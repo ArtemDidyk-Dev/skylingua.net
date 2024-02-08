@@ -1,0 +1,450 @@
+@extends('frontend.layouts.index')
+
+@if(old('role_id', $userAdd->role_id) == 3)
+    @section('title', language('frontend.cabinet.institution_add'))
+@else
+    @section('title', language('frontend.cabinet.employee_add'))
+@endif
+@section('keywords', language('frontend.edit_profile.keywords') )
+@section('description',language('frontend.edit_profile.description') )
+
+
+@section('content')
+
+<main>
+
+    <!--  CABINET START  -->
+    <div class="cabinet-container">
+        <div class="container">
+            <div class="row">
+
+                @include('frontend.cabinet._sidebar-menu', compact($user))
+
+                <!-- CABINET RIGHT SIDEBAR START  -->
+                <div class="col-lg-9 right-content-container">
+
+                    <!--  CABINET HEADER START  -->
+                    <div class="cabinet-header">
+                        <div class="cabinet-title">
+
+                            @if(old('role_id', $userAdd->role_id) == 3)
+                                {{ language('frontend.cabinet.institution_add') }}
+                            @else
+                                {{ language('frontend.cabinet.employee_add') }}
+                            @endif
+
+                        </div>
+{{--                        @include('frontend.cabinet._balance', compact($user))--}}
+                    </div>
+                    <!--  CABINET HEADER END  -->
+
+                    <!--  CABINET CONTENT START  -->
+                    <div class="content-box">
+
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger d-flex align-items-center">
+                                <i class="fa fa-exclamation-triangle fa-2x" aria-hidden="true"></i>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        @if(session()->has('message'))
+                            <div class="alert alert-success d-flex align-items-center">
+                                <i class="fa fa-check fa-2x" aria-hidden="true"></i>
+                                <ul>
+                                    <li>{{ session()->get('message') }}</li>
+                                </ul>
+                            </div>
+                        @endif
+
+                        <div class="profile-container">
+
+                            <!--  FORM START  -->
+                            <form id="submit-form" action="{{ route('frontend.cabinet.addStore') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+
+                                <input type="hidden" class="hidden" name="role_id" value="{{ old('role_id', $userAdd->role_id) }}">
+
+
+                                @error('refererID' )<div class="alert alert-my-danger">{{ $message }}</div> @enderror
+
+                                <!--  LEFT START  -->
+                                <div class="profile-edit-left">
+
+
+                                    <div class="cabinet center-block">
+                                        @if(!empty( old('profile_photo', $userAdd->profile_photo) ))
+                                        <div title="{{ language('frontend.edit_profile.delete_photo') }}" id="notPhoto">
+                                            <i class="fas fa-times"></i>
+                                        </div>
+                                        @endif
+                                        <figure>
+                                            <img
+                                                src="@if(old('role_id', $userAdd->role_id) == 3){{ !empty( old('profile_photo', $userAdd->profile_photo) ) ? asset('storage/profile/'. old('profile_photo', $userAdd->profile_photo)) : asset('storage/no-image.jpg') }}@else{{ !empty( old('profile_photo', $userAdd->profile_photo) ) ? asset('storage/profile/'. old('profile_photo', $userAdd->profile_photo)) : asset('storage/no-photo.jpg') }}@endif"
+                                                class="gambar img-responsive img-thumbnail"
+                                                id="crop-item-img-output"/>
+                                        </figure>
+                                        <input type="file" class="crop-item-img  file center-block"
+                                               name="profile_photo"/>
+                                    </div>
+                                    <input type="text" name="profile_photo_upload"
+                                           value="{{ old('profile_photo_upload') }}"
+                                           class="fileUpload">
+                                    <input type="text" name="not_photo" class="notPhoto">
+                                    <div class="text-muted mt-2">{{ language('frontend.edit_profile.photo_formats') }}</div>
+                                    <div class="alert alert-danger mt-3  cropImgError"></div>
+                                    @error('profile_photo' )
+                                    <div class="alert alert-my-danger">{{ $message }}</div>
+                                    @enderror
+
+                                </div>
+                                <!--  LEFT END  -->
+
+                                <!--  RIGHT START  -->
+                                <div class="profile-edit-right">
+                                    <div class="row">
+                                        <!--  NAME START  -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="name" class="form-label">
+                                                    @if(old('role_id', $userAdd->role_id) == 3)
+                                                        {{ language('frontend.register.branche_name') }}
+                                                    @else
+                                                        {{ language('frontend.cabinet.employee_name') }}
+                                                    @endif
+                                                </label>
+                                                <input autocomplete="OFF" id="name" type="text" name="name" value="{{ old('name',$userAdd->name) }}" class="form-control" placeholder="@if(old('role_id', $userAdd->role_id) == 3){{ language('frontend.register.branche_name') }}@else{{ language('frontend.cabinet.employee_name') }}@endif"/>
+                                                @error('name' )<span class="text-danger">{{ $message }}</span> @enderror
+                                            </div>
+                                        </div>
+                                        <!--  NAME END  -->
+
+
+
+                                        <!--  POSITION START  -->
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-group ">
+                                                <label for="user_category" class="mb-2">{{ language('frontend.edit_profile.position') }}</label>
+                                                <select class="form-control w-100 my-select-option" name="user_category" id="user_category">
+                                                    <option value="">{{ language('frontend.common.select') }}</option>
+                                                    @foreach($user_categories as $user_category)
+                                                        <option {{ old('user_category',$userAdd->user_category) == $user_category->id ? 'selected':null }} value="{{ $user_category->id }}">{{ $user_category->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @error('user_category' )<span class="text-danger">{{ $message }}</span> @enderror
+                                        </div>
+                                        <!--  POSITION END  -->
+
+
+                                        @if(old('role_id', $userAdd->role_id) == 4)
+                                        <!--  Gender START  -->
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-group ">
+                                                <label for="gender" class="mb-2">{{ language('frontend.edit_profile.gender') }}</label>
+                                                <select class="form-control w-100 my-select-option" name="gender" id="gender">
+                                                    <option {{ old('gender',$userAdd->gender) == 0 ? 'selected':null }} value="0">{{ language('frontend.common.select') }}</option>
+                                                    <option {{ old('gender',$userAdd->gender) == 1 ? 'selected':null }} value="1">{{ language('frontend.edit_profile.male') }}</option>
+                                                    <option {{ old('gender',$userAdd->gender) == 2 ? 'selected':null }} value="2">{{ language('frontend.edit_profile.famale') }}</option>
+                                                </select>
+                                            </div>
+                                            @error('gender' )<span class="text-danger">{{ $message }}</span> @enderror
+                                        </div>
+                                        <!--  Gender END  -->
+
+                                        <!--  BDAY START  -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <div class="form-group">
+                                                    <label for="date_of_birth" class="form-label">{{ language('frontend.edit_profile.date_of_birth') }}</label>
+
+                                                    <div class='input-group date' id='profileBDayInput'>
+                                                        <input  autocomplete="off" id="date_of_birth" type="text" name="date_of_birth" value="{{ old('date_of_birth',$userAdd->date_of_birth) }}" class="form-control" placeholder="{{ language('frontend.edit_profile.yyyy_mm_dd') }}" />
+                                                        <span class="input-group-addon input-group-text">
+                                                            <span class="fa fa-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                    @error('date_of_birth' )<span class="text-danger">{{ $message }}</span> @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--  BDAY END  -->
+
+                                        @elseif(old('role_id', $userAdd->role_id) == 3)
+
+                                            <!--  Address START  -->
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="address" class="form-label">{{ language('frontend.edit_profile.address') }}</label>
+                                                    <input autocomplete="OFF" id="address" type="text" name="address" value="{{ old('address',$userAdd->address) }}" class="form-control" placeholder="{{ language('frontend.edit_profile.address') }}"/>
+                                                @error('address' )<span class="text-danger">{{ $message }}</span> @enderror
+                                                </div>
+                                            </div>
+                                            <!--  Address END  -->
+
+                                            <!--  Postalcode START  -->
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="postalcode" class="form-label">{{ language('frontend.edit_profile.postalcode') }}</label>
+                                                    <input autocomplete="OFF" id="postalcode" type="text" name="postalcode" value="{{ old('postalcode',$userAdd->postalcode) }}" class="form-control" placeholder="{{ language('frontend.edit_profile.postalcode') }}"/>
+                                                </div>
+                                            </div>
+                                            <!--  Address END  -->
+                                        @endif
+
+                                        <!--  EMAIL START  -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">{{ language('frontend.register.your_email') }}</label>
+                                                <input autocomplete="OFF" id="email" type="text" name="email" value="{{ old('email',$userAdd->email) }}" class="form-control" placeholder="{{ language('frontend.register.your_email') }}"/>
+                                                @error('email' )<span class="text-danger">{{ $message }}</span> @enderror
+                                            </div>
+                                        </div>
+                                        <!--  EMAIL END  -->
+
+
+                                        <!--  Phone START  -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="phone" class="form-label">{{ language('frontend.edit_profile.phone') }}</label>
+                                                <input autocomplete="OFF" id="phone" type="tel" name="phone" value="{{ old('phone',$userAdd->phone) }}" class="form-control" placeholder="{{ language('frontend.edit_profile.phone') }}"/>
+                                                @error('phone' )<span class="text-danger">{{ $message }}</span> @enderror
+                                            </div>
+                                        </div>
+                                        <!--  Phone END  -->
+
+
+
+
+
+                                        <!--  Password START  -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="password" class="form-label">{{ language('frontend.edit_profile.password') }}</label>
+                                                <input autocomplete="OFF" id="password" type="password" name="password" value="" class="form-control" placeholder="{{ language('frontend.edit_profile.password') }}"/>
+                                                @error('password' )<span class="text-danger">{{ $message }}</span> @enderror
+                                            </div>
+                                        </div>
+                                        <!--  Password END  -->
+
+
+                                        <!--  Password Confirmation START  -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="password_confirmation" class="form-label">{{ language('frontend.edit_profile.password_confirmation') }}</label>
+                                                <input autocomplete="OFF" id="password_confirmation" type="password" name="password_confirmation" value="" class="form-control" placeholder="{{ language('frontend.edit_profile.password_confirmation') }}"/>
+                                                @error('password_confirmation' )<span class="text-danger">{{ $message }}</span> @enderror
+                                            </div>
+                                        </div>
+                                        <!--  Password Confirmation END  -->
+
+
+
+                                        @if(old('role_id', $userAdd->role_id) == 3 || old('role_id', $userAdd->role_id) == 4)
+                                        <!--  Description START  -->
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label for="description" class="form-label">{{ language('frontend.edit_profile.description') }}</label>
+                                                <textarea id="description" name="description" class="form-control" placeholder="{{ language('frontend.edit_profile.description') }}" rows="5">{{ old('description', $userAdd->description) }}</textarea>
+                                                @error('description' )<span class="text-danger">{{ $message }}</span> @enderror
+                                            </div>
+                                        </div>
+                                        <!--  Description END  -->
+                                        @endif
+
+                                        <!--  Status START  -->
+                                        <div class="col-md-6 mb-3">
+                                            &nbsp;
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-group ">
+                                                <label for="status" class="mb-2">{{ language('frontend.edit_profile.status') }}</label>
+                                                <select class="form-control w-100 my-select-option" name="status" id="status">
+                                                    <option {{ old('status',$userAdd->status) == 0 ? 'selected':null }} value="0">{{ language('frontend.common.deactive') }}</option>
+                                                    <option {{ old('status',$userAdd->status) == 1 ? 'selected':null }} value="1">{{ language('frontend.common.active') }}</option>
+                                                </select>
+                                            </div>
+                                            @error('status' )<span class="text-danger">{{ $message }}</span> @enderror
+                                        </div>
+                                        <!--  Status END  -->
+
+
+                                        <div class="col-md-12 d-flex justify-content-end mt-3">
+                                            <button type="submit" class="btn btn-my-success">{{ language('frontend.common.save') }}</button>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <!--  RIGHT END  -->
+
+                            </form>
+                            <!--  FORM END  -->
+
+                        </div>
+                    </div>
+                    <!--  CABINET CONTENT END  -->
+
+                </div>
+                <!-- CABINET RIGHT SIDEBAR END  -->
+
+            </div>
+
+        </div>
+    </div>
+    <!--  CABINET END  -->
+
+</main>
+
+
+{{--@include('frontend.cabinet._qrcode', compact($user))--}}
+
+
+<!--  CROP IMAGE START  -->
+<div class="modal fade" id="cropImagePop" tabindex="-1" aria-labelledby="cropImagePopLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cropImagePopLabel">{{ language('frontend.edit_profile.profile_photo') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ language('frontend.common.close') }}"></button>
+            </div>
+            <div class="modal-body">
+                <div id="upload-crop-img" class="center-block"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ language('frontend.common.close') }}</button>
+                <button type="button" id="cropImageBtn" class="btn btn-my-success">{{ language('frontend.common.crop') }}</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--  CROP IMAGE END  -->
+
+
+@endsection
+
+
+@section('CSS')
+    <!--  THIS PAGE  -->
+    <!-- CROPPER CSS  -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/plugins/cropper/croppie.css') }}">
+
+    <!--  DATEPICKER  -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/plugins/datepicker/css/bootstrap-datepicker.min.css') }}">
+@endsection
+
+@section('JS')
+    <!--  THIS PAGE  -->
+    <!--  DATEPICKER  -->
+    <script src="{{ asset('frontend/assets/plugins/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <!--  CROPPER JS START -->
+    <script src="{{ asset('frontend/assets/plugins/cropper/croppie.js') }}"></script>
+
+    <script>
+        /*   CROP IMG START   */
+        let $uploadCrop,
+            tempFilename,
+            rawImg,
+            imageId;
+
+        function readFile(input) {
+            if (input.files[0].type == "image/jpeg" || input.files[0].type == "image/png") {
+                if (input.files && input.files[0]) {
+                    $('.cropImgError').hide();
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('.upload-crop-img').addClass('ready');
+                        $('#cropImagePop').modal('show');
+                        rawImg = e.target.result;
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                } else {
+                    // console.log("Sorry - you're browser doesn't support the FileReader API");
+                }
+            } else {
+                $('.cropImgError').fadeIn();
+                $('.cropImgError').html('{{ language('frontend.edit_profile.photo_format_error') }}')
+            }
+
+        }
+
+        $uploadCrop = $('#upload-crop-img').croppie({
+            viewport: {
+                width: 272,
+                height: 272,
+            },
+            enforceBoundary: true,
+            enableExif: true
+        });
+        $('#cropImagePop').on('shown.bs.modal', function () {
+            // alert('Shown pop');
+            $uploadCrop.croppie('bind', {
+                url: rawImg
+            }).then(function () {
+                // console.log('jQuery bind complete');
+            });
+        });
+
+        $('.crop-item-img').on('change', function () {
+            imageId = $(this).data('id');
+            tempFilename = $(this).val();
+            $('#cancelCropBtn').data('id', imageId);
+            readFile(this);
+        });
+        $('#cropImageBtn').on('click', function (ev) {
+            $uploadCrop.croppie('result', {
+                type: 'base64',
+                format: 'jpeg',
+                size: {width: 720, height: 720}
+            }).then(function (resp) {
+                $('#crop-item-img-output').attr('src', resp);
+                $('#cropImagePop').modal('hide');
+                $('#notPhoto').remove();
+                $('.cabinet').prepend(`
+                <div title="Foto delete" id="notPhoto">
+                    <i class="fas fa-times"></i>
+                 </div>
+                `);
+                $('.notPhoto').val('');
+                $('.fileUpload').val(resp);
+            });
+        });
+        // End upload preview image
+
+        $(document).on('click', '#notPhoto', function () {
+            $(this).remove();
+            $('.notPhoto').val('1');
+            $('.cabinet img').attr("src", "@if(old('role_id', $userAdd->role_id) == 3){{ asset('storage/no-image.jpg') }}@else{{ asset('storage/no-photo.jpg') }}@endif")
+        })
+
+        /*   CROP IMG END   */
+    </script>
+    <!--  CROPPER JS END -->
+
+    @if(old('role_id', $userAdd->role_id) == 4)
+    <!--  DATEPICKER  -->
+    <script>
+        // $('.input-group.date').datepicker({
+        //     orientation: "bottom right",
+        //     autoclose: true,
+        //     todayHighlight: true
+        // });
+
+        $('#profileBDayInput').datepicker({
+            format: 'yyyy-mm-dd',
+            orientation: "bottom auto",
+            autoclose: true,
+        });
+    </script>
+    @endif
+
+    <!--  SHARE JS  -->
+    <script src="https://yastatic.net/share2/share.js"></script>
+@endsection
+

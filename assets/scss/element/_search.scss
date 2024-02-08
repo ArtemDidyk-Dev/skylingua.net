@@ -1,0 +1,192 @@
+.search {
+    padding-top: 67px;
+    padding-bottom: 93px;
+    background-image: url("/build/website/images/other/serach-bg.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+
+    &__inner {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+
+        @media #{$mq-mobile} {
+            flex-direction: column;
+        }
+    }
+
+    &__left {
+        max-width: 558px;
+        width: 100%;
+        align-self: center;
+        @media #{$mq-mobile} {
+            width: 100%;
+            align-self: flex-start;
+            max-width: 100%;
+        }
+    }
+
+    &__text {
+        p {
+            margin-top: 20px;
+            font-size: 18px;
+            line-height: 27px;
+            font-weight: 400;
+
+            @media #{$mq-mobile-sm} {
+                margin-top: 15px;
+                font-size: 16px;
+                line-height: 25px;
+            }
+        }
+    }
+
+    &__element-form {
+        border-radius: 12px;
+        padding: 5px 5px 5px 16px;
+        max-width: 547px;
+        display: flex;
+        align-items: center;
+        margin-top: 30px;
+        box-shadow: 0 0 28px 0 rgba(0, 0, 0, 0.08);
+        background: #fff;
+
+        @media #{$mq-mobile} {
+            margin: 0 auto;
+            margin-top: 20px;
+
+        }
+
+        @media #{$mq-mobile-sm} {
+            box-shadow: 0px 0px 28px 0px rgba(0, 0, 0, 0.15);
+            justify-content: center;
+            align-items: center;
+            align-self: center;
+            flex-direction: column;
+            position: relative;
+            padding: 15px;
+            width: 100%;
+            max-width: 350px;
+
+            &-ico {
+                position: absolute;
+                right: 31px;
+                top: 26px;
+            }
+
+            &-select {
+                display: flex;
+                justify-content: center;
+                margin-top: 10px;
+            }
+
+            &-options {
+                width: 100%;
+            }
+
+            .home-search-form {
+                margin: 0 0 15px 0;
+            }
+
+            button {
+                margin-top: 10px;
+                width: 100%;
+            }
+        }
+    }
+
+    &__element-form-input {
+        padding: 12px 30px 12px 12px;
+        font-weight: 500;
+        font-size: 15px;
+        height: 48px;
+        width: 230px;
+        border: 0;
+        flex-grow: 1;
+
+        @media #{$mq-mobile-sm} {
+            width: 100%;
+            font-size: 13px;
+            line-height: 18px;
+            padding: 12px 20px 12px 12px;
+        }
+    }
+
+    &__element-form-separator {
+        width: 1px;
+        height: 18px;
+        background-color: #C1C1C1;
+
+        @media #{$mq-mobile-sm} {
+            width: 18px;
+            height: 1px;
+        }
+    }
+
+    &__element-form-select {
+        width: 197px;
+        padding: 0 16px 0 16px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    &__element-form-title {
+        font-size: 15px;
+        font-weight: 500;
+        margin-right: 10px;
+    }
+
+    &__element-form-options {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(0, 5px);
+        transition: 0.3s;
+        background-color: white;
+        border-radius: 8px;
+        top: 18px;
+        padding: 8px 8px 5px 8px;
+    }
+
+    &__element-form-select:hover>&__element-form-options {
+        transform: translate(0, 0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    &__element-form-option {
+        margin-bottom: 3px;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    &__element-form-option:hover {
+        text-decoration: underline;
+    }
+
+
+
+    @media #{$mq-mobile} {
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
+
+    &__right {
+        img {
+            height: auto;
+            @media (max-width: 370px) {
+                transform: scale(1.2);
+            }
+        }
+
+        @media #{$mq-mobile} {
+            align-self: center;
+            margin-top: 36px;
+        }
+    }
+}

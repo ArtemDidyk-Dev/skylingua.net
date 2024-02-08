@@ -1,0 +1,137 @@
+.choose {
+    margin-top: 120px;
+    position: relative;
+    background: var(--back-light, #FBFBFB);
+    padding: 120px 0;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        width: 553.461px;
+        height: 542.582px;
+        transform: rotate(-51.276deg);
+        border: 3px solid #E5AFEE;
+        opacity: 0.8;
+        border-radius: 50%;
+        top: -300px;
+        left: -255px;
+
+    }
+
+    &__wrapper {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+
+        @media #{$mq-mobile} {
+            flex-direction: column;
+        }
+
+    }
+
+    &__content {
+        max-width: 571px;
+        width: 100%;
+        margin-left: 20px;
+
+        h2 {
+            margin-bottom: 35px;
+        }
+
+        @media #{$mq-mobile} {
+            margin-left: 0px;
+            max-width: 100%;
+            margin-top: 30px;
+
+            h2 {
+                margin-bottom: 20px;
+            }
+        }
+    }
+
+    &__content-item {
+        display: flex;
+        gap: 6px;
+        flex-direction: column;
+    }
+
+    &__item-title {
+        display: flex;
+        align-items: flex-start;
+
+        img {
+            margin-right: 12px;
+
+            @media #{$mq-mobile} {
+                width: 20px;
+                height: 20px;
+                margin-right: 8px;
+                margin-top: 5px;
+            }
+
+        }
+
+        span {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 28px;
+
+            @media #{$mq-mobile} {
+                font-size: 16px;
+            }
+        }
+
+    }
+
+    &__content-item+&__content-item {
+        margin-top: 20px;
+        @media #{$mq-mobile} {
+            margin-top: 16px;
+        }
+    }
+
+    &__img {
+        flex-shrink: 1;
+
+        @media #{$mq-mobile} {
+            flex-direction: column;
+            max-width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-self: center;
+
+            img {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                align-self: center;
+            }
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    @media #{$mq-mobile} {
+        margin-top: 50px;
+        padding: 50px 0;
+
+        &::before {
+            width: 239.314px;
+            height: 238.617px;
+            transform: rotate(-51.276deg);
+            border: 2px solid #E5AFEE;
+            opacity: 0.8;
+            border-radius: 50%;
+            top: -170px;
+            left: -163px;
+        }
+    }
+
+}

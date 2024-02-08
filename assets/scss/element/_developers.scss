@@ -1,0 +1,135 @@
+.developers {
+    margin-top: 120px;
+    position: relative;
+    &__top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+
+        @media #{$mq-mobile} {
+            a {
+                display: none;
+            }
+        }
+
+    }
+
+    &__top-content {
+        p {
+            margin-top: 10px;
+        }
+    }
+
+    &__inner {
+        overflow: hidden;
+        margin-top: 40px;
+        @media(max-width: 566px) {
+            padding: 6px;
+        }
+    }
+
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    &__box {
+        padding: 20px 20px 30px 20px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    &__top-arrow {
+        order: 1;
+    }
+
+    &__arrow {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 112px;
+        height: 36px;
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 15px !important;
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            color: $color-second;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background: var(--white, #FFF);
+            box-shadow: 0px 4px 32px 0px rgba(114, 67, 118, 0.2);
+        }
+
+        .swiper-button-prev {}
+
+        @media(max-width: 921px) {
+            top: auto;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+
+    &__item {
+        border-radius: 16px;
+        background: $color-white;
+        box-shadow: 0px 2px 24px 0px rgba(0, 0, 0, 0.10);
+        
+        border-radius: 20px;
+        margin-bottom: 35px;
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        .preview-user__right {
+            span {
+                font-size: 17px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+        }
+
+        .preview-user__footer {
+            margin-top: auto;
+        }
+
+        .preview-user__body {
+            margin-bottom: 20px;
+        }
+        @media(max-width: 921px) {
+            margin-bottom: 20px;
+            box-shadow: 0px 4px 32px 0px rgba(114, 67, 118, 0.10);
+        }
+    }
+
+    &__bottom {
+        display: none;
+
+        @media #{$mq-mobile} {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    @media #{$mq-tablet} {
+        margin-top: 50px;
+    }
+
+
+}

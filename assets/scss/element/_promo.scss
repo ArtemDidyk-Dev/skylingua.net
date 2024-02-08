@@ -1,0 +1,162 @@
+.promo {
+    padding: 120px 0px;
+    border-radius: 20px;
+    background: var(--back-light, #FBFBFB);
+
+    &__box {
+        padding: 40px 60px;
+        border-radius: 20px;
+        background: var(--White, #FFF);
+        box-shadow: 0px 4px 32px 0px rgba(114, 67, 118, 0.12);
+        @media #{$mq-tablet} {
+            padding: 35px 25px;
+        }
+    }
+
+    &__box-inner {
+        display: flex;
+        justify-content: flex-start;
+        margin-left: -170px;
+        flex-wrap: nowrap;
+
+        @media #{$mq-tablet} {
+            margin-left: -70px;
+
+        }
+        @media (max-width: 776px){
+            margin-left: 0px;
+            flex-direction: column;
+        }
+        
+    }
+
+    &__box-item {
+        display: flex;
+        flex-direction: column;
+        margin-left: 170px;
+        flex-basis: calc(33.3333% - 170px);
+        justify-content: flex-start;
+        align-items: center;
+        position: relative;
+
+        &:first-child {
+            &::after {
+                content: "";
+                background-image: url("/build/website/images/icons/arrow-first.svg");
+                width: 112.25px;
+                height: 19px;
+                position: absolute;
+                right: -115px;
+                top: 50%;
+                transform: translateY(-50%);
+                background-size: cover;
+                background-repeat: no-repeat;
+
+                @media #{$mq-tablet} {
+                    width: 87.25px;
+                    height: 19px;
+                    position: absolute;
+                    right: -78px;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                }
+                @media (max-width: 776px){
+                    background-image: url("/build/website/images/icons/arrow-first-mob.svg");
+                    width: 34.999px;
+                    height: 41px;
+                    right: 0px;
+                    bottom: -62px;
+                    top: auto;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+            }
+            @media (max-width: 776px) {
+                margin-bottom: 92px;
+            }
+        }
+
+        &:nth-child(2) {
+            &::after {
+                content: "";
+                background-image: url("/build/website/images/icons/arrow-second.svg");
+                width: 118.568px;
+                height: 24px;
+                position: absolute;
+                right: -134px;
+                top: 50%;
+                transform: translateY(-50%);
+                background-size: cover;
+                @media #{$mq-tablet} {
+                    width: 86.568px;
+                    height: 24px;
+                    position: absolute;
+                    right: -84px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                }
+
+                @media (max-width: 776px){
+                    background-image: url("/build/website/images/icons/arrow-second-mob.svg");
+                    width: 34.999px;
+                    height: 41px;
+                    right: 0px;
+                    bottom: -62px;
+                    top: auto;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+            }
+           
+            @media (max-width: 776px) {
+                margin-bottom: 92px;
+            }
+        }
+
+        p {
+            font-size: 16px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        @media #{$mq-tablet} {
+            margin-left: 70px;
+            flex-basis: calc(33.3333% - 70px);
+        }
+
+        @media (max-width: 776px){
+            flex-basis: 100%;  
+            margin-left: 0px;
+        }
+    }
+
+    &__item-top {
+        display: flex;
+        padding: 4px 10px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 16px;
+        background: var(--selected-category, #F6F1F7);
+
+        span {
+            color: $color-third;
+            font-weight: 600;
+            font-size: 14px;
+        }
+    }
+
+    &__item-picture {
+        margin-top: 35px;
+        @media (max-width: 776px){
+            margin-top: 29px;
+        }
+    }
+
+    @media #{$mq-tablet} {
+        padding: 40px 0px;
+    }
+
+    @media (max-width: 776px) {}
+}

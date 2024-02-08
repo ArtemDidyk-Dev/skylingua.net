@@ -1,0 +1,257 @@
+.btn {
+    cursor: pointer;
+
+    &-auth {
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    &-purple {
+        background: $color-second;
+        color: #fff;
+
+        &:hover {
+            background: $color-four;
+        }
+    }
+
+   
+
+    &-black {
+        color: $color-white;
+        background: $color-second;
+
+        &:hover {
+            background: $color-second;
+            color: $color-white;
+        }
+    }
+
+    &-search {
+        border: none;
+        height: 100%;
+        padding: 12px 22px;
+        font-size: 16px;
+        font-weight: 800;
+        line-height: 26px;
+        color: $color-white;
+        border-radius: 12px;
+        background: $color-second;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            margin-left: 8px;
+        }
+
+        &:hover {
+            background: $color-third;
+        }
+
+        @media #{$mq-mobile-sm} {
+            font-size: 14px;
+            padding: 9px 16px;
+
+            svg {
+                width: 12px;
+                height: 12px;
+            }
+        }
+    }
+
+    &-all {
+        border-radius: 12px;
+        padding: 16px 40px;
+        background: $color-second;
+        font-weight: 700;
+        font-size: 15px;
+        text-align: center;
+        color: $color-white;
+        transition: all 0.3s;
+        &:hover {
+            background: $color-third;
+        }
+        @media #{$mq-mobile-sm} {
+            padding: 10px 20px;
+        }
+    }
+
+    &-white {
+        background: $color-white;
+        color: $color-second;
+
+        &:hover {
+            background: $color-second;
+            color: $color-white;
+        }
+    }
+
+    &-details {
+        border-radius: 50px;
+        border: 2px solid $color-second;
+        padding: 10px 20px;
+        font-size: 14px;
+        line-height: 24px;
+        // @extend %font-700-nunito-sans;
+        color: $color-second;
+        transition: all 0.3s;
+        display: block;
+        text-align: center;
+
+        &:hover {
+            color: $color-white;
+            background: $color-second;
+        }
+    }
+
+    &-filter {
+        transition: all 0.3s;
+        border: none;
+        padding: 12px 20px;
+        font-weight: 800;
+        width: 100%;
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+
+        svg {
+            margin-left: 12px;
+        }
+
+        &:hover {
+            background: $color-third;
+        }
+    }
+
+    &-with-image {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: center;
+        border-radius: 50px;
+        padding: 10px;
+        font-size: 14px;
+        font-weight: 800;
+        transition: all 0.3s;
+
+        img {
+            margin-left: 12px;
+        }
+
+        &:hover {
+            background: $color-third;
+        }
+    }
+
+    &-profile {
+        padding: 12px 14px;
+        border-radius: 50px;
+        border: 2px solid $color-second;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 20px;
+        color: $color-second;
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+
+        img {
+            margin-right: 8px;
+        }
+
+        &.favourited {
+            border: 2px solid $color-third;
+            color: $color-third;
+        }
+
+        @media #{$mq-mobile} {
+            padding: 10px 14px;
+            font-size: 13px;
+
+            img {
+                width: 14px;
+                height: 14px;
+            }
+        }
+    }
+
+    &-svg {
+        border-radius: 50px;
+        padding: 12px 28px;
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 20px;
+        display: block;
+        transition: all 0.3s;
+
+        &.white {
+            background: var(--white, #FFF);
+            color: var(--black, #111);
+            border: 2px solid var(--white, #FFF);
+
+            &:hover {
+                border: 2px solid var(--white, #FFF);
+                background: transparent;
+                color: var(--white, #FFF);
+
+                svg {
+                    filter: invert(1);
+                }
+            }
+
+        }
+
+        &.pink {
+            border: 2px solid var(--pink, #B34D75);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #B34D75;
+
+            svg {
+                margin-right: 12px;
+            }
+
+            &:hover {
+                border: 2px solid var(--white, $color-third);
+                background: transparent;
+                color: var(--white, $color-third);
+
+                svg {
+                    path {
+                        stroke: $color-third;
+                    }
+                }
+            }
+
+        }
+
+        &.full-pink {
+            background: #B34D75;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffff;
+
+            svg {
+                margin-left: 12px;
+            }
+
+            &:hover {
+                background: #7D3C88;
+            }
+        }
+
+        @media #{$mq-mobile} {
+            font-size: 13px;
+        }
+
+    }
+}

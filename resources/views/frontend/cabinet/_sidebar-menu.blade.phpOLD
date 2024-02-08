@@ -1,0 +1,52 @@
+<!--  CABINET LEFT SIDEBAR START  -->
+<div class="col-lg-3 left-menu-container">
+    <ul class="left-sidebar-menu">
+        <li>
+            <a href="{{ route('frontend.cabinet.cabinet') }}" class="menu-link{{Route::is(
+                                                        [
+                                                        'frontend.cabinet.cabinet',
+                                                        ]
+                                                        )? " active":""}}">{{ language('frontend.cabinet.my_profile') }}</a>
+        </li>
+        <li>
+            <a href="{{ route('frontend.cabinet.pay') }}" class="menu-link{{Route::is(
+                                                        [
+                                                        'frontend.cabinet.pay',
+                                                        ]
+                                                        )? " active":""}}">{{ language('frontend.cabinet.pay') }}</a>
+        </li>
+        <li>
+            <a href="{{ route('frontend.cabinet.history') }}" class="menu-link{{Route::is(
+                                                        [
+                                                        'frontend.cabinet.history',
+                                                        ]
+                                                        )? " active":""}}">{{ language('frontend.cabinet.history') }}</a>
+        </li>
+        <li>
+            <a href="{{ route('frontend.cabinet.notification') }}" class="menu-link{{Route::is(
+                                                        [
+                                                        'frontend.cabinet.notification',
+                                                        ]
+                                                        )? " active":""}}">{{ language('frontend.cabinet.notification') }}</a>
+        </li>
+
+        @if($auth_user->role_id == 3 && $auth_user->parent == 0)
+        <li>
+            <a href="{{ route('frontend.cabinet.institution') }}" class="menu-link{{Route::is(
+                                                        [
+                                                        'frontend.cabinet.institution',
+                                                        ]
+                                                        )? " active":""}}">{{ language('frontend.cabinet.institution') }}</a>
+        </li>
+        <li>
+            <a href="{{ route('frontend.cabinet.employee') }}" class="menu-link{{Route::is(
+                                                        [
+                                                        'frontend.cabinet.employee',
+                                                        ]
+                                                        )? " active":""}}">{{ language('frontend.cabinet.employee') }}</a>
+        </li>
+        @endif
+
+    </ul>
+</div>
+<!--  CABINET LEFT SIDEBAR END  -->

@@ -1,0 +1,103 @@
+@extends('frontend.layouts.index')
+
+@section('title',empty(language('frontend.cabinet.title')) ? language('frontend.cabinet.name') : language('frontend.cabinet.title'))
+@section('keywords', language('frontend.cabinet.keywords') )
+@section('description',language('frontend.cabinet.description') )
+
+
+@section('content')
+
+<main>
+
+
+    <!--  CABINET START  -->
+    <div class="cabinet-container">
+        <div class="container">
+            <div class="row">
+
+                @include('frontend.cabinet._sidebar-menu', compact($user))
+
+                <!-- CABINET RIGHT SIDEBAR START  -->
+                <div class="col-lg-9 right-content-container">
+
+                    <!--  CABINET HEADER START  -->
+                    <div class="cabinet-header">
+                        <div class="cabinet-title">{{ language('frontend.cabinet.employee') }}</div>
+{{--                        @include('frontend.cabinet._balance', compact($user))--}}
+                    </div>
+                    <!--  CABINET HEADER END  -->
+
+                    <!--  CABINET CONTENT START  -->
+                    <div class="content-box">
+                        <div class="employee-container">
+
+                            <div class="employee-header">
+                                <a href="{{ route('frontend.cabinet.add', ['role' => 4]) }}" class="employee-add" title="{{ language('frontend.cabinet.employee_add') }}">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                            </div>
+
+
+                            @if($employees->total() > 0)
+                            <div class="employee-body">
+
+
+                                @foreach($employees as  $employee)
+                                <!--  ITEM 1 START -->
+                                <div class="employee-item">
+                                    <div class="employee-item-header">
+                                        <a href="{{ route('frontend.cabinet.edit', $employee->id) }}" class="employee-edit" title="{{ language('frontend.cabinet.employee_edit') }}">
+                                            <i class="fas fa-user-edit"></i>
+                                        </a>
+                                        <img src="{{ !empty($employee->profile_photo) ? asset('storage/profile/'. $employee->profile_photo) : asset('storage/no-image.png') }}" alt="{{ $employee->name }}">
+                                    </div>
+                                    <div class="employee-item-footer">
+                                        <div class="employee-name">{{ $employee->name }}</div>
+                                        <div class="employee-position">{{ $employee->user_category_name }}</div>
+                                    </div>
+                                </div>
+                                <!--  ITEM 1 END -->
+                                @endforeach
+
+
+                            </div>
+
+                            <div class="employee-footer">
+                                {{ $employees->appends(['search' => isset($searchText) ? $searchText : null])
+->render('vendor.pagination.frontend.cabinet-pagination') }}
+                            </div>
+
+                            @else
+                                {{ language('frontend.common.not_result') }}
+                            @endif
+
+                        </div>
+                    </div>
+                    <!--  CABINET CONTENT END  -->
+
+                </div>
+                <!-- CABINET RIGHT SIDEBAR END  -->
+
+            </div>
+
+        </div>
+    </div>
+    <!--  CABINET END  -->
+
+</main>
+
+
+
+{{--@include('frontend.cabinet._qrcode', compact($user))--}}
+
+
+@endsection
+
+
+@section('CSS')
+@endsection
+
+@section('JS')
+    <script src="https://yastatic.net/share2/share.js"></script>
+@endsection
+

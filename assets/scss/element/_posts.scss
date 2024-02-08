@@ -1,0 +1,137 @@
+.posts {
+    margin-top: 125px;
+
+    h2 {
+        text-align: center;
+    }
+
+    &__inner {
+        margin-top: 30px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin-left: -25px;
+
+        @media #{$mq-mobile} {
+            margin-top: 20px;
+        }
+    }
+
+    &__item {
+        position: relative;
+        margin-left: 25px;
+        flex-basis: calc(33.333% - 25px);
+        margin-bottom: 35px;
+
+        @media #{$mq-tablet} {
+            flex-basis: calc(50% - 25px);
+        }
+
+        @media (max-width: 776px) {
+            flex-basis: 100%;
+            margin-bottom: 20px;
+        }
+
+        @media #{$mq-mobile-sm} {
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+    }
+
+    &__item-img {
+        border-radius: 20px;
+        width: 100%;
+
+        @media (max-width: 776px) {
+            width: 100%;
+            max-height: 500px;
+            height: 199px;
+            object-fit: cover;
+        }
+    }
+
+    &__item-body {
+        width: 100%;
+        z-index: 999;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 25px;
+
+    }
+
+    &__item-title {
+        font-size: 17px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 22px;
+
+    }
+
+    &__item-escription {
+        margin-top: 10px;
+        font-size: 15px;
+        line-height: 21px;
+    }
+
+    &__item-more {
+        display: block;
+        margin-top: 16px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 22px;
+        color: $color-second;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        transition: all 0.3s;
+
+        &:hover {
+            color: $color-four;
+        }
+    }
+
+    &__bottom {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+
+
+    }
+
+    &__item-data {
+        color: var(--stroke-3, #B0B0B0);
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        display: flex;
+        align-items: center;
+
+        svg {
+            margin-right: 6px;
+        }
+    }
+
+    &__item-title {
+        display: flex;
+        font-weight: 800;
+        font-size: 20px;
+        color: var(--black, #111);
+        margin-top: 12px;
+
+        svg {
+            min-width: 25px;
+            min-height: 25px;
+            margin-left: auto;
+        }
+    }
+
+    @media #{$mq-tablet} {
+        margin-top: 60px;
+    }
+
+    @media #{$mq-mobile} {
+        margin-bottom: 0px;
+    }
+}

@@ -1,0 +1,55 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    &-right,
+    &-left {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &-right-img,
+    &-left-img {
+        width: 20px;
+    }
+
+    &-left-img {
+        transform: rotate(180deg);
+    }
+
+    &-pages {
+        display: flex;
+        justify-content: center;
+    }
+
+    &-item {
+        border-radius: 4px;
+        border: 1.6px solid var(--pink, #B34D75);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 32px;
+        height: 32px;
+        text-decoration: none;
+        margin: 0 12.5px;
+        font-size: 15px;
+        transition: 0.3s;
+        color: $color-second;
+      
+    }
+
+    &-item.disabled {
+        pointer-events: none;
+    }
+
+    &-item:hover,
+    &-item.active {
+        background-color: $color-second;
+        color: $color-white;
+        font-weight: 700;
+    }
+}

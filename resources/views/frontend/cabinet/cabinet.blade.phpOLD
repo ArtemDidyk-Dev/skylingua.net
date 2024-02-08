@@ -1,0 +1,180 @@
+@extends('frontend.layouts.index')
+
+@section('title',empty(language('frontend.cabinet.title')) ? language('frontend.cabinet.name') : language('frontend.cabinet.title'))
+@section('keywords', language('frontend.cabinet.keywords') )
+@section('description',language('frontend.cabinet.description') )
+
+
+@section('content')
+
+<main>
+
+
+    <!--  CABINET START  -->
+    <div class="cabinet-container">
+        <div class="container">
+            <div class="row">
+
+                @include('frontend.cabinet._sidebar-menu', compact($user))
+
+                <!-- CABINET RIGHT SIDEBAR START  -->
+                <div class="col-lg-9 right-content-container">
+
+                    <!--  CABINET HEADER START  -->
+                    <div class="cabinet-header">
+                        <div class="cabinet-title">{{ language('frontend.cabinet.my_profile') }}</div>
+                        @include('frontend.cabinet._balance', compact($user))
+                    </div>
+                    <!--  CABINET HEADER END  -->
+
+                    <!--  CABINET CONTENT START  -->
+                    <div class="content-box">
+
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger d-flex align-items-center">
+                                <i class="fa fa-exclamation-triangle fa-2x" aria-hidden="true"></i>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        @if(session()->has('message'))
+                            <div class="alert alert-success d-flex align-items-center">
+                                <i class="fa fa-check fa-2x" aria-hidden="true"></i>
+                                <ul>
+                                    <li>{{ session()->get('message') }}</li>
+                                </ul>
+                            </div>
+                        @endif
+
+                        <div class="profile-container">
+                            <!--  PROFILE LEFT IMG START  -->
+                            <div class="profile-left">
+                                <img src="{{ !empty($user->profile_photo) ? asset('storage/profile/'. $user->profile_photo) : asset('storage/no-image.png') }}" alt="{{ $user->name }}">
+                                <a href="{{ route('frontend.cabinet.edit', $user->id) }}" class="profile-edit" title="{{ language('frontend.cabinet.profile_edit') }}">
+                                    <i class="fas fa-user-edit"></i>
+                                </a>
+                            </div>
+                            <!--  PROFILE LEFT IMG END  -->
+
+                            <!--  PROFILE RIGHT START  -->
+                            <div class="profile-right">
+                                <!--  NAME BOX START  -->
+                                <div class="profile-name-box">
+                                    <div class="profile-name">{{ $user->name }}</div>
+                                    <a href="{{ route('frontend.cabinet.edit', $user->id) }}" class="profile-edit" title="{{ language('frontend.cabinet.profile_edit') }}">
+                                        <i class="fas fa-user-edit"></i>
+                                    </a>
+                                </div>
+                                <!--  NAME BOX END  -->
+
+                                <div class="profile-user-position">{{ $user->user_category_name }}</div>
+
+                                <div class="profile-detail">
+
+                                    @if($user->role_id == 4)
+                                        @if(!empty($user->gender))
+                                        <!--  ITEM 1 START  -->
+                                        <div class="profile-detail-item">
+                                            <i class="fas fa-venus-mars"></i>
+                                            <span>
+                                                @if($user->gender == 1)
+                                                    {{ language('frontend.common.male') }}
+                                                @elseif($user->gender == 2)
+                                                    {{ language('frontend.common.famale') }}
+                                                @endif
+                                            </span>
+                                        </div>
+                                        <!--  ITEM 1 END  -->
+                                        @endif
+
+                                        @if(!empty($user->date_of_birth))
+                                        <!--  ITEM 2 START  -->
+                                        <div class="profile-detail-item">
+                                            <i class="fas fa-birthday-cake"></i>
+                                            <span>{{ $user->date_of_birth }}</span>
+                                        </div>
+                                        <!--  ITEM 2 END  -->
+                                        @endif
+
+                                    @elseif($user->role_id == 3)
+
+                                        @if(!empty($user->address))
+                                            <!--  ITEM 2 START  -->
+                                            <div class="profile-detail-item">
+                                                <i class="fas fa-location-dot"></i>
+                                                <span>{{ $user->address }} @if($user->postalcode) {{ $user->postalcode }}@endif </span>
+                                            </div>
+                                            <!--  ITEM 2 END  -->
+                                        @endif
+                                    @endif
+
+                                    <!--  ITEM 2 START  -->
+                                    <div class="profile-detail-item">
+                                        <i class="fas fa-envelope"></i>
+                                        <span>{{ $user->email }}</span>
+                                    </div>
+                                    <!--  ITEM 2 END  -->
+
+                                    @if($user->phone)
+                                    <!--  ITEM 3 START  -->
+                                    <div class="profile-detail-item">
+                                        <i class="fas fa-phone"></i>
+                                        <span>{{ $user->phone }}</span>
+                                    </div>
+                                    <!--  ITEM 3 END  -->
+                                    @endif
+
+
+                                </div>
+                            </div>
+                            <!--  PROFILE RIGHT END  -->
+
+
+
+
+
+                        </div>
+
+                    </div>
+                    <!--  CABINET CONTENT END  -->
+
+
+
+                    @if(!empty($user->description))
+                        <div class="aboutme-description mt-40">
+                            {{ $user->description }}
+                        </div>
+                    @endif
+
+
+                </div>
+                <!-- CABINET RIGHT SIDEBAR END  -->
+
+            </div>
+
+        </div>
+    </div>
+    <!--  CABINET END  -->
+
+</main>
+
+
+
+@include('frontend.cabinet._qrcode', compact($user))
+
+
+@endsection
+
+
+@section('CSS')
+@endsection
+
+@section('JS')
+    <script src="https://yastatic.net/share2/share.js"></script>
+@endsection
+

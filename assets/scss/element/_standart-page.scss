@@ -1,0 +1,26 @@
+.standart {
+   
+    &-content {
+        max-width: 850px;
+        h1 {
+            font-size: 32px;
+            @media #{$mq-tablet} {
+                font-size: 29px;
+            }
+            
+        }
+        img {
+            margin-bottom: 50px;
+        }
+    }
+    
+    &-content.full {
+        max-width: 100%;
+    }
+    
+    .content > div {
+        display: flex;
+        flex-wrap: wrap;
+    }
+   
+}

@@ -1,0 +1,6 @@
+<div class="balance-container">
+    <div class="balance-box">
+        <span>{{ language('frontend.cabinet.balance') }}: <b>${{ $auth_user->balance }}</b></span>
+    </div>
+    <div class="qr-menu" data-bs-toggle="modal" data-bs-target="#qrCodeModal" title="{{ language('frontend.cabinet.qr_code') }}"><i class="fas fa-qrcode"></i></div>
+</div>

@@ -1,0 +1,170 @@
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: inherit;
+}
+
+ul,
+ol {
+    padding: 0;
+}
+
+ol {
+    padding-left: 15px;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+    margin: 0;
+}
+
+ul[class] {
+    list-style: none;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+a {
+    text-decoration: none;
+}
+
+html {
+    height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-x: hidden;
+    @extend %font-400-montserrat;
+    font-size: 16px;
+    line-height: 26px; 
+    font-style: normal;
+    background: #fff;
+}
+
+header {
+    flex: 0 0 auto;
+}
+
+.main-content {
+    flex: 1 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+footer {
+    flex: 0 0 auto;
+    margin-top: 120px;
+    @media #{$mq-tablet} {
+       margin-top: 60px;
+    }
+}
+
+h1 {
+    color: $color-title;
+    font-size: 48px;
+    line-height: 46px;
+    @extend %font-700-montserrat;
+
+    @media #{$mq-tablet} {
+        font-size: 27px;
+        line-height: 35px;
+    }
+}
+
+h2 {
+    color: $color-title;
+    font-size: 28px;
+    line-height: 38px;
+    @extend %font-600-montserrat;
+
+    @media #{$mq-tablet} {
+        font-size: 24px;
+        line-height: 32px
+
+    }
+}
+
+h3 {
+    color: $color-title;
+    font-size: 24px;
+    line-height: 32px;
+    @extend %font-600-montserrat;
+
+    @media #{$mq-tablet} {
+        font-size: 20px;
+        line-height: 28px;
+
+    }
+}
+
+
+p {
+    color: $color-basic;
+    font-size: 16px;
+    @extend %font-600-montserrat;
+    line-height: 24px;
+
+    @media #{$mq-tablet} {
+        font-size: 15px;
+        line-height: 24px
+    }
+
+    a {
+        color: $color-link;
+    }
+}
+
+p+p {
+    margin-top: 25px;
+
+    @media #{$mq-tablet} {
+        margin-top: 15px;
+    }
+}
+
+.container {
+    max-width: 1270px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+input:focus-visible {
+    outline: none;
+}
+

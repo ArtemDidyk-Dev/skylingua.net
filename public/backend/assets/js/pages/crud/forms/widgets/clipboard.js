@@ -1,0 +1,1 @@
+"use strict";var KTClipboardDemo={init:function(osman){new ClipboardJS("[data-clipboard=true]").on("success",(function(e){e.clearSelection(),  toastr.success('('+e.text+') kopyalandı')}))}};jQuery(document).ready((function(){KTClipboardDemo.init()}));

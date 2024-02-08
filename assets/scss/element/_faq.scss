@@ -1,0 +1,180 @@
+.faq {
+    margin-top: 120px;
+    text-align: center;
+    background: #f7f7f7;
+    .container {
+        padding: 80px 171px;
+    }
+    &__subtitle {
+        margin-top: 10px;
+        display: block;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    &__inner {
+        margin-top: 35px;
+        display: flex;
+        justify-content: flex-start;
+        margin-left: -28px;
+        flex-wrap: wrap;
+
+        &.second-colum {
+            margin-left: -28px;
+        }
+        @media(max-width: 640px) {
+           margin-left: 0px;
+        }
+        @media #{$mq-tablet} {
+            margin-top: 15px;
+        }
+
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 4px 16px 0 #eaeaea;
+        background: #fff;
+        border-radius: 8px;
+        padding: 20px 30px;
+        justify-content: flex-start;
+        align-items: flex-start;
+        height: 100%;
+        margin-bottom: 10px;
+        width: 100%;
+        &.second-colum {
+            flex-basis: calc(50% - 28px);
+            margin-left: 28px;
+
+            @media #{$mq-tablet} {
+                flex-basis: calc(100% - 28px);
+            }
+        }
+
+        @media #{$mq-tablet} {
+            padding: 15px 10px;
+            margin-bottom: 10px;
+        }
+    }
+
+    &__title {
+        font-weight: 600;
+        font-size: 17px;
+        display: flex;
+        text-align: left;
+        padding-right: 10px;
+        width: 100%;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+        
+        svg {
+            fill: $color-second;
+            margin-right: 45px;
+            min-width: 26px;
+            min-height: 26px;
+            transition: all 0.3s;
+            @media #{$mq-tablet} {
+               margin-right: 10px;
+            }
+        }
+        &:hover {
+            color: $color-third;
+            span {
+                img {
+                    transform: rotate(180deg);
+                }
+            }
+            svg {
+                fill: $color-third;
+            }
+
+        }
+
+        &.active {
+            text-align: left;
+            color: $color-third;
+            span {
+                img {
+                    transform: rotate(180deg);
+                }
+            }
+            svg {
+                fill: $color-third;
+            }
+        }
+
+        span {
+            display: block;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            background: $color-third;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+            margin-left: auto;
+            
+            img {
+                transition: all 0.3s;
+            }
+
+            @media #{$mq-tablet} {
+                min-width: 25px;
+                min-height: 25px;
+                max-height: 25px;
+                max-width: 25px;
+               
+                img {
+                    width: 12px;
+                }
+            }
+        }
+
+        @media #{$mq-tablet} {
+            font-size: 15px;
+            align-items: flex-start;
+        }
+    }
+
+    &__content {
+        display: none;
+        text-align: left;
+        margin-top: 10px;
+        padding-left: 45px;
+        max-width: 680px;
+        width: 100%;
+        &.active {
+            display: block;
+        }
+        @media(max-width: 640px) {
+            max-width: 100%;
+            padding-left: 0px;
+            align-items: self-start;
+        }
+    }
+
+    &__bottom {
+        margin-top: 40px;
+
+        @media #{$mq-tablet} {
+            margin-top: 20px;
+        }
+    }
+
+    @media #{$mq-tablet} {
+        margin-top: 100px;
+        .container {
+            padding: 20px 80px;
+            @media(max-width: 640px) {
+                padding: 0 15px;
+            }
+        }
+    }
+
+}

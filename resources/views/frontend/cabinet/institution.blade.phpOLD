@@ -1,0 +1,106 @@
+@extends('frontend.layouts.index')
+
+@section('title',empty(language('frontend.cabinet.title')) ? language('frontend.cabinet.name') : language('frontend.cabinet.title'))
+@section('keywords', language('frontend.cabinet.keywords') )
+@section('description',language('frontend.cabinet.description') )
+
+
+@section('content')
+
+<main>
+
+
+    <!--  CABINET START  -->
+    <div class="cabinet-container">
+        <div class="container">
+            <div class="row">
+
+                @include('frontend.cabinet._sidebar-menu', compact($user))
+
+                <!-- CABINET RIGHT SIDEBAR START  -->
+                <div class="col-lg-9 right-content-container">
+
+                    <!--  CABINET HEADER START  -->
+                    <div class="cabinet-header">
+                        <div class="cabinet-title">{{ language('frontend.cabinet.institution') }}</div>
+{{--                        @include('frontend.cabinet._balance', compact($user))--}}
+                    </div>
+                    <!--  CABINET HEADER END  -->
+
+                    <!--  CABINET CONTENT START  -->
+                    <div class="content-box">
+                        <div class="institution-container">
+
+                            <div class="institution-header">
+                                <a href="{{ route('frontend.cabinet.add', ['role' => 3]) }}" class="institution-add" title="{{ language('frontend.cabinet.institution_add') }}">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                            </div>
+
+
+                            @if($institutions->total() > 0)
+                            <div class="institution-body">
+
+                                @foreach($institutions as  $institution)
+                                <!--  INSTITUTION 1 START  -->
+                                <div class="tp-award-item mb-30">
+                                    <div class="award-inner d-md-flex align-items-center">
+                                        <div class="award-image">
+                                            <a href="{{ route('frontend.cabinet.edit', $institution->id) }}">
+                                                <img src="{{ !empty($institution->profile_photo) ? asset('storage/profile/'. $institution->profile_photo) : asset('storage/no-image.png') }}" alt="{{ $institution->name }}">
+                                            </a>
+                                        </div>
+                                        <div class="award-content">
+                                            <h4 class="award-title"><a href="{{ route('frontend.cabinet.edit', $institution->id) }}">{{ $institution->name }}</a></h4>
+                                            <span class="award-meta"><span class="award-year">{{ $institution->user_category_name }}</span>  {{ $institution->address }} @if($institution->postalcode)  {{ $institution->postalcode }} @endif </span>
+                                        </div>
+                                    </div>
+                                    <div class="award-icon">
+                                        <div class="award-icon-wrap">
+                                            <a href="{{ route('frontend.cabinet.edit', $institution->id) }}" title="{{ language('frontend.cabinet.institution_edit') }}"><i class="fas fa-edit"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  INSTITUTION 1 END  -->
+                                @endforeach
+
+                            </div>
+
+                            <div class="institution-footer">
+                                {{ $institutions->appends(['search' => isset($searchText) ? $searchText : null])
+->render('vendor.pagination.frontend.cabinet-pagination') }}
+                            </div>
+                            @else
+                                {{ language('frontend.common.not_result') }}
+                            @endif
+
+                        </div>
+                    </div>
+                    <!--  CABINET CONTENT END  -->
+
+                </div>
+                <!-- CABINET RIGHT SIDEBAR END  -->
+
+            </div>
+
+        </div>
+    </div>
+    <!--  CABINET END  -->
+
+</main>
+
+
+
+{{--@include('frontend.cabinet._qrcode', compact($user))--}}
+
+
+@endsection
+
+
+@section('CSS')
+@endsection
+
+@section('JS')
+    <script src="https://yastatic.net/share2/share.js"></script>
+@endsection
+

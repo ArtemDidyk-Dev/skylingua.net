@@ -1,0 +1,20 @@
+<div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrCodeModalLabel">{{ language('frontend.cabinet.qr_code') }}</h5>
+                <div class="qr-code-name-box">
+                    <div class="ya-share2" data-title="QR Code" data-url="assets/img/qr-code.png" data-curtain data-shape="round" data-lang="en" data-limit="0" data-more-button-type="short" data-services="messenger,vkontakte,facebook,odnoklassniki,telegram,twitter,viber,whatsapp,moimir,skype,tumblr,evernote,linkedin,lj,blogger,delicious,digg,reddit,pocket,qzone,renren,sinaWeibo,surfingbird,tencentWeibo"></div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ language('frontend.common.close') }}"></button>
+            </div>
+            <div class="modal-body">
+                <div class="qrCode">
+                    <img src="assets/img/qr-code.png" alt="{{ language('frontend.cabinet.qr_code') }}">
+                    <div class="name">{{ $auth_user->name }}</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

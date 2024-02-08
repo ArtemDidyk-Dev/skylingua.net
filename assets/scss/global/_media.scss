@@ -1,0 +1,15 @@
+$bp-small-sm-extra: 460px; // 460px
+$bp-small-sm: 567px; // 567px
+$bp-small: 992px; // 992px
+$bp-medium: 1200px; //1200px
+$bp-large: 1440px; // 1440px
+$bp-xlarge: 2560px; // 2560px
+
+
+// Media Queries
+$mq-mobile-sm-extra: "(max-width: #{$bp-small-sm-extra})"; // 460px
+$mq-mobile-sm: "(max-width: #{$bp-small-sm})"; // 567px
+$mq-mobile: "(max-width: #{$bp-small})"; // 992px
+$mq-tablet: "(max-width: #{$bp-medium})"; //1200px
+$mq-desctop: "(max-width: #{$bp-large})"; // 1920px
+$mq-desctopLarge: "(max-width: #{$bp-xlarge})"; // 2560px 

@@ -1,0 +1,206 @@
+@extends('frontend.layouts.index')
+
+@section('title',empty(language('frontend.cabinet_pay.title')) ? language('frontend.cabinet_pay.name') : language('frontend.cabinet_pay.title'))
+@section('keywords', language('frontend.cabinet_pay.keywords') )
+@section('description',language('frontend.cabinet_pay.description') )
+
+
+@section('content')
+
+    <main>
+
+
+        <!--  CABINET START  -->
+        <div class="cabinet-container">
+            <div class="container">
+                <div class="row">
+                    @include('frontend.cabinet._sidebar-menu', compact($user))
+
+                    <!-- CABINET RIGHT SIDEBAR START  -->
+                    <div class="col-lg-9 right-content-container">
+
+                        <!--  CABINET HEADER START  -->
+                        <div class="cabinet-header">
+                            <div class="cabinet-title">{{ language('frontend.cabinet_pay.name') }}</div>
+                            @include('frontend.cabinet._balance', compact($user))
+                        </div>
+                        <!--  CABINET HEADER END  -->
+
+                        <!--  CABINET CONTENT START  -->
+                        <div class="content-box">
+                            <!--  PAYMENT START  -->
+                            <div class="payment-container">
+                                <!--  PAYMENT METHOD START  -->
+                                <div class="payment-title mt-2 mb-2">{{ language('frontend.cabinet_pay.payment_method') }}</div>
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="payment-method-card-tab" data-bs-toggle="pill"
+                                                data-bs-target="#payment-method-card" type="button" role="tab"
+                                                aria-controls="payment-method-card" aria-selected="true">
+                                            <img src="{{ asset('frontend/assets/images/payment/card.png') }}" alt="{{ language('frontend.cabinet_pay.card') }}">
+                                            <div>{{ language('frontend.cabinet_pay.card') }}</div>
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="payment-method-bank-tab" data-bs-toggle="pill"
+                                                data-bs-target="#payment-method-bank" type="button" role="tab"
+                                                aria-controls="payment-method-bank" aria-selected="false">
+                                            <img src="{{ asset('frontend/assets/images/payment/bank.png') }}" alt="{{ language('frontend.cabinet_pay.bank') }}">
+                                            <div>{{ language('frontend.cabinet_pay.bank') }}</div>
+                                        </button>
+                                    </li>
+                                </ul>
+                                <!--  PAYMENT METHOD END  -->
+
+                                <!--  PAYMENT CONTENT START  -->
+                                <div class="tab-content" id="pills-tabContent">
+                                    <div class="tab-pane fade show active" id="payment-method-card" role="tabpanel"
+                                         aria-labelledby="payment-method-card-tab" tabindex="0">
+                                        <!--  FORM START  -->
+                                        <form action="#" method="post">
+                                            <!--  METHOD  -->
+                                            <input type="hidden" value="1" name="payment_method">
+
+
+                                            <!--  SUMMA  -->
+                                            <div class="payment-sum-box">
+                                                <label for="paymentSumInput" class="form-label">{{ language('frontend.cabinet_pay.amount') }}</label>
+                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text" id="basic-addon3">{{ language('frontend.currency') }}</span>
+                                                    <input type="number" step="any" min="0" class="form-control"
+                                                           placeholder="0" name="payment_sum" id="paymentSumInput"
+                                                           aria-describedby="basic-addon3">
+                                                </div>
+                                            </div>
+
+                                            <!--  CARD BOX START  -->
+                                            <div class="payment-card-box">
+
+
+                                                <!--  CARD NUMBER START  -->
+                                                <label for="paymentNumberInput" class="form-label">{{ language('frontend.cabinet_pay.card_number') }}</label>
+                                                <div class="paymentNumberContainer mb-3">
+                                                    <input type="text" size="19" autocomplete="OFF"
+                                                           class="card-mask form-control" name="payment_card_number"
+                                                           id="paymentNumberInput" aria-invalid="false">
+                                                    <span id="paymentNumberIcon">
+                                                            <img src="{{ asset('frontend/assets/images/payment/visacard.png') }}">
+                                                        </span>
+                                                </div>
+                                                <!--  CARD NUMBER END  -->
+
+                                                <!--  DATE CONTAINER START  -->
+                                                <div class="payment-date-container">
+                                                    <div class="payment-date-left-box mb-3">
+                                                        <div class="payment-date-title mb-2">{{ language('frontend.cabinet_pay.validity_period') }}</div>
+                                                        <div class="payment-left-box-item">
+                                                            <input type="text" class="form-control" placeholder="{{ language('frontend.cabinet_pay.mm') }}"
+                                                                   id="paymentDateInput"
+                                                                   name="payment_date">
+                                                            <span>/</span>
+                                                            <input type="text" class="form-control" placeholder="{{ language('frontend.cabinet_pay.yy') }}"
+                                                                   id="paymentYearInput"
+                                                                   name="payment_year">
+                                                        </div>
+                                                    </div>
+                                                    <div class="payment-date-right-box">
+                                                        <div class="mb-3">
+                                                            <label for="paymentCardUserName" class="form-label">{{ language('frontend.cabinet_pay.card_holder') }}</label>
+                                                            <input type="text" class="form-control"
+                                                                   name="payment_card_user_name" id="paymentCardUserName">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--  DATE CONTAINER END  -->
+
+                                                <button type="submit"
+                                                        class="payment-submit-btn btn btn-my-success w-100 mt-3">
+                                                    {{ language('frontend.cabinet_pay.out_money') }}
+                                                </button>
+
+                                                <img class="payment-bg-img" src="{{ asset('frontend/assets/images/shape/ab-shape.png') }}">
+                                            </div>
+                                            <!--  CARD BOX END  -->
+
+
+                                        </form>
+                                        <!--  FORM END  -->
+                                    </div>
+                                    <div class="tab-pane fade" id="payment-method-bank" role="tabpanel"
+                                         aria-labelledby="payment-method-bank-tab" tabindex="0">
+                                        <!--  FORM START  -->
+                                        <form action="#" method="post">
+                                            <!--  METHOD  -->
+                                            <input type="hidden" value="2" name="payment_method">
+
+
+                                            <!--  SUMMA  -->
+                                            <div class="payment-sum-box">
+                                                <label for="paymentBankSumInput" class="form-label">{{ language('frontend.cabinet_pay.amount') }}</label>
+                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text">{{ language('frontend.currency') }}</span>
+                                                    <input type="number" step="any" min="0" class="form-control"
+                                                           placeholder="0" name="payment_sum" id="paymentBankSumInput">
+                                                </div>
+                                            </div>
+
+
+                                            <!--  COUNTRY  -->
+                                            <div class="payment-country mt-3">
+                                                <div class="form-group ">
+                                                    <label for="paymentCountrySelectOptionBox" class="mb-2">{{ language('frontend.cabinet_pay.сountry') }}</label>
+                                                    <select class="form-control w-100 my-select-option"
+                                                            id="paymentCountrySelectOptionBox">
+                                                        <option>{{ language('frontend.common.select') }}</option>
+                                                        <option>{{ language('Azerbaijan') }}</option>
+                                                        <option>{{ language('Italy') }}</option>
+                                                        <option>{{ language('Ukraina') }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!--  PROPS  -->
+                                            <div class="payment-props ">
+                                                <label for="paymentPropsInput" class="form-label">{{ language('frontend.cabinet_pay.payment_props') }}</label>
+                                                <div class="input-group mb-3">
+                                                    <textarea class="form-control" id="paymentPropsInput"></textarea>
+                                                </div>
+                                            </div>
+
+
+                                            <button class="payment-bank-submit btn btn-my-success">{{ language('frontend.cabinet_pay.out_money') }}</button>
+
+
+                                        </form>
+                                        <!--  FORM END  -->
+                                    </div>
+                                </div>
+                                <!--  PAYMENT CONTENT END  -->
+
+                            </div>
+                            <!--  PAYMENT END  -->
+                        </div>
+                        <!--  CABINET CONTENT END  -->
+
+                    </div>
+                    <!-- CABINET RIGHT SIDEBAR END  -->
+
+                </div>
+
+            </div>
+        </div>
+        <!--  CABINET END  -->
+
+
+    </main>
+
+
+@endsection
+
+
+@section('CSS')
+@endsection
+
+@section('JS')
+@endsection
+

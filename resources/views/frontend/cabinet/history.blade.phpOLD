@@ -1,0 +1,114 @@
+@extends('frontend.layouts.index')
+
+@section('title',empty(language('frontend.history.title')) ? language('frontend.history.name') : language('frontend.history.title'))
+@section('keywords', language('frontend.history.keywords') )
+@section('description',language('frontend.history.description') )
+
+
+@section('content')
+
+    <main>
+
+
+
+        <!--  CABINET START  -->
+        <div class="cabinet-container">
+            <div class="container">
+                <div class="row">
+
+                    @include('frontend.cabinet._sidebar-menu', compact($user))
+
+                    <!-- CABINET RIGHT SIDEBAR START  -->
+                    <div class="col-lg-9 right-content-container">
+
+                        <!--  CABINET HEADER START  -->
+                        <div class="cabinet-header">
+                            <div class="cabinet-title">{{ language('frontend.cabinet.history') }}</div>
+                            @include('frontend.cabinet._balance', compact($user))
+                        </div>
+                        <!--  CABINET HEADER END  -->
+
+                        <!--  CABINET CONTENT START  -->
+                        <div class="content-box">
+                            <div class="history-container">
+
+                                <!--  HISTORY TABLE START  -->
+                                <div class="table-responsive-md w-100">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">#{{ language('frontend.history.id') }}</th>
+                                            <th scope="col">{{ language('frontend.history.date') }}</th>
+                                            <th scope="col">{{ language('frontend.history.type') }}</th>
+                                            <th scope="col">{{ language('frontend.history.amount') }}</th>
+                                            <th scope="col" class="text-end">{{ language('frontend.history.status') }}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        @if($pays->total() > 0)
+                                        @foreach($pays as  $pay)
+                                        <tr>
+                                            <th>{{ $pay->id }}</th>
+                                            <td>{{ $pay->created_at }}</td>
+                                            <td>
+                                                @if($pay->type == 1)
+                                                    {{ language('frontend.history.pay') }}
+                                                @else
+                                                    {{ language('frontend.history.out') }}
+                                                @endif
+                                            </td>
+                                            <td>${{ $pay->amount }}</td>
+                                            <td class="text-end">
+                                                @if($pay->status == 2)
+                                                <span class="text-success">{{ language('frontend.common.success') }}</span>
+                                                @elseif($pay->status == 3)
+                                                <span class="text-danger">{{ language('frontend.common.cancel') }}</span>
+                                                @else
+                                                <span class="text-warning">{{ language('frontend.common.pending') }}</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+
+
+                                        @else
+                                        <tr>
+                                            <th colspan="5">{{ language('frontend.common.not_result') }}</th>
+                                        </tr>
+                                        @endif
+
+                                    </table>
+                                </div>
+                                <!--  HISTORY TABLE END  -->
+
+
+                                {{ $pays->appends(['search' => isset($searchText) ? $searchText : null])
+    ->render('vendor.pagination.frontend.cabinet-pagination') }}
+
+                            </div>
+                        </div>
+                        <!--  CABINET CONTENT END  -->
+
+                    </div>
+                    <!-- CABINET RIGHT SIDEBAR END  -->
+
+                </div>
+
+            </div>
+        </div>
+        <!--  CABINET END  -->
+
+
+    </main>
+
+
+@endsection
+
+
+@section('CSS')
+@endsection
+
+@section('JS')
+@endsection
+
