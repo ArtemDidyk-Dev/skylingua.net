@@ -17,6 +17,6 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd /home/creativestudio.work
+          cd /home/skylingua.net
           git pull origin master
           
