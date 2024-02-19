@@ -22,7 +22,11 @@ use App\Models\Service\Service;
 use App\Models\Slide\Slide;
 use App\Models\Team\Team;
 use App\Models\User;
+use App\Services\CommentRepositoryInterface;
+use App\Services\FaqInterface;
+use App\Services\FaqRepositoryInterface;
 use App\Services\ProductService;
+use App\Services\ReviewInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +35,18 @@ use App\Models\UserCategory\UserCategoryTranslation;
 
 class HomeController extends Controller
 {
+    public ReviewInterface $reviewService;
+
+    public FaqRepositoryInterface $faqRepository;
+
+    public CommentRepositoryInterface $commentRepository;
+
+    public function __construct(ReviewInterface $reviewService, FaqRepositoryInterface $faqRepository, CommentRepositoryInterface $commentRepository)
+    {
+        $this->reviewService = $reviewService;
+        $this->faqRepository = $faqRepository;
+        $this->commentRepository = $commentRepository;
+    }
 
     public function index(Request $request)
     {
@@ -117,6 +133,7 @@ class HomeController extends Controller
                     'country_name' => $project->user_country_name,
                     'country_image' => $project->user_country_image ? asset($project->user_country_image) : "",
                     'user_id' => $project->user_id,
+                    'image' => $project->project_photo,
                     'user_name' => $project->user_name,
                     'user_profile_photo' => $project->user_profile_photo ? asset('storage/profile/' . $project->user_profile_photo) : asset('storage/no-image.jpg'),
                     'created_at_view' => $showDiff,
@@ -124,39 +141,39 @@ class HomeController extends Controller
                     'deadline' => $project->deadline,
                     'favourites' => (isset($project_favourites_arr[$project->id]) ? true : false),
                     'proposals_count' => $proposals_count,
+                    'reviews' => $this->reviewService->getReviewProjectRatingAvg($project->id),
                     'description' => $project->description ? htmlspecialchars_decode($project->description) : "",
+                    'project_categories_first' => $ProjectsCategories->first()->user_category_name ?? "",
+                    'category_img' =>  's'
                 ];
             } // foreach
         } // if
-//        @dd($projects);
 
-        $blogs = Blog::getBlogs($request->languageID, 3)->map(function($blog) {
+   
+        $blogs = Blog::getBlogs($request->languageID, 3)->map(function ($blog) {
             $blog->updated_at = Carbon::parse($blog->updated_at);
             return $blog;
         });
-        
+
 
         $employerCount = User::getEmployerCount();
         $freelancersCount = User::getFreelancerCount();
         $projectsCount = Projects::getProjectsCount();
-        $categories = UserCategoryTranslation::active()
-            ->limit(7)
-            ->get();
-        $categories = $categories->map(function ($category) {
-            $category->users = $category->users->take(2);
-            return $category;
-        });
-
+        
+        $faq = $this->faqRepository->limit(3)->get();
+        $comments = $this->commentRepository->all();
+       
         return view('pages.home', compact(
-            'freelancers',
-            'categories',
-            'getProjects',
-            'projects',
-            'employerCount',
-            'freelancersCount',
-            'projectsCount',
-            'blogs',
-        )
+                'freelancers',
+                'getProjects',
+                'projects',
+                'employerCount',
+                'freelancersCount',
+                'projectsCount',
+                'faq',
+                'comments'
+
+            )
         );
     }
 
@@ -224,8 +241,6 @@ class HomeController extends Controller
 
 
     }
-
-
 
 
 }

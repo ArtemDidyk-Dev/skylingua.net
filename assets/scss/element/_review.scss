@@ -246,4 +246,162 @@
     @media #{$mq-tablet} {
         margin-top: 60px;
     }
+    &-form {
+        width: 100%;
+        margin-top: 40px;
+        background: $color-second;
+        border-radius: 8px;
+        padding: 30px 20px;
+        span {
+            text-align: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 24px;
+            display: block;
+        }
+    }
+    &-form-box {
+        margin-top: 30px;
+        input {
+            border-radius: 8px;
+            padding: 12px 18px 11px 18px;
+            background: transparent;
+            color: $color-white;
+            &::placeholder {
+                color: $color-white;
+            }
+        }
+        .review-form-input + .review-form-input {
+            margin-top: 12px;
+        }
+        .review-form-input-text {
+            margin-top: 12px;
+        }
+        .input-textarea {
+            background: transparent;
+            border-radius: 8px;
+            padding: 16px 18px 15px 18px;
+            resize: none;
+            color: $color-white;
+            &::placeholder {
+                color: #fff;
+            }
+        }
+        #filter_btn {
+            margin-top: 16px;
+            background: $color-third;
+            text-transform: uppercase;
+            color: $color-white;
+            font-weight: 700;
+        }
+        
+
+    }
+    &-form__star {
+        margin-top: 16px;
+        display: flex;
+        justify-content: center;
+        input {
+
+            margin: 0px;
+            padding: 0px;
+            width: 22px;
+            height: 22px;
+        }
+    }
+
+    &-form__result {
+        margin-top: 10px;
+        p {
+            color: #ffff;
+        }
+        p + p  {
+            margin-top: 5px;
+        }
+    }
+}
+.promo__item-ratings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.promo__recall-rating {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.promo__rating-inner {
+    position: relative;
+}
+
+.promo__rating-inner::before {
+    content: "";
+    display: block;
+    background-image: url('/build/website/images/icons/star-white.svg');
+    width: 90px;
+    height: 17px;
+}
+
+.promo__rating-active {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.promo__rating-items {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.promo__rating-item {
+    flex: 0 0 20%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    padding: 0px;
+    margin: 0px;
+}
+
+.promo__rating-value {
+    color: #ffff;
+    font-size: 16px;
+    line-height: 16px;
+    margin-left: 8px;
+    position: relative;
+    padding-right: 12px;
+    opacity: 0;
+    width: 0px;
+}
+
+.promo__rating-value::before {
+    position: absolute;
+    right: 0;
+    content: "/5";
+    font-size: 12px;
+    line-height: 18px;
+    top: 1px;
+}
+
+.promo__rating-active::before {
+    content: "";
+    background-image: url('/build/website/images/icons/star-o.svg');
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
 }

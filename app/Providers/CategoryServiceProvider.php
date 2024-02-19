@@ -27,6 +27,7 @@ class CategoryServiceProvider extends ServiceProvider
         view()->composer(
             [
                 'components.inc.footer',
+                'components.inc.home.categories',
                 'frontend.layouts.partials.footer',
             ],
             CategoryViewComposer::class

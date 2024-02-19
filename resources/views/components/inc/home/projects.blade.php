@@ -2,38 +2,39 @@
     <div class="container">
         <h2>{{ language('projects.home.title') }}</h2>
         <div class="project__wrapper">
-            @for ($i = 0; $i < 6; $i++)
-                <a href="/" class="project__item">
+            @foreach($projects as $project)
+                <a href="{{ route('frontend.project.detail', $project['id']) }}" class="project__item">
                     <div class="project__item-top">
                         <div class="project__top-item">
-                            <img width="16" height="16" src="{{ asset('build/website/images/icons/owner.svg') }}" alt="Regina Crossr" >
-                           <span>Project Owner: Regina Cross</span>
+                            <img width="16" height="16" src="{{ asset('build/website/images/icons/owner.svg') }}" alt="{{ $project['user_name'] }}" >
+                           <span>Project Owner: {{ $project['user_name'] }}</span>
                         </div>
                         <div class="project__top-item">
-                            <img width="16" height="16" src="build/website/images/icons/time.svg" alt="Posted 5 mins ago" >
-                             <span>Posted 5 mins ago</span>
+                            <img width="16" height="16" src="{{ asset('build/website/images/icons/time.svg') }}" alt="{{$project['created_at_view']}}" >
+                             <span>{{$project['created_at_view']}}</span>
                         </div>
                     </div>
-                    <h4>Assisting with drafting and filing the articles of incorporation or organization</h4>
+                    <h4>{{ $project['name'] }}</h4>
                     <div class="project__item-descrip">
                         <span class="project__item-price">
                             <img loading="lazy" width="16" height="16"
                                 src="{{ asset('build/website/images/icons/cash.svg') }}" alt="price">
-                            Starts at 16.98€
+                            Starts at {{ $project['price'] > 0 ? price_format($project['price_view']) : language('Bidding Price') }}
                             
                         </span>
+                        @if(!empty($project['project_categories_first']))
                         <span class="project__item-categor">
                             <img loading="lazy" width="16" height="16"
-                            src="{{ asset('build/website/images/icons/categor-project.svg') }}" alt="Company registration services">
-                            Company registration services
+                            src="{{ asset('build/website/images/icons/categor-project.svg') }}" alt=" {{$project['project_categories_first']}}">
+                            {{$project['project_categories_first']}}
                         </span>
+                        @endif
                     </div>
-                    <p>I am thrilled to offer my expertise as an experienced professional in assisting you with drafting
-                        and filing the articles of incorporation or organization for your busi...</p>
+                    <p> {!!  str_limit(strip_tags(html_entity_decode($project['description'])), $limit = 230, $end = '...') !!}</p>
                 </a>
-            @endfor
+            @endforeach
             <div class="project__footer">
-                <x-inc.btns.all color="blue" title="{{ language('See all services') }}" link="/" >
+                <x-inc.btns.all color="blue" title="{{ language('See all services') }}" link="{{route('frontend.project.index')}}" >
                 </x-inc.btns.all>
             </div>
             

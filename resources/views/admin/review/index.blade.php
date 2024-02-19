@@ -107,11 +107,13 @@
                                 {{--                            @endif --}}
                                 <th width="10" data-breakpoints="xs">ID</th>
                                 <th>User From</th>
-                                <th>User To</th>
+                                <th>Project To</th>
                                 <th>Rating</th>
                                 <th>Review</th>
+
                                 <th data-breakpoints="xs sm md" data-sortable="false">Date</th>
                                 <th width="40" data-breakpoints="xs sm md" data-sortable="false">Setting</th>
+                                <th data-breakpoints="xs">Approve</th>
                             </tr>
                         </thead>
                         <tbody id="sortable">
@@ -135,7 +137,7 @@
                                     <td class="sortableHandle">{{ $review->reviews_from }} ({{ $review->from }})</td>
 
                                     <!-- reviews_to -->
-                                    <td class="sortableHandle">{{ $review->reviews_to }} ({{ $review->to }})</td>
+                                    <td class="sortableHandle">{{ $review->reviews_to }} ({{ $review->project_id }})</td>
 
                                     <!-- rating -->
                                     <td class="sortableHandle">{{ $review->rating }}</td>
@@ -189,6 +191,23 @@
                                                 <!--end::Navigation-->
                                             </div>
                                         </div>
+                                    </td>
+
+                                    <!--  Approve  -->
+                                    <td width="100">
+
+                                        <span class="switch switch-outline switch-icon switch-success">
+                                        <label>
+                                            <input
+                                                class="statusActive"
+                                                data-id="{{ $review->id }}"
+                                                type="checkbox"
+                                                {{ $review->status == 1? 'checked="checked"':"" }}
+                                                name="select">
+                                            <span></span>
+                                        </label>
+									</span>
+
                                     </td>
                                 </tr>
                             @endforeach
@@ -375,6 +394,39 @@
 
         });
         /*   EDITOR END   */
+
+
+        $(document).on('click', '.statusActive', function () {
+            var dataID = $(this).data('id');
+            var statusActive = '';
+
+            if ($(this).is(':checked')) {
+                statusActive = 1;
+            } else {
+                statusActive = 0;
+            }
+
+
+            $.ajax({
+                url: "{{ route('admin.review.statusAjax') }}",
+                type: 'POST',
+                data: {id: dataID, statusActive: statusActive},
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data.success == true) {
+                        if (data.data == 1) {
+                            toastr.success("Status activated");
+                        } else {
+                            toastr.success("Status disabled");
+                        }
+                    } else {
+                        toastr.error("An error occurred");
+                    }
+                }
+            });
+
+
+        })
     </script>
 
 

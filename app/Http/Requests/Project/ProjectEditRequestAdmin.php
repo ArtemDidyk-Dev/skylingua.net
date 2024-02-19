@@ -30,7 +30,7 @@ class ProjectEditRequestAdmin extends FormRequest
             /*   Country   */
             'country_id' => 'required|integer',
 
-
+            'profile_photo' => 'mimes:jpg,png',
 
             /*   DOCUMENT   */
 //            'document' => 'mimes:jpg,jpeg,png,gif,doc,docx,xls,pdf'

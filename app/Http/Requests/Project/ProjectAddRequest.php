@@ -26,6 +26,8 @@ class ProjectAddRequest extends FormRequest
             /*   Country   */
             'country_id' => 'required|integer',
 
+            'project_photo' => 'mimes:jpg,png',
+
             /*   DOCUMENT   */
 //            'document' => 'mimes:jpg,jpeg,png,gif,doc,docx,xls,pdf'
 
@@ -50,6 +52,8 @@ class ProjectAddRequest extends FormRequest
             'country_id.required' => language('Country required'),
             'country_id.integer' => language('Country integer'),
 
+            /*  project_photo   */
+            'project_photo.mimes' => 'Wrong photo format. Allowed formats (jpg, jpeg and png)'
 
         ];
     }

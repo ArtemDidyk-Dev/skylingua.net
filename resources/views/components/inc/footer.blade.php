@@ -3,7 +3,7 @@
         <div class="footer__top">
             <div class="footer__top-left">
                 <a href="{{ route('frontend.home.index') }}" class="footer__top-logo">
-                    <img width="140" height="36" src="{{ asset('build/website/images/logo-light.svg') }}"
+                    <img width="78" height="36" src="{{ asset('build/website/images/logo-light.png') }}"
                         alt="logo">
                 </a>
                 <div class="footer__top-copyright">
@@ -70,9 +70,7 @@
                 <ul>
                     @foreach ($categoryes as $category)
                         @if ($loop->index < 3)
-                            <li><a
-                                    href="{{ route('frontend.developer.index', ['user_category' => $category->user_category_id]) }}">{{ $category->name }}</a>
-                            </li>
+                        <li><a href="{{ route('frontend.project.index', ['project_category' => $category->user_category_id]) }}">{{ $category->user_category_name }}</a></li>
                         @endif
                     @endforeach
                 </ul>
@@ -82,9 +80,7 @@
                 <ul>
                     @foreach ($categoryes as $category)
                         @if ($loop->index > 3)
-                            <li><a
-                                    href="{{ route('frontend.developer.index', ['user_category' => $category->user_category_id]) }}">{{ $category->name }}</a>
-                            </li>
+                        <li><a href="{{ route('frontend.project.index', ['project_category' => $category->user_category_id]) }}">{{ $category->user_category_name }}</a></li>
                         @endif
                     @endforeach
                 </ul>

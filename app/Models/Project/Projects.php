@@ -97,7 +97,7 @@ class Projects extends Model
             $projects = $projects->where('projects.price_type', (int) $filter['price_type']);
         }
         if (isset($filter['project_category']) && !empty($filter['project_category']) && $filter['project_category'] > 0) {
-            $projects = $projects->where('projects_categories.user_category_id', (int) $filter['project_category']);
+            $projects = $projects->whereIn('projects_categories.user_category_id', (array) $filter['project_category']);
         }
         if (isset($filter['project_hired']) && $filter['project_hired'] == true) {
             $projects = $projects->where('project_hireds.id', '!=', null);
@@ -192,7 +192,7 @@ class Projects extends Model
             $projects = $projects->where('projects.price_type', (int) $filter['price_type']);
         }
         if (isset($filter['project_category']) && !empty($filter['project_category']) && $filter['project_category'] > 0) {
-            $projects = $projects->where('projects_categories.user_category_id', (int) $filter['project_category']);
+            $projects = $projects->whereIn('projects_categories.user_category_id', (array) $filter['project_category']);
         }
         if (isset($filter['project_hired']) && $filter['project_hired'] == true) {
             $projects = $projects->where('project_hireds.id', '!=', null);
@@ -336,6 +336,7 @@ class Projects extends Model
 
     public static function addProject($data = [])
     {
+       
         $project = Projects::create(
             [
                 'status' => (isset($data['status']) ? (int) $data['status'] : 0),
@@ -351,6 +352,8 @@ class Projects extends Model
                 'document' => (isset($data['document']) ? stripinput($data['document']) : null),
                 'links' => (isset($data['links']) ? json_encode($data['links'], JSON_FORCE_OBJECT) : null),
                 'description' => (isset($data['description']) && !empty($data['description']) ? $data['description'] : null),
+                'project_photo' => (isset($data['project_photo']) && !empty($data['project_photo']) ? $data['project_photo'] : null),
+                'range_price' =>  (!empty($data['range'])  ? json_encode($data['range'], JSON_FORCE_OBJECT) : null),
             ]
         );
 
@@ -386,7 +389,7 @@ class Projects extends Model
         $project->links = (isset($data['links']) ? json_encode($data['links'], JSON_FORCE_OBJECT) : null);
         $project->description = (isset($data['description']) && !empty($data['description']) ? $data['description'] : null);
         $project->updated_at = Carbon::today();
-
+        $project->project_photo = (isset($data['project_photo']) && !empty($data['project_photo']) ? $data['project_photo'] : null);
         $project->save();
 
         ProjectsCategories::deleteByProjectId($project_id);
@@ -424,7 +427,7 @@ class Projects extends Model
         $project->links = (isset($data['links']) ? json_encode($data['links'], JSON_FORCE_OBJECT) : null);
         $project->description = (isset($data['description']) && !empty($data['description']) ? $data['description'] : null);
         $project->updated_at = Carbon::today();
-
+        $project->project_photo = (isset($data['project_photo']) && !empty($data['project_photo']) ? $data['project_photo'] : null);
         $project->save();
 
         ProjectsCategories::deleteByProjectId($project_id);

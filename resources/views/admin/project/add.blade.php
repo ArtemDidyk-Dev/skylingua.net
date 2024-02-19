@@ -181,9 +181,9 @@
                                                                         <!--  Country END  -->
 
 
-                                                                        <!--  Freelancer category START  -->
+                                                                        <!--  Project category START  -->
                                                                         <div class="form-group">
-                                                                            <span class="span-dvidder">Freelancer category ({{ $language->code }})</span>
+                                                                            <span class="span-dvidder">Project category ({{ $language->code }})</span>
                                                                             <div class="form-group">
                                                                                 <select class="form-control" id="kt_select2_3" name="user_category_id[]"  multiple="multiple">
                                                                                     @foreach($user_categories as $category)
@@ -194,7 +194,7 @@
                                                                                     class="text-danger">{{ $message }}</span> @enderror
                                                                             </div>
                                                                         </div>
-                                                                        <!--  Freelancer category END  -->
+                                                                        <!--  Project category END  -->
 
 
                                                                         <!--  Pricing Type START  -->
@@ -306,6 +306,29 @@
                                                                         </div>
                                                                         <!--Add Documents END-->
 
+                                                                        <!-- Add Range START -->
+                                                                        <div class="form-group">
+                                                                            <span class="span-dvidder">Price Range: ({{ $language->code }})</span>
+                                                                        <div class="title-content">
+                                                                            <div class="title-detail">
+                                                                                <div class="range-info">
+                                                                                        <div class="row form-row range-cont">
+                                                                                            <div class="col-12 col-md-11">
+                                                                                                <div class="d-flex form-group mb-5">
+                                                                                                    <input placeholder="Title" type="text" name="range[title][]"  class="form-control mr-2 col-6">
+                                                                                                    <input placeholder="Price" type="text" name="range[price][]"  class="form-control col-6">
+                                                                                                    <p class="mb-0"></p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-12 col-md-1">
+                                                                                                <a href="javascript:void(0);" class="btn project-add-range"><i class="fas fa-plus"></i></a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                  
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        </div>
 
 
 
@@ -451,6 +474,54 @@
                             </div>
                         </div>
 
+                        <div class="card card-custom gutter-b">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">Project Image</h3>
+                                </div>
+                            </div>
+
+                            <div style="padding-top: 2px; padding-bottom: 2px;" class="card-body">
+
+                                <!--  IMAGES CONTAINER START  -->
+                                <div class="row">
+                                    <div class="col-md-12 ">
+
+                                        <div class="crop-photo-container">
+
+                                            <div class="cabinet center-block">
+                                                @if(old('project_photo_upload')))
+                                                <div tooltip="Delete Photo" id="notPhoto">
+                                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                </div>
+                                                @endif
+                                                <figure>
+                                                    <img
+                                                        src="{{ old('project_photo_upload') ? asset('storage/profile/'. old('project_photo_upload')) : asset('storage/no-image.png') }}"
+                                                        class="gambar img-responsive img-thumbnail" id="crop-item-img-output"/>
+                                                </figure>
+                                                <input form="submit-form" type="file" class="crop-item-img  file center-block" name="project_photo"/>
+                                            </div>
+                                            <input form="submit-form" type="text" id="project_photo_upload" name="project_photo_upload"
+                                                   value="{{ old('project_photo_upload') }}"
+                                                   class="fileUpload">
+                                            <input form="submit-form" type="text" name="not_photo" class="notPhoto">
+                                            <div class="text-muted mt-2">Image formats (jpg,jpeg,png)</div>
+                                            <div class="alert alert-danger mt-3  cropImgError"></div>
+                                            @error('project_photo' )
+                                            <div class="alert alert-my-danger">{{ $message }}</div>
+                                            @enderror
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <!--  IMAGES CONTAINER END  -->
+                            </div>
+                        </div>
+
+
                     </div>
 
                 </div>
@@ -589,7 +660,7 @@
     <!--  SELECT  -->
     <script>
         $('#kt_select2_3').select2({
-            placeholder: "Select freelancer category",
+            placeholder: "Select Project category",
         });
     </script>
 
@@ -725,6 +796,34 @@
 
     </script>
 
+     <!--  ADD RANGE  -->
+     <script>
+
+        $(".range-info").on('click','.trashRange', function () {
+            $(this).closest('.range-cont').remove();
+            return false;
+        });
+
+        $(".project-add-range").on('click', function () {
+
+            var experiencecontent = '<div class="row form-row range-cont">' +
+                '<div class="col-12 col-md-11 col-lg-11">' +
+                '<div class="d-flex form-group mt-2">' +
+                '<input placeholder="Title" type="text" name="range[title][]"  class="form-control mr-2 col-6">' +
+                '<input placeholder="Price" type="text" name="range[price][]"  class="form-control col-6">' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-12 col-md-1 col-lg-1">' +
+                '<a href="javascript:void(0);" class="btn btn-danger trash trashRange"><i class="far fa-trash-alt"></i></a>' +
+                '</div>' +
+                '</div>';
+
+            $(".range-info").append(experiencecontent);
+            return false;
+        });
+
+    </script>
+
 
     <!--  EDITOR  -->
     <!--  TINYMCE START -->
@@ -779,13 +878,6 @@
 
     </script>
     <!--  BUTTON TINYMCE IMAGE END  -->
-
-
-
-
-
-
-
 
 
 

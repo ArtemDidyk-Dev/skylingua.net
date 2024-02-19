@@ -20,7 +20,7 @@
 }
 
 .custom-select-options {
-    @extend %font-600-nunito-sans;
+    @extend %font-600-montserrat ;
     position: absolute;
     width: 100%;
     border: 1px solid #D9D9D9;
@@ -70,7 +70,7 @@
     cursor: pointer;
     font-size: 14px;
     line-height: 20px;
-    @extend %font-600-nunito-sans;
+    @extend %font-600-montserrat;
 }
 
 .custom-select-option:hover {

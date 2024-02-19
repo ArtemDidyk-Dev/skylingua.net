@@ -1,31 +1,6 @@
 .contacts {
-    &.section {
-        background: var(--back-light, #FBFBFB);
-        &::before {
-            content: '';
-            position: absolute;
-            width: 744px;
-            height: 484px;
-            background-image: url("/build/website/images/other/contacts.svg");
-            right: 0px;
-            background-repeat: no-repeat;
-            background-size: contain;
-            top: -92px;
-            @media #{$mq-tablet} {
-                background-image: url("/build/website/images/other/contacts-mob.svg");
-                width: 284px;
-                height: 282px;
-                background-size: cover;
-            }
-        }
-
-       
-    }
 
     &__wrapper {
-        position: relative;
-        z-index: 2;
-        
         h1 {
             font-size: 32px;
 
@@ -45,11 +20,11 @@
     }
 
     &__left {
-        max-width: 560px;
+        max-width: 402px;
         width: 100%;
         padding: 45px 55px;
-        border-radius: 16px;
-        background: $color-white;
+        border-radius: 8px;
+        background: $color-second;
         box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
         margin-right: 20px;
 
@@ -58,6 +33,13 @@
             margin-right: 0px;
             margin-bottom: 20px;
             padding: 15px;
+        }
+
+        h1 {
+            font-size: 22px;
+            line-height: 30px;
+            font-weight: 700;
+            color: $color-white;
         }
     }
 
@@ -68,25 +50,9 @@
         }
     }
 
-    &__wrapper-right {
-        max-width: 518px;
-        width: 100%;
-        margin-left: 10px;
-        border-radius: 20px;
-        background: var(--white, #FFF);
-        box-shadow: 0px 4px 32px 0px rgba(114, 67, 118, 0.08);
-        padding: 35px;
-        align-self: flex-end;
-
-        @media #{$mq-mobile} {
-            max-width: 100%;
-            padding: 10px;
-            margin-top: 20px;
-        }
-    }
-
     &__info-subtitle {
-        margin-top: 20px;
+        margin-top: 10px;
+        color: $color-white;
 
         @media #{$mq-mobile} {
             margin-top: 10px;
@@ -98,10 +64,11 @@
         align-items: flex-start;
         margin-top: 25px;
         color: $color-title;
-        font-size: 16px;
+        font-weight: 600;
+        font-size: 12px;
 
         @media #{$mq-mobile} {
-            margin-top: 15px;
+            margin-top: 5px;
         }
     }
 
@@ -111,7 +78,7 @@
 
     &-socials {
         display: flex;
-        gap: 20px;
+
         &.offset-top {
             margin-top: 35px;
 
@@ -122,8 +89,11 @@
     }
 
     &-form {
-        margin-top: 30px;
-
+        margin-top: 70px;
+        border-radius: 8px;
+        background: $color-second;
+        padding: 40px 55px;
+        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
         display: flex;
         flex-direction: column;
 
@@ -132,48 +102,40 @@
             color: $color-white;
         }
 
+        p {
+            color: #fff;
+            font-weight: 600;
+        }
+
         &__top {
             display: flex;
             flex-wrap: wrap;
             margin-left: -17px;
             justify-content: flex-start;
-            row-gap: 16px;
+            margin-top: 17px;
 
             .contacts-form__top-element {
-                flex-basis: calc(50% - 17px);
+                flex-basis: calc(33.3333% - 17px);
                 margin-left: 17px;
 
                 .input-wrapper-label {
-                    font-size: 15px;
-                    color: var(--grey, #5C5C5C);
-                    font-weight: 400;
+                    font-size: 14px;
+                    color: $color-white;
+                    font-weight: 600;
                     line-height: 20px;
                 }
 
-                .input-wrapper {
-                    border-radius: 8px;
-                    border: none;
-                }
 
-                .input-text {
-                    border-radius: 8px;
-                    border: 1px solid var(--stroke, #D9D9D9);
-                    background: var(--white, #FFF);
-                }
 
                 @media (max-width:767px) {
                     flex-basis: 100%;
 
                 }
-
-                &:last-child {
-                    flex-basis: calc(100% - 17px);
-                }
             }
 
             @media (max-width:767px) {
                 .contacts-form__top-element+.contacts-form__top-element {
-                    margin-top: 0px;
+                    margin-top: 15px;
                 }
             }
         }
@@ -182,39 +144,30 @@
             margin-top: 16px;
             display: flex;
             align-items: center;
-            flex-direction: column;
 
             .contacts-form__top-element {
+                max-width: 747px;
                 width: 100%;
 
                 .input-wrapper-label {
-                    font-size: 15px;
-                    color: var(--grey, #5C5C5C);
-                    font-weight: 400;
+                    font-size: 14px;
+                    color: $color-white;
+                    font-weight: 600;
                     line-height: 20px;
+
                 }
 
-                .input-wrapper {
-                    border-radius: 8px;
-                    border: none;
-                }
 
-                .input-textarea {
-                    border-radius: 8px;
-                    resize: none;
-                    border: 1px solid var(--stroke, #D9D9D9);
-                    background: var(--white, #FFF);
-                }
             }
 
             .btn-filter {
-                max-width: 259px;
+                max-width: 365px;
+                margin-left: 17px;
                 border: none;
-                align-self: flex-start;
-                margin-top: 30px;
 
                 &:hover {
-                    background: $color-third;
+                    background: $color-white;
+                    color: $color-four;
                     border: none;
                 }
             }
@@ -229,7 +182,6 @@
                 .btn-filter {
                     margin-left: 0px;
                     max-width: 100%;
-                    margin-top: 0px;
                 }
             }
         }
@@ -238,12 +190,45 @@
             margin-top: 20px;
 
             P {
-                color: #EC0505;
+                color: $color-white;
             }
         }
 
         @media #{$mq-mobile} {
             margin-top: 30px;
+            padding: 15px;
+        }
+
+        #filter_btn {
+            background: $color-third;
+            text-transform: uppercase;
+            color: $color-white;
+        }
+
+        .input-text {
+            background: transparent;
+            color: #fff;
+            &::placeholder {
+                color: #fff;
+            }
+        }
+
+        .input-textarea {
+            background: transparent;
+            border-radius: 8px;
+            padding: 16px 18px 15px 18px;
+            resize: none;
+            color: #fff;
+            &::placeholder {
+                color: #fff;
+            }
         }
     }
+
+    .contacts__info-line {
+        margin-top: 12px;
+        color: #fff;
+        align-items: center;
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models\Reviews;
 
+use App\DTO\ReviewDTO;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,7 +29,6 @@ class Reviews extends Model
             ->where('reviews.to', $user_id)
             ->where('reviews.project_id', $project_id)
             ->get();
-
         return $reviews;
     }
 
@@ -41,12 +41,14 @@ class Reviews extends Model
     }
 
     public static function getReviewsByUserId($user_id) {
+
         $reviews = Reviews::select(
                 'reviews.*',
                 'users.id as user_id',
                 'users.name as user_name',
                 'users.profile_photo as user_profile_photo'
             )
+            ->where('reviews.status', 1)
             ->leftJoin('users', 'reviews.from', '=', 'users.id')
             ->where('reviews.to', $user_id)
             ->get();
@@ -70,6 +72,7 @@ class Reviews extends Model
             )
             ->leftJoin('users', 'reviews.from', '=', 'users.id')
             ->where('reviews.project_id', $project_id)
+            ->where('reviews.status', 1)
             ->groupBy('reviews.id')
             ->get();
 
@@ -89,29 +92,24 @@ class Reviews extends Model
         $reviewsCount = Reviews::where('from', $from)
             ->where('reviews.to', $to)
             ->where('reviews.project_id', $project_id)
+            ->where('reviews.status', 1)
             ->count();
 
         return $reviewsCount;
     }
 
 
-    public static function addReview($data = []) {
-
-        $from = (int)$data['from'];
-        $to = (int)$data['to'];
-        $rating = (float)$data['rating'];
-        $review = stripinput(strip_tags($data['review']));
+    public static function addReview(ReviewDTO $reviewDTO) {
 
 
-        $reviews = Reviews::create([
-            'from' => $from,
-            'to' => $to,
-            'rating' => $rating,
-            'review' => $review
+        return Reviews::create([
+            'from' => $reviewDTO->from,
+            'to' => $reviewDTO->to,
+            'project_id' => $reviewDTO->projectId,
+            'rating' => $reviewDTO->rating,
+            'review' => $reviewDTO->review,
+            'status' => $reviewDTO->status,
         ]);
 
-        return $reviews;
-
     }
-
 }

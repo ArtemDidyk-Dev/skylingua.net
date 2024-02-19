@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="contacts-form-title h3">
-                        {{ language('SEND PROPOSALS') }}
+                        {{ language('ORDER NOW') }}
                     </div>
                     <span class="modal-close">
                         <img width="25" height="25" src="/images/close.png" alt="close">

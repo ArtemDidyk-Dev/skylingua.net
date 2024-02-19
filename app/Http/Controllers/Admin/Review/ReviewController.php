@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Review;
 
+use App\DTO\ReviewDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Review\ReviewAddRequest;
 use App\Http\Requests\Review\ReviewEditRequest;
@@ -10,6 +11,7 @@ use App\Models\Reviews\Reviews;
 use App\Models\Project\Projects;
 use App\Models\User;
 use App\Services\CommonService;
+use App\Services\ReviewInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
@@ -21,15 +23,16 @@ class ReviewController extends Controller
 
     public $defaultLanguage;
     public $validatorCheck;
+    public ReviewInterface $reviewInterface;
 
-
-    public function __construct()
+    public function __construct(ReviewInterface $reviewInterface)
     {
 
         //Hansi dil defaultdursa onu caqir
         $this->defaultLanguage = cache('language-defaultID') == null ? Languages::where('default', 1)
             ->first()->id : cache('language-defaultID');
 
+        $this->reviewInterface = $reviewInterface;
     }
 
     public function index(Request $request)
@@ -37,20 +40,20 @@ class ReviewController extends Controller
 
 
         $reviews = Reviews::select(
-                'reviews.*',
-                DB::raw("(
+            'reviews.*',
+            DB::raw("(
                         SELECT users.name
                         FROM users
                         WHERE users.id = reviews.from
                         LIMIT 1
                     ) as reviews_from"),
-                DB::raw("(
-                        SELECT users.name
-                        FROM users
-                        WHERE users.id = reviews.to
+            DB::raw("(
+                        SELECT projects.name
+                        FROM projects
+                        WHERE projects.id = reviews.project_id
                         LIMIT 1
                     ) as reviews_to")
-            )
+        )
             ->groupBy('reviews.id')
             ->orderBy('reviews.id', 'DESC')
             ->paginate(15);
@@ -62,32 +65,25 @@ class ReviewController extends Controller
 
     public function add(Request $request)
     {
-        
-        $users = User::get();
 
+        $projects = Projects::get();
         return view('admin.review.add', compact(
-            'users'
+            'projects'
         ));
     }
 
     public function store(ReviewAddRequest $request)
     {
-
-
-        $from = (int)$request->from;
-        $to = (int)$request->to;
-        $rating = (float)$request->rating;
-        $review = stripinput($request->review);
-
-
-        $review = Reviews::addReview([
-            'from' => $from,
-            'to' => $to,
-            'rating' => $rating,
-            'review' => $review,
-        ]);
-
-
+        $user = Projects::findOrFail($request->input('project_id'))->employer_id;
+        $reviewDTO = new ReviewDTO(
+            $request->input('name'),
+            $user,
+            $request->input('project_id'),
+            $request->input('rating'),
+            $request->input('review'),
+            $request->input('status'),
+        );
+        Reviews::addReview($reviewDTO);
         return redirect()->route('admin.review.index');
 
 
@@ -100,50 +96,41 @@ class ReviewController extends Controller
             ->first();
 
 
-       
-        $users = User::get();
+        $projects = Projects::get();
 
 
         return view('admin.review.edit', compact(
             'review',
-            'users'
+            'projects'
         ));
     }
 
-    public function update(ReviewEditRequest $request)
+    public function update(ReviewAddRequest $request)
     {
-        $id = (int)$request->id;
-        $from = (int)$request->from;
-        $to = (int)$request->to;
-        
-        $rating = (float)$request->rating;
-        $review = stripinput($request->review);
+        $user = Projects::findOrFail($request->input('project_id'))->employer_id;
+        $reviewDTO = new ReviewDTO(
+            $request->input('name'),
+            $user,
+            $request->input('project_id'),
+            $request->input('rating'),
+            $request->input('review'),
+            $request->input('status'),
+        );
 
-        //CUSTOM VALIDATE START
-        $this->validatorCheck = Validator::make(request()->all(), []);
-
-        //Eger gonderilen ID sehfdirse
-        $refererError = CommonService::refererError($id);
-        if ($refererError) {
-            $this->validateCheck('refererID', 'ID Error!');
-        }
-
-        $this->validatorCheck->validate();
-
-
-        $review = Reviews::where('id', $id)
+        $review = Reviews::where('id', $request->id)
             ->update([
-                'from' => $from,
-                'to' => $to,
-                'rating' => $rating,
-                'review' => $review
+                'from' => $reviewDTO->from,
+                'to' => $reviewDTO->to,
+                'project_id' => $reviewDTO->projectId,
+                'rating' => $reviewDTO->rating,
+                'review' => $reviewDTO->review,
+                'status' => $reviewDTO->status,
             ]);
 
 
         return redirect()->route('admin.review.index');
 
     }
-
 
 
     public function sortAjax(Request $request)
@@ -205,4 +192,8 @@ class ReviewController extends Controller
         });
     }
 
+    public function statusAjax(Request $request)
+    {
+        return $this->reviewInterface->updateStatus(intval($request->id), intval($request->statusActive));
+    }
 }

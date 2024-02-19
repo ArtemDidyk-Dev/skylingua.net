@@ -7,7 +7,7 @@
                     <p>{{ language('home-banner-subtitle') }}</p>
                 </div>
                 <form class="search__element-form" name="store" id="search" method="GET"
-                    action="{{ route('frontend.developer.index') }}">
+                    action="{{ route('frontend.project.index') }}">
                     <img width="22" height="22" src="{{ asset('build/website/images/icons/search.svg') }}"
                         alt="" class="search__element-form-ico">
                     <input type="text" name="keyword" class="search__element-form-input"
@@ -17,8 +17,8 @@
                             <div class="search__element-form-title">Legal services</div>
                             <img src="/images/icons/arrow-bottom.svg" alt="" class="search__element-form-arrow">
                             <div class="search__element-form-options">
-                                <div data-search="developer" class="search__element-form-option">{{ language('Freelancers') }}</div>
-                                <div data-search="projects" class="search__element-form-option">{{ language('Projects') }}</div>
+                                <div data-search="services" class="search__element-form-option">{{ language('Legal services') }}
+                                </div>
                             </div>
                         </div>
                     <x-inc.btns.search title="{{ language('Search') }}">

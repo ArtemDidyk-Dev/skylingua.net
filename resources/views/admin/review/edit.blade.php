@@ -71,28 +71,24 @@
 
 
                                                     <div class="tab-content">
+                                                        <div class="form-group">
+                                                            <span class="span-dvidder">User From Nane</span>
+
+                                                            <input value="{{ old('from', $review->from) }}"  class="form-control" rows="5" name="name" type="text" required placeholder="User From Nane">
+                                                        </div>
+
 
                                                         <div class="form-group">
-                                                            <span class="span-dvidder">User From</span>
-                                                            <select form="submit-form" class="form-control" name="from">
+                                                            <span class="span-dvidder">Project To</span>
+                                                            <select form="submit-form" class="form-control" name="project_id">
                                                                 <option value="">-=Select=-</option>
-                                                                @foreach($users as $user)
-                                                                    <option {{ old('from', $review->from) == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->name }}</option>
+                                                                @foreach($projects as $project)
+                                                                    <option {{ old('project_id', $review->project_id) == $project->id ? 'selected' : '' }} value="{{ $project->id }}">{{ $project->name }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
 
-                                                        <div class="form-group">
-                                                            <span class="span-dvidder">User To</span>
-                                                            <select form="submit-form" class="form-control" name="to">
-                                                                <option value="">-=Select=-</option>
-                                                                @foreach($users as $user)
-                                                                    <option {{ old('to', $review->to) == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
 
-                                                       
                                                         <div class="form-group">
                                                             <span class="span-dvidder">Rating</span>
                                                             <input type="number" name="rating" min="0" max="5" step="0.5" value="{{ old('rating', $review->rating) }}" class=" form-control">

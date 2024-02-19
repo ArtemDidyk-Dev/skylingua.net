@@ -1,7 +1,7 @@
 <section class="review">
     <div class="container">
-        <h2>Our happy clients talk about us</h2>
-        
+        <h2>{{ language('frontend.home.review') }}</h2>
+
         <div class="review__box">
             <div class="review__arrow">
                 <div class="swiper-button-prev"></div>
@@ -9,70 +9,31 @@
             </div>
             <div class="mySwiper">
                 <div class="swiper-wrapper review__wrapper">
-                    <div class="swiper-slide review__item">
-                        <div class="review__left">
-                            <img loading="lazy" width="160" height="250"
-                                src="{{ asset('build/website/images/other/review.png') }}" alt="">
-                        </div>
-                        <div class="review__right">
-                            <div class="review__star">
-                                <x-inc.previews.rating-white :ratingStars="5" />
-                                <span>5.0 rating</span>
-                            </div>
-                            <p class="review__content">
-                                My vision came alive effortlessly. Their blend
-                                of casual and professional approach made the process a breeze. Creativity flowed, and
-                                the
-                                results were beyond my expectations.
-                            </p>
-                            <div class="review__bottom">
-                                <span>Jenny Wilson</span>
-                                <span>Grower.io</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide review__item">
-                        <div class="review__left">
-                            <img loading="lazy" width="160" height="250"
-                                src="{{ asset('build/website/images/other/review.png') }}" alt="">
-                        </div>
-                        <div class="review__right">
-                            <div class="review__star">
-                                <x-inc.previews.rating-white :ratingStars="5" />
-                            </div>
-                            <p class="review__content">
-                                My vision came alive effortlessly. Their blend
-                                of casual and professional approach made the process a breeze. Creativity flowed, and
-                                the
-                                results were beyond my expectations.
-                            </p>
-                            <div class="review__bottom">
-                                <span>Jenny Wilson</span>
-                                <span>Grower.io</span>
+                    @foreach ($comments as $comment)
+                        <div class="swiper-slide review__item">
+                            @if ($comment->image)
+                                <div class="review__left">
+                                    <img loading="lazy" width="160" height="250"
+                                    src="{{ asset('storage/'.$comment->image) }}" alt="">
+                                </div>
+                            @endif
+                            <div class="review__right">
+                                <div class="review__star">
+                                    <x-inc.previews.rating-white :ratingStars="5" />
+                                    <span>5.0 rating</span>
+                                </div>
+                                <p class="review__content">
+                                    {{ $comment->content }}
+                                </p>
+                                <div class="review__bottom">
+                                    <span>{{ $comment->name }}</span>
+                                    @if ($comment->descrip)
+                                        <span>{{ $comment->descrip }}</span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="swiper-slide review__item">
-                        <div class="review__left">
-                            <img loading="lazy" width="160" height="250"
-                                src="{{ asset('build/website/images/other/review.png') }}" alt="">
-                        </div>
-                        <div class="review__right">
-                            <div class="review__star">
-                                <x-inc.previews.rating-white :ratingStars="5" />
-                            </div>
-                            <p class="review__content">
-                                My vision came alive effortlessly. Their blend
-                                of casual and professional approach made the process a breeze. Creativity flowed, and
-                                the
-                                results were beyond my expectations.
-                            </p>
-                            <div class="review__bottom">
-                                <span>Jenny Wilson</span>
-                                <span>Grower.io</span>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

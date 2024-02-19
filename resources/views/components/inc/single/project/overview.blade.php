@@ -2,7 +2,9 @@
     <x-inc.single.title>
         {{ language('Overview') }}
     </x-inc.single.title>
-    <div class="content">
-        {!! $content !!}
+    <div class="single-project-overview-box">
+        <div class="content">
+            {!! $content !!}
+        </div>
     </div>
 </div>

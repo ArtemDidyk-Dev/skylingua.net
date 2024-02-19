@@ -32,10 +32,10 @@ class UserCategoryTranslation extends Model
           ->whereHas('users', function($q) {
             $q->with("reviews")->where(['status' => 1, 'approve' => 1]);
           });
-      
+
     }
 
-    public function userCategory() 
+    public function userCategory()
     {
         return $this->hasMany(UserCategory::class, 'id', 'user_category_id');
     }

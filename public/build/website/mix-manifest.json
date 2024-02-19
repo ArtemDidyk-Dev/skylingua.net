@@ -41,6 +41,7 @@
     "/images/icons/categories.svg": "/images/icons/categories.svg",
     "/images/icons/check-icon.svg": "/images/icons/check-icon.svg",
     "/images/icons/check.svg": "/images/icons/check.svg",
+    "/images/icons/checked.svg": "/images/icons/checked.svg",
     "/images/icons/choose.svg": "/images/icons/choose.svg",
     "/images/icons/circle-folder.svg": "/images/icons/circle-folder.svg",
     "/images/icons/circle-user-code.svg": "/images/icons/circle-user-code.svg",
@@ -78,10 +79,13 @@
     "/images/icons/promo-item-second.svg": "/images/icons/promo-item-second.svg",
     "/images/icons/promo-item-third.svg": "/images/icons/promo-item-third.svg",
     "/images/icons/rating.svg": "/images/icons/rating.svg",
+    "/images/icons/review-el.svg": "/images/icons/review-el.svg",
     "/images/icons/search.svg": "/images/icons/search.svg",
     "/images/icons/second-icon-home.svg": "/images/icons/second-icon-home.svg",
     "/images/icons/send.svg": "/images/icons/send.svg",
     "/images/icons/star-grey.svg": "/images/icons/star-grey.svg",
+    "/images/icons/star-o.svg": "/images/icons/star-o.svg",
+    "/images/icons/star-white.svg": "/images/icons/star-white.svg",
     "/images/icons/star.svg": "/images/icons/star.svg",
     "/images/icons/three-icon-home.svg": "/images/icons/three-icon-home.svg",
     "/images/icons/time.svg": "/images/icons/time.svg",
@@ -89,6 +93,7 @@
     "/images/icons/user.svg": "/images/icons/user.svg",
     "/images/icons/zoom.svg": "/images/icons/zoom.svg",
     "/images/logo-l.png": "/images/logo-l.png",
+    "/images/logo-light.png": "/images/logo-light.png",
     "/images/logo-light.svg": "/images/logo-light.svg",
     "/images/logo.png": "/images/logo.png",
     "/images/logo.svg": "/images/logo.svg",
@@ -224,6 +229,5 @@
     "/fonts/nunito-v26-latin-900italic.woff2": "/fonts/nunito-v26-latin-900italic.woff2",
     "/fonts/nunito-v26-latin-italic.woff2": "/fonts/nunito-v26-latin-italic.woff2",
     "/fonts/nunito-v26-latin-regular.woff2": "/fonts/nunito-v26-latin-regular.woff2",
-    "/fonts/stylesheet.css": "/fonts/stylesheet.css",
-    "/images/icons/review-el.svg": "/images/icons/review-el.svg"
+    "/fonts/stylesheet.css": "/fonts/stylesheet.css"
 }

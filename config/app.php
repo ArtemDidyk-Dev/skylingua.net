@@ -182,7 +182,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
         App\Providers\CategoryServiceProvider::class,
-
+        App\Providers\ReviewServiceProvider::class,
 
 
     ],

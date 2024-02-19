@@ -30,6 +30,27 @@ class ProjectsCategories extends Model
         return $projectsCategories;
     }
 
+    public static function getCategories(array $filter)
+    {
+     
+        $projectsCategories = ProjectsCategories::select(
+            'projects_categories.*',
+            'user_categories.*',
+            'user_categories_translations.name as user_category_name',
+            'user_categories_translations.text as user_category_text',
+        )
+        ->leftJoin('user_categories_translations', function ($join) use ($filter) {
+            $join->on('projects_categories.user_category_id', '=', 'user_categories_translations.user_category_id')
+                ->where('user_categories_translations.language_id', '=', $filter['language_id']);
+        })
+        ->leftJoin('user_categories', 'projects_categories.user_category_id', '=', 'user_categories.id')
+        ->where('user_categories.status', 1)
+        ->groupBy('name', 'user_category_name')
+        ->orderBy('sort', 'ASC')
+        ->get();
+
+        return $projectsCategories;
+    }
 
     public static function add($project_id, $user_category_id)
     {

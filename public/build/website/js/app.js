@@ -200,6 +200,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _js_tabCategory__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_js_tabCategory__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _js_faq__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./js/faq */ "./assets/js/faq.js");
 /* harmony import */ var _js_faq__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_js_faq__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _js_review__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./js/review */ "./assets/js/review.js");
+/* harmony import */ var _js_review__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_js_review__WEBPACK_IMPORTED_MODULE_8__);
+
 
 
 
@@ -421,6 +424,106 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+/***/ }),
+
+/***/ "./assets/js/review.js":
+/*!*****************************!*\
+  !*** ./assets/js/review.js ***!
+  \*****************************/
+/***/ (() => {
+
+var reviewForm = document.querySelector(".review-form");
+reviewForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  var route = reviewForm.getAttribute('action');
+  var name = document.querySelector('[name="name"]').value;
+  var email = document.querySelector('[name="email"]').value;
+  var message = document.querySelector('[name="message"]').value;
+  var rating = +document.querySelector('.promo__rating-items').getAttribute('rating');
+  var resultForm = document.querySelector('.review-form__result');
+  var data = {
+    "name": name,
+    'rating': rating,
+    'email': email
+  };
+  for (var dataKey in data) {
+    if (data[dataKey] == '') {
+      return resultForm.innerHTML = "<p> ".concat(dataKey.toUpperCase(), " should not be empty</p>");
+    }
+  }
+  data['message'] = message;
+  resultForm.innerHTML = "";
+  fetch(route, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    },
+    body: JSON.stringify(data)
+  }).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    if (data.errors) {
+      for (var key in data.errors) {
+        for (var keyError in data.errors[key]) {
+          var dataError = data.errors[key];
+          resultForm.innerHTML += "<p>".concat(dataError[keyError], "</p>");
+        }
+      }
+    }
+    if (data.success) {
+      resultForm.innerHTML = "";
+      resultForm.innerHTML = "<p>Your message has been sent for admin approval</p>";
+    }
+  });
+});
+var ratings = document.querySelectorAll('.promo__recall-rating');
+if (ratings.length > 0) {
+  initRatings();
+}
+function initRatings() {
+  var ratingActive, ratingValue;
+  for (var index = 0; index < ratings.length; index++) {
+    var rating = ratings[index];
+    initRatings(rating);
+  }
+  function initRatings(rating) {
+    initRatingsVars(rating);
+    setRatingActiveWidth();
+    return setRating(rating);
+  }
+  function initRatingsVars(rating) {
+    ratingActive = rating.querySelector('.promo__rating-active');
+    ratingValue = rating.querySelector('.promo__rating-value');
+  }
+  function setRatingActiveWidth() {
+    var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ratingValue.innerHTML;
+    if (+index >= 10) {
+      ratingValue.classList.add("maxRating");
+    }
+    var ratingActiveWidth = index / 0.05;
+    ratingActive.style.width = "".concat(ratingActiveWidth, "%");
+  }
+  function setRating(rating) {
+    var ratingItems = document.querySelectorAll('.promo__rating-item');
+    var _loop = function _loop() {
+      var ratingItem = ratingItems[_index];
+      ratingItem.addEventListener("mouseenter", function () {
+        initRatingsVars(rating);
+        setRatingActiveWidth(ratingItem.value);
+      });
+      ratingItem.addEventListener("click", function (e) {
+        initRatingsVars(rating);
+        document.querySelector('.promo__rating-items').setAttribute('rating', ratingItem.value);
+        return setRatingActiveWidth(ratingItem.value);
+      });
+    };
+    for (var _index = 0; _index < ratingItems.length; _index++) {
+      _loop();
+    }
+  }
+}
 
 /***/ }),
 

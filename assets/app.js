@@ -6,3 +6,4 @@ import "./js/contacts";
 import "./js/model";
 import "./js/tabCategory";
 import "./js/faq";
+import "./js/review";

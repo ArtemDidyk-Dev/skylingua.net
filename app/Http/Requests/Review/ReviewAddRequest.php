@@ -14,13 +14,14 @@ class ReviewAddRequest extends FormRequest
     }
 
 
-    public function rules()
+    public function rules(): array
     {
         return [
-            'rating' => 'required',
-            'from' => 'required|integer|exists:users,id',
-            'to' => 'required|integer|exists:users,id',
-            'review' => 'required',
+            'name' => 'required|string|max:200',
+            'rating' => 'required|numeric|between:0,5',
+            'project_id' => 'required|integer',
+            'message' => "string|max:1000",
+            'status' => 'required|integer',
         ];
     }
 

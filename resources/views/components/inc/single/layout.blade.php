@@ -1,5 +1,8 @@
 <div class="container">
     {!! $breadcrumbs !!}
+    <div class="single__layout-top">
+        {{$profileTop}}
+    </div>
     <div class="single-layout__wrapper">
         <div class="single-layout__left">
             <div class="single-layout__left-content">
@@ -11,6 +14,9 @@
             {{ $overview }}
             {{ $about }}
         </div>
+    </div>
+    <div class="single-layout__project">
+        {{$projects}}
     </div>
     {{ $modal }}
 </div>

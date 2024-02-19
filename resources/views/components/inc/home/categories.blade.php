@@ -7,7 +7,7 @@
     <div class="container">
         <h2>{{ language('categories.home.title') }}</h2>
         <div class="categories__wrapper">
-            @foreach ($categories as $category)
+            @foreach ($categoryes as $category)
                 @if ($loop->iteration == $firstIndex)
                     <div class="categories__item first">
                     @php
@@ -24,11 +24,11 @@
                     <img loading="lazy" width="44" height="44"
                         src="{{ asset('build/website/images/icons/categories.svg') }}" alt=""
                         class="categories__item-img">
-                    <span>{{ $category->title ?? $category->name }}</span>
-                    @if ($category->text)
-                        <p>{{ $category->text }}</p>
+                    <span>{{ $category->user_category_name  }}</span>
+                    @if ($category->user_category_text)
+                        <p>{{ $category->user_category_text }}</p>
                     @endif
-                    <a href="{{ route('frontend.developer.index', ['user_category' => $category->user_category_id]) }}">
+                    <a href="{{ route('frontend.project.index', ['user_category' => $category->user_category_id]) }}">
                         {{ language('learnmore') }}
                     </a>
                 </div>

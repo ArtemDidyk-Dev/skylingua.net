@@ -5,7 +5,6 @@
 
 @section('content')
 
-
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -138,10 +137,12 @@
                                                                                 class=" form-control">
                                                                             <div class="projectUserNameList"></div>
 
-                                                                            <div class="projectUserNameResult"  style="display: block"  >
-                                                                                   {{ \App\Services\UserService::getUserNameEmail(old('user_name', $project->employer_id))->name }}
-                                                                                    ({{ \App\Services\UserService::getUserNameEmail(old('user_name', $project->employer_id))->email }})
-                                                                                </div>
+                                                                            <div class="projectUserNameResult"
+                                                                                 style="display: block">
+                                                                                {{ \App\Services\UserService::getUserNameEmail(old('user_name', $project->employer_id))->name }}
+                                                                                ({{ \App\Services\UserService::getUserNameEmail(old('user_name', $project->employer_id))->email }}
+                                                                                )
+                                                                            </div>
                                                                             <input
                                                                                 id="projectUserID"
                                                                                 type="hidden"
@@ -172,9 +173,11 @@
                                                                         <!--  Country START  -->
                                                                         <div class="form-group">
                                                                             <span class="span-dvidder">Country ({{ $language->code }})</span>
-                                                                            <select class="form-control select" name="country_id">
+                                                                            <select class="form-control select"
+                                                                                    name="country_id">
                                                                                 @foreach($countries as $country)
-                                                                                    <option  value="{{ $country->id }}" @if(old('country_id', $project->country_id) == $country->id) selected @endif >{{ $country->name }}</option>
+                                                                                    <option value="{{ $country->id }}"
+                                                                                            @if(old('country_id', $project->country_id) == $country->id) selected @endif >{{ $country->name }}</option>
                                                                                 @endforeach
                                                                             </select>
                                                                             @error('country_id' )<span
@@ -183,35 +186,47 @@
                                                                         <!--  Country END  -->
 
 
-                                                                        <!--  Freelancer category START  -->
+                                                                        <!--  Project category START  -->
                                                                         <div class="form-group">
-                                                                            <span class="span-dvidder">Freelancer category ({{ $language->code }})</span>
+                                                                            <span class="span-dvidder">Project category ({{ $language->code }})</span>
                                                                             <div class="form-group">
-                                                                                <select class="form-control" id="kt_select2_3" name="user_category_id[]"  multiple="multiple">
+                                                                                <select class="form-control"
+                                                                                        id="kt_select2_3"
+                                                                                        name="user_category_id[]"
+                                                                                        multiple="multiple">
                                                                                     @foreach($user_categories as $category)
 
-                                                                                        <option  value="{{ $category->id }}" {{in_array($category->id, old("user_category_id",$projects_categories) ?: []) ? "selected" : ""}} >{{ $category->name }}</option>
+                                                                                        <option
+                                                                                            value="{{ $category->id }}" {{in_array($category->id, old("user_category_id",$projects_categories) ?: []) ? "selected" : ""}} >{{ $category->name }}</option>
                                                                                     @endforeach
                                                                                 </select>
                                                                                 @error('user_category_id' )<span
                                                                                     class="text-danger">{{ $message }}</span> @enderror
                                                                             </div>
                                                                         </div>
-                                                                        <!--  Freelancer category END  -->
+                                                                        <!--  Project category END  -->
 
 
                                                                         <!--  Pricing Type START  -->
                                                                         <div class="form-group">
                                                                             <span class="span-dvidder">Pricing Type ({{ $language->code }})</span>
                                                                             <div class="form-group price-cont">
-                                                                                <select name="price_type" id="price_type" class="form-control select">
+                                                                                <select name="price_type"
+                                                                                        id="price_type"
+                                                                                        class="form-control select">
                                                                                     <option value="0">Select</option>
-                                                                                    <option value="1" @if(old('price_type', $project->price_type)==1) selected @endif
-                                                                                    >Fixed Price</option>
-                                                                                    <option value="2" @if(old('price_type', $project->price_type)==2) selected @endif
-                                                                                    >Hourly Pricing</option>
-                                                                                    <option value="3" @if(old('price_type', $project->price_type)==3) selected @endif
-                                                                                    >Bidding Price</option>
+                                                                                    <option value="1"
+                                                                                            @if(old('price_type', $project->price_type)==1) selected @endif
+                                                                                    >Fixed Price
+                                                                                    </option>
+                                                                                    <option value="2"
+                                                                                            @if(old('price_type', $project->price_type)==2) selected @endif
+                                                                                    >Hourly Pricing
+                                                                                    </option>
+                                                                                    <option value="3"
+                                                                                            @if(old('price_type', $project->price_type)==3) selected @endif
+                                                                                    >Bidding Price
+                                                                                    </option>
                                                                                 </select>
                                                                                 @error('price_type' )<span
                                                                                     class="text-danger">{{ $message }}</span> @enderror
@@ -221,11 +236,13 @@
 
 
                                                                         <!--  Pricing START  -->
-                                                                        <div class="form-group" id="price_project" @if(old('price_type', $project->price_type)!=1 && old('price_type', $project->price_type)!=2) style="display: none;" @endif>
+                                                                        <div class="form-group" id="price_project"
+                                                                             @if(old('price_type', $project->price_type)!=1 && old('price_type', $project->price_type)!=2) style="display: none;" @endif>
                                                                             <span class="span-dvidder">Pricing ({{ $language->code }})</span>
                                                                             <div class="input-group">
                                                                                 <div class="input-group-prepend">
-                                                                                    <span class="input-group-text">$</span>
+                                                                                    <span
+                                                                                        class="input-group-text">$</span>
                                                                                 </div>
                                                                                 <input
                                                                                     type="number"
@@ -245,16 +262,23 @@
                                                                         <!--  Pricing END  -->
 
 
-
-
-
                                                                         <!--  Period of Project START  -->
                                                                         <div class="form-group">
                                                                             <span class="span-dvidder">Period of Project ({{ $language->code }})</span>
                                                                             <div class="form-group">
-                                                                                <div class="input-group input-group-solid date" id="kt_datetimepicker_3" data-target-input="nearest">
-                                                                                    <input type="text" class="form-control form-control-solid datetimepicker-input" name="deadline" value="{{ old('deadline', $project->deadline) }}" placeholder="Select period of Project" data-target="#kt_datetimepicker_3" />
-                                                                                    <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                                                <div
+                                                                                    class="input-group input-group-solid date"
+                                                                                    id="kt_datetimepicker_3"
+                                                                                    data-target-input="nearest">
+                                                                                    <input type="text"
+                                                                                           class="form-control form-control-solid datetimepicker-input"
+                                                                                           name="deadline"
+                                                                                           value="{{ old('deadline', $project->deadline) }}"
+                                                                                           placeholder="Select period of Project"
+                                                                                           data-target="#kt_datetimepicker_3"/>
+                                                                                    <div class="input-group-append"
+                                                                                         data-target="#kt_datetimepicker_3"
+                                                                                         data-toggle="datetimepicker">
 															<span class="input-group-text">
 																<i class="ki ki-calendar"></i>
 															</span>
@@ -265,8 +289,6 @@
                                                                             </div>
                                                                         </div>
                                                                         <!--  Period of Project END  -->
-
-
 
 
                                                                         <!--Add Documents START-->
@@ -282,16 +304,20 @@
                                                                                             multiple
                                                                                             class="custom-file-input"
                                                                                         >
-                                                                                        <label class="custom-file-label custom-file-label-orange"></label>
+                                                                                        <label
+                                                                                            class="custom-file-label custom-file-label-orange"></label>
                                                                                     </div>
-                                                                                    <p class="mb-0">Size of the Document should be Below 2MB. Formats
+                                                                                    <p class="mb-0">Size of the Document
+                                                                                        should be Below 2MB. Formats
                                                                                         (pdf,xlx,csv,doc,docx,jpg,jpeg,png,gif)</p>
                                                                                     @error('document')
-                                                                                    <div class="text-danger mt-2">{{ $message }}</div>
+                                                                                    <div
+                                                                                        class="text-danger mt-2">{{ $message }}</div>
                                                                                     @enderror
 
                                                                                     <div id="file-queue"></div>
-                                                                                    <div class="upload-wrap" id="file_names">
+                                                                                    <div class="upload-wrap"
+                                                                                         id="file_names">
                                                                                         @if(old('document', $project->document))
                                                                                             @php ($delete_documents = (old('delete_document') ? old('delete_document') : []) )
                                                                                             @foreach($delete_documents as $delete_document_index => $delete_document)
@@ -322,8 +348,6 @@
                                                                         <!--Add Documents END-->
 
 
-
-
                                                                         <!-- Add Links START -->
                                                                         <div class="form-group">
                                                                             <span class="span-dvidder">Add Links ({{ $language->code }})</span>
@@ -332,31 +356,52 @@
                                                                                     <div class="links-info">
                                                                                         @if(old('links',$project->links))
                                                                                             @foreach(old('links',$project->links) as $link_index => $link)
-                                                                                                <div class="row form-row links-cont">
-                                                                                                    <div class="col-12 col-md-11">
-                                                                                                        <div class="form-group">
-                                                                                                            <input type="text" name="links[]" class="form-control" value="{{ $link }}">
+                                                                                                <div
+                                                                                                    class="row form-row links-cont">
+                                                                                                    <div
+                                                                                                        class="col-12 col-md-11">
+                                                                                                        <div
+                                                                                                            class="form-group">
+                                                                                                            <input
+                                                                                                                type="text"
+                                                                                                                name="links[]"
+                                                                                                                class="form-control"
+                                                                                                                value="{{ $link }}">
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div class="col-12 col-md-1">
+                                                                                                    <div
+                                                                                                        class="col-12 col-md-1">
                                                                                                         @if($link_index == 0)
-                                                                                                            <a href="javascript:void(0);" class="btn project-add-links"><i class="fas fa-plus"></i></a>
+                                                                                                            <a href="javascript:void(0);"
+                                                                                                               class="btn project-add-links"><i
+                                                                                                                    class="fas fa-plus"></i></a>
                                                                                                         @else
-                                                                                                            <a href="javascript:void(0);" class="btn btn-danger trash trashLink"><i class="far fa-trash-alt"></i></a>
+                                                                                                            <a href="javascript:void(0);"
+                                                                                                               class="btn btn-danger trash trashLink"><i
+                                                                                                                    class="far fa-trash-alt"></i></a>
                                                                                                         @endif
                                                                                                     </div>
                                                                                                 </div>
                                                                                             @endforeach
                                                                                         @else
-                                                                                            <div class="row form-row links-cont">
-                                                                                                <div class="col-12 col-md-11">
-                                                                                                    <div class="form-group mb-5">
-                                                                                                        <input type="text" name="links[]"  class="form-control">
+                                                                                            <div
+                                                                                                class="row form-row links-cont">
+                                                                                                <div
+                                                                                                    class="col-12 col-md-11">
+                                                                                                    <div
+                                                                                                        class="form-group mb-5">
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            name="links[]"
+                                                                                                            class="form-control">
                                                                                                         <p class="mb-0"></p>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                <div class="col-12 col-md-1">
-                                                                                                    <a href="javascript:void(0);" class="btn project-add-links"><i class="fas fa-plus"></i></a>
+                                                                                                <div
+                                                                                                    class="col-12 col-md-1">
+                                                                                                    <a href="javascript:void(0);"
+                                                                                                       class="btn project-add-links"><i
+                                                                                                            class="fas fa-plus"></i></a>
                                                                                                 </div>
                                                                                             </div>
                                                                                         @endif
@@ -367,7 +412,6 @@
                                                                         <!-- Add Links END -->
 
 
-
                                                                         <!--  Write Description of Projects START  -->
                                                                         <div class="form-group">
                                                                             <span class="span-dvidder">Description ({{ $language->code }})</span>
@@ -375,13 +419,11 @@
                                                                                 name="description"
                                                                                 class="tinymceEditor form-control">{!! old('description',$project->description) !!}</textarea>
                                                                             @error('description')
-                                                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                                                            <div
+                                                                                class="text-danger mt-2">{{ $message }}</div>
                                                                             @enderror
                                                                         </div>
                                                                         <!--  Write Description of Projects END  -->
-
-
-
 
 
                                                                     </div>
@@ -433,12 +475,24 @@
                                 <label for="status" class="col-lg-3 col-form-label">Status</label>
                                 <div class="col-lg-9">
                                     <select form="submit-form" class="form-control" name="status">
-                                        <option {{ old('status',$project->status) == 0 ? 'selected' : '' }} value="0">Unpublish</option>
-                                        <option {{ old('status',$project->status) == 1 ? 'selected' : '' }} value="1">Publish</option>
-                                        <option {{ old('status',$project->status) == 2 ? 'selected' : '' }} value="2">Pending</option>
-                                        <option {{ old('status',$project->status) == 3 ? 'selected' : '' }} value="3">Ongoing</option>
-                                        <option {{ old('status',$project->status) == 4 ? 'selected' : '' }} value="4">Completed</option>
-                                        <option {{ old('status',$project->status) == 5 ? 'selected' : '' }} value="5">Canceled</option>
+                                        <option {{ old('status',$project->status) == 0 ? 'selected' : '' }} value="0">
+                                            Unpublish
+                                        </option>
+                                        <option {{ old('status',$project->status) == 1 ? 'selected' : '' }} value="1">
+                                            Publish
+                                        </option>
+                                        <option {{ old('status',$project->status) == 2 ? 'selected' : '' }} value="2">
+                                            Pending
+                                        </option>
+                                        <option {{ old('status',$project->status) == 3 ? 'selected' : '' }} value="3">
+                                            Ongoing
+                                        </option>
+                                        <option {{ old('status',$project->status) == 4 ? 'selected' : '' }} value="4">
+                                            Completed
+                                        </option>
+                                        <option {{ old('status',$project->status) == 5 ? 'selected' : '' }} value="5">
+                                            Canceled
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -450,8 +504,12 @@
                                 <label for="approve" class="col-lg-3 col-form-label">Approve</label>
                                 <div class="col-lg-9">
                                     <select form="submit-form" class="form-control" name="approve">
-                                        <option {{ old('approve',$project->approve) == 0 ? 'selected' : '' }} value="0">No</option>
-                                        <option {{ old('approve',$project->approve) == 1 ? 'selected' : '' }} value="1">Yes</option>
+                                        <option {{ old('approve',$project->approve) == 0 ? 'selected' : '' }} value="0">
+                                            No
+                                        </option>
+                                        <option {{ old('approve',$project->approve) == 1 ? 'selected' : '' }} value="1">
+                                            Yes
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -465,6 +523,62 @@
                             </div>
                         </div>
 
+
+                        <div class="card card-custom gutter-b">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">Project Image</h3>
+                                </div>
+                            </div>
+
+                            <div style="padding-top: 2px; padding-bottom: 2px;" class="card-body">
+
+                                <!--  IMAGES CONTAINER START  -->
+                                <div class="row">
+                                    <div class="col-md-12 ">
+
+                                        <div class="crop-photo-container">
+
+                                            <div class="cabinet center-block">
+
+                                                @if(old('project_photo_upload')))
+                                                <div tooltip="Delete Photo" id="notPhoto">
+                                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                </div>
+                                                @endif
+                                                <figure>
+                                                    @if($project->project_photo)
+                                                        <img
+                                                        src="{{ asset("/storage/project/$project->project_photo") }}"
+                                                        class="gambar img-responsive img-thumbnail" id="crop-item-img-output"/>
+                                                    @else
+                                                    <img
+                                                        src="{{ old('project_photo_upload') ? asset('storage/profile/'. old('project_photo_upload')) : asset('storage/no-image.png') }}"
+                                                        class="gambar img-responsive img-thumbnail" id="crop-item-img-output"/>
+                                                    @endif
+                                                </figure>
+                                                <input form="submit-form" type="file" class="crop-item-img  file center-block" name="project_photo"/>
+                                            </div>
+                                            <input form="submit-form" type="text" id="project_photo_upload" name="project_photo_upload"
+                                                   value="{{ old('project_photo_upload') }}"
+                                                   class="fileUpload">
+                                            <input form="submit-form" type="text" name="not_photo" class="notPhoto">
+                                            <div class="text-muted mt-2">Image formats (jpg,jpeg,png)</div>
+                                            <div class="alert alert-danger mt-3  cropImgError"></div>
+                                            @error('project_photo' )
+                                            <div class="alert alert-my-danger">{{ $message }}</div>
+                                            @enderror
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <!--  IMAGES CONTAINER END  -->
+                            </div>
+                        </div>
+
+
                     </div>
 
                 </div>
@@ -475,7 +589,6 @@
         <!--end::Container-->
     </div>
     <!--end::Entry-->
-
 
 @endsection
 
@@ -531,7 +644,7 @@
     <script>
 
         var nameSearchInterval;
-        $(document).on('keyup','#projectUserName',function (){
+        $(document).on('keyup', '#projectUserName', function () {
 
             $('body').prepend(`<div class="userSearchOverlay"></div>`);
 
@@ -540,25 +653,25 @@
 
                 let data = $('#projectUserName').val();
 
-                if(data == ''){
+                if (data == '') {
                     $('.projectUserNameList').hide();
                     $('.userSearchOverlay').remove();
-                }else {
+                } else {
                     $.ajax({
                         type: "POST",
                         url: "{{ route('admin.project.nameSearch') }}",
-                        data: {data:data},
+                        data: {data: data},
                         dataType: "json",
                         cache: false,
                         success: function (response) {
-                            if(response.success){
+                            if (response.success) {
                                 $('.projectUserNameList').html('');
-                                if(response.data.length == 0){
+                                if (response.data.length == 0) {
                                     $('.projectUserNameList').html('<span>No result</span>');
-                                }else {
+                                } else {
                                     $('.projectUserNameList').html('<ul></ul>');
                                     let responseData = response.data;
-                                    responseData.forEach(function (data){
+                                    responseData.forEach(function (data) {
                                         $('.projectUserNameList ul').append(`<li data-userID="${data.id}">${data.name} (${data.email})</li>`);
 
                                     });
@@ -577,7 +690,7 @@
         });
 
 
-        $(document).on('click','.userSearchOverlay',function (){
+        $(document).on('click', '.userSearchOverlay', function () {
             $('.projectUserNameList').hide();
             $('.projectUserNameList').html('');
             $('.userSearchOverlay').remove();
@@ -585,7 +698,7 @@
 
         // projectUserNameResult
 
-        $(document).on('click','.projectUserNameList ul li',function (){
+        $(document).on('click', '.projectUserNameList ul li', function () {
             let userName = $(this).text();
             let userID = $(this).attr('data-userID');
             $('.projectUserNameResult').text(userName);
@@ -596,38 +709,34 @@
         })
 
 
-
     </script>
 
 
     <!--  SELECT  -->
     <script>
         $('#kt_select2_3').select2({
-            placeholder: "Select freelancer category",
+            placeholder: "Select Project category",
         });
     </script>
 
 
     <!--  CHANGE PRICE TYPE  -->
     <script>
-        $('#price_type').on('change', function() {
+        $('#price_type').on('change', function () {
             if ($(".price-cont select option:selected").val() == '1') {
                 $('#price_project').show();
                 $('#price_id').show();
                 $('#hour_id').hide();
-            }
-            else if ($(".price-cont select option:selected").val() == '2') {
+            } else if ($(".price-cont select option:selected").val() == '2') {
                 $('#price_project').show();
                 $('#price_id').hide();
                 $('#hour_id').show();
-            }
-            else if ($(".price-cont select option:selected").val() == '3') {
+            } else if ($(".price-cont select option:selected").val() == '3') {
                 $('#price_project').hide();
                 $('#price_project input').val('');
                 $('#price_id').hide();
                 $('#hour_id').hide();
-            }
-            else if ($(".price-cont select option:selected").val() == '0') {
+            } else if ($(".price-cont select option:selected").val() == '0') {
                 $('#price_project').hide();
                 $('#price_project input').val('');
                 $('#price_id').hide();
@@ -675,13 +784,13 @@
             extraFields: {
                 _token: "{{ csrf_token() }}"
             },
-            onSuccess: function(response, file_number, file) {
+            onSuccess: function (response, file_number, file) {
 
-                $('#file_names').append('<input type="hidden" name="document[]" id="document'+
-                    file_number +'" value="'+ file.name +'">');
+                $('#file_names').append('<input type="hidden" name="document[]" id="document' +
+                    file_number + '" value="' + file.name + '">');
 
             },
-            onError: function(event, file, file_number, response) {
+            onError: function (event, file, file_number, response) {
 
                 const response_json = JSON.parse(response);
 
@@ -692,7 +801,7 @@
                 });
 
             },
-            onRemove: function(file, total) {
+            onRemove: function (file, total) {
                 $.ajax({
                     url: '{{ route('admin.project.fileDeleteAjax') }}',
                     type: 'POST',
@@ -701,10 +810,10 @@
                         _token: "{{ csrf_token() }}",
                     },
                     dataType: 'json',
-                    success: function(json) {
+                    success: function (json) {
                         if (json.success == true) {
 
-                            $('#file_names').find('#document'+ file.file_number).remove();
+                            $('#file_names').find('#document' + file.file_number).remove();
 
                         } // if
                     }
@@ -719,7 +828,7 @@
     <!--  ADD LINKS  -->
     <script>
 
-        $(".links-info").on('click','.trashLink', function () {
+        $(".links-info").on('click', '.trashLink', function () {
             $(this).closest('.links-cont').remove();
             return false;
         });
@@ -797,14 +906,5 @@
 
     </script>
     <!--  BUTTON TINYMCE IMAGE END  -->
-
-
-
-
-
-
-
-
-
 
 @endsection

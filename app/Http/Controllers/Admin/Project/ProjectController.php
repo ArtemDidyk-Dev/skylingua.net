@@ -18,6 +18,7 @@ use App\Models\UserCategory\UserCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -57,7 +58,7 @@ class ProjectController extends Controller
                 }
 
                 $getProject->hired = [];
-                if ( $getProject->status >= 2 ) {
+                if ($getProject->status >= 2) {
                     $getHired = ProjectHireds::getHiredByProjectId($getProject->id);
                     if ($getHired) {
                         $getProject->hired = $getHired;
@@ -75,7 +76,8 @@ class ProjectController extends Controller
         return view('admin.project.index', compact(
             'projects',
             'getProjects'
-        ));
+        )
+        );
     }
 
 
@@ -103,7 +105,7 @@ class ProjectController extends Controller
                 }
 
                 $getProject->hired = [];
-                if ( $getProject->status >= 2 ) {
+                if ($getProject->status >= 2) {
                     $getHired = ProjectHireds::getHiredByProjectId($getProject->id);
                     if ($getHired) {
                         $getProject->hired = $getHired;
@@ -123,7 +125,8 @@ class ProjectController extends Controller
         return view('admin.project.search', compact(
             'projects',
             'getProjects'
-        ));
+        )
+        );
 
 
 
@@ -157,7 +160,7 @@ class ProjectController extends Controller
         $userCategories_filter = [
             'languageID' => $this->defaultLanguage,
             'limit' => 9999,
-            'role_id' => 4
+            'role_id' => 3
         ];
         $user_categories = UserCategory::getUserCategories($userCategories_filter);
 
@@ -168,9 +171,15 @@ class ProjectController extends Controller
         ];
         $countries = Country::getCountries($countries_filter);
 
-        return view('admin.project.add',compact('countries','user_categories'));
+        return view('admin.project.add', compact('countries', 'user_categories'));
     }
 
+    public function validateCheck($inputName, $text): void
+    {
+        $this->validatorCheck->after(function ($validator) use ($inputName, $text) {
+            $validator->errors()->add($inputName, $text);
+        });
+    }
 
     public function store(ProjectAddRequestAdmin $request)
     {
@@ -180,17 +189,27 @@ class ProjectController extends Controller
 
         $status = $request->status;
         $approve = $request->approve;
-        $country_id = (int)$request->country_id;
+        $country_id = (int) $request->country_id;
         $name = stripinput($request->name);
-        $price_type = (int)$request->price_type;
-        $price = (float)$request->price;
+        $price_type = (int) $request->price_type;
+        $price = (float) $request->price;
         $deadline = stripinput($request->deadline);
         $links = $request->links;
         $userCategoryID = $request->user_category_id;
         $description = htmlentities($request->description);
+        $range = $request->range;
 
+        $range = array_map(function ($title, $price) {
+            if ($title && $price) {
+                return ['title' => $title, 'price' => $price];
+            }
 
+        }, $range['title'], $range['price']);
 
+        $range = array_filter($range, function ($value) {
+            return !empty($value);
+        });
+        
         $project = [
             'user_id' => $user_id,
             'status' => $status,
@@ -203,13 +222,18 @@ class ProjectController extends Controller
             'document' => "",
             'links' => $links,
             'description' => $description,
+            'range' => $range,
             'user_category_id' => ($userCategoryID ? $userCategoryID : [])
         ];
+        $file = $request->file('project_photo');
+        if ($file) {
+            $ex = $file->getClientOriginalExtension();
+            $name = uniqid() . '.' . $ex;
+            Storage::putFileAs('public/project', $file, $name);
+            $project["project_photo"] = $name;
+        }
+        ;
         $addProject = Projects::addProject($project);
-
-
-
-
 
         if ($addProject && $request->document) {
             $fileNames = [];
@@ -218,7 +242,7 @@ class ProjectController extends Controller
                 $filePathOld = "public/tmp/" . Auth::id() . "/" . $fileName;
                 $filePathNew = $addProject->id . "/" . $fileName;
                 if (Storage::exists($filePathOld)) {
-                    Storage::move($filePathOld, "public/project-documents/".  $filePathNew);
+                    Storage::move($filePathOld, "public/project-documents/" . $filePathNew);
                     $fileNames[] = $filePathNew;
                 } // if
             } // foreach
@@ -231,7 +255,6 @@ class ProjectController extends Controller
 
 
             $project = Projects::where('id', $addProject->id)->first();
-
 
 
             $project->document = $fileNames;
@@ -249,17 +272,19 @@ class ProjectController extends Controller
         $user_id = $request->user_name;
 
 
-        $project_id = (int)$request->id;
+        $project_id = (int) $request->id;
         $status = $request->status;
         $approve = $request->approve;
-        $country_id = (int)$request->country_id;
+        $country_id = (int) $request->country_id;
         $name = stripinput($request->name);
-        $price_type = (int)$request->price_type;
-        $price = (float)$request->price;
+        $price_type = (int) $request->price_type;
+        $price = (float) $request->price;
         $deadline = stripinput($request->deadline);
         $links = $request->links;
         $userCategoryID = $request->user_category_id;
         $description = htmlentities($request->description);
+
+        $file = $request->file('project_photo');
 
 
 
@@ -277,7 +302,16 @@ class ProjectController extends Controller
             'description' => $description,
             'user_category_id' => ($userCategoryID ? $userCategoryID : [])
         ];
+
+        if ($file) {
+            $ex = $file->getClientOriginalExtension();
+            $name = uniqid() . '.' . $ex;
+            Storage::putFileAs('public/project', $file, $name);
+            $project["project_photo"] = $name;
+        }
+
         $editProject = Projects::editProjectForAdmin($project_id, $project);
+
 
 
 
@@ -324,7 +358,7 @@ class ProjectController extends Controller
     public function edit(Request $request)
     {
 
-        $project_id = (int)$request->id;
+        $project_id = (int) $request->id;
 
 
         $project_filter = [
@@ -333,8 +367,9 @@ class ProjectController extends Controller
         $project = Projects::getProject($project_id, $project_filter);
 
 
+
         $project->user_country_image = $project->user_country_image ? asset($project->user_country_image) : "";
-        $project->user_profile_photo = $project->user_profile_photo ? asset('storage/profile/'. $project->user_profile_photo) : asset('storage/no-image.jpg');
+        $project->user_profile_photo = $project->user_profile_photo ? asset('storage/profile/' . $project->user_profile_photo) : asset('storage/no-image.jpg');
         $project->links = $project->links ? json_decode($project->links) : [];
         $project->user_social = $project->user_social ? json_decode($project->user_social) : [];
         $project->description = $project->description ? htmlspecialchars_decode($project->description) : "";
@@ -364,7 +399,7 @@ class ProjectController extends Controller
         $userCategories_filter = [
             'languageID' => $this->defaultLanguage,
             'limit' => 9999,
-            'role_id' => 4
+            'role_id' => 3
         ];
         $user_categories = UserCategory::getUserCategories($userCategories_filter);
 
@@ -381,7 +416,8 @@ class ProjectController extends Controller
             'countries',
             'project',
             'projects_categories'
-        ));
+        )
+        );
 
     }
 
@@ -424,8 +460,8 @@ class ProjectController extends Controller
         ]);
 
 
-        $fileName = stripinput( $request->filedata->getClientOriginalName() );
-        $request->filedata->move(public_path('storage/tmp/'. $user_id), $fileName);
+        $fileName = stripinput($request->filedata->getClientOriginalName());
+        $request->filedata->move(public_path('storage/tmp/' . $user_id), $fileName);
 
 
         $data = [];
@@ -441,17 +477,17 @@ class ProjectController extends Controller
     {
         $user_id = Auth::id();
 
-        $fileName = stripinput( $request->file );
+        $fileName = stripinput($request->file);
         if (isset($request->patch)) {
-            $filePatch = stripinput( $request->patch );
+            $filePatch = stripinput($request->patch);
         } else {
-            $filePatch = "tmp/". $user_id;
+            $filePatch = "tmp/" . $user_id;
         }
-        $filePath = "public/". $filePatch ."/". $fileName;
+        $filePath = "public/" . $filePatch . "/" . $fileName;
 
         $data = [];
 
-        if(Storage::exists($filePath)) {
+        if (Storage::exists($filePath)) {
             $data['message'] = "Success";
             Storage::delete($filePath);
         } else {

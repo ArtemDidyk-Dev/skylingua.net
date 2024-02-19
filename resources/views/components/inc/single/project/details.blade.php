@@ -1,39 +1,38 @@
-<h3>{{ language('Information:') }}</h3>
-<x-inc.single.text-line title="{{ language('Job Expiry') }}">
-    {{ $data }}
-</x-inc.single.text-line>
-<x-inc.single.text-line title="{{ language('Location') }}">
-    <img class="details-country-img" src="{{ $geoImg }}" alt="{{ $geo }}">
-    {{ $geo }}
-</x-inc.single.text-line>
-<x-inc.single.text-line title="{{ language('Proposals') }}">
-    {{ $proposals }} {{ language('Proposals') }}
-</x-inc.single.text-line>
-<x-inc.single.text-line title="{{ language('Price type') }}">
-    {{ $priceType }}
-</x-inc.single.text-line>
+@if ($project->range_price)
+    <div class="single-project__range">
+        <h3>{{ language('Price Range:') }}</h3>
+        @foreach ($project->range_price as $item)
+            <div class="single-project__range-item">
+                @if ($item->title)
+                    <p>{{ $item->title }}</p>
+                @endif
+                @if ($item->price)
+                    <span>{{ $item->price }}</span>
+                @endif
+            </div>
+        @endforeach
+    </div>
+@endif
+
 
 <div class="single-project-description-btns">
     @if (auth()->check())
         @if (\App\Services\CommonService::userRoleId(auth()->id()) == 4)
-            @if ($favourites)
-            <x-inc.btns.profile attribute="data-project_id={{ $id }}" link="javascript:void(0)"
-            color="transparent" classMod="projectAddFavorite favourited"
-            image="{{ asset('build/website/images/icons/favourite-on.svg') }}" title="{{ language('In favorites') }}" />
-            @else
-                <x-inc.btns.profile attribute="data-project_id={{ $id }}" link="javascript:void(0)"
-                color="transparent" classMod="projectAddFavorite"
-            image="{{ asset('build/website/images/icons/favourite.svg') }}" title="{{ language('Favourite') }}" />
-            @endif
+
             <x-inc.btns.profile link="javascript:void(0)" classMod="model-active" color="transparent"
-                image="{{ asset('build/website/images/icons/send.svg') }}" title="{{ language('Send Invite') }}" />
-        
+                image="{{ asset('build/website/images/icons/send.svg') }}" title="{{ language('Order now') }}" />
+
+            @if (auth()->id() != $id)
+                <x-inc.btns.profile-chat color="black" image="{{ asset('build/website/images/icons/chat.svg') }}"
+                    title="{{ language('Chat now') }}" link="{{ route('frontend.dashboard.create-chat', $id) }}" />
+            @endif
+
         @endif
     @else
-    <x-inc.btns.profile link="{{ route('frontend.login.index') }}" color="transparent"
-    image="{{ asset('build/website/images/icons/favourite.svg') }}" title="{{ language('Favourite') }}" />
-<x-inc.btns.profile link="{{ route('frontend.login.index') }}" color="transparent"
-    image="{{ asset('build/website/images/icons/send.svg') }}" title="Send Proposal" />
+        <x-inc.btns.profile link="{{ route('frontend.login.index') }}" color="transparent"
+            image="{{ asset('build/website/images/icons/send.svg') }}" title="Order now" />
+        <x-inc.btns.profile-chat color="black" image="{{ asset('build/website/images/icons/chat.svg') }}"
+            title="{{ language('Chat now') }}" link="{{ route('frontend.login.index') }}" />
     @endif
 </div>
 
@@ -48,13 +47,16 @@
 
                         if (button.classList.contains('favourited')) {
                             button.classList.remove('favourited');
-                            let imageUrl =  "{{ asset('build/website/images/icons/favourite.svg') }}";
-                            let imgElement = `<img src="${imageUrl}" alt="Favourite Icon" class="btn-profile-img">`;
+                            let imageUrl = "{{ asset('build/website/images/icons/favourite.svg') }}";
+                            let imgElement =
+                                `<img src="${imageUrl}" alt="Favourite Icon" class="btn-profile-img">`;
                             button.innerHTML = ` ${imgElement} Favourite`;
                         } else {
                             button.classList.add('favourited');
-                            let imageUrl =  "{{ asset('build/website/images/icons/favourite-on.svg') }}";
-                            let imgElement = `<img src="${imageUrl}" alt="Favourite Icon" class="btn-profile-img">`;
+                            let imageUrl =
+                                "{{ asset('build/website/images/icons/favourite-on.svg') }}";
+                            let imgElement =
+                                `<img src="${imageUrl}" alt="Favourite Icon" class="btn-profile-img">`;
                             button.innerHTML = ` ${imgElement} In favorites`;
                         }
 

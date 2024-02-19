@@ -93,21 +93,16 @@
                                                     <div class="tab-content">
 
                                                         <div class="form-group">
-                                                            <span class="span-dvidder">User From</span>
-                                                            <select form="submit-form" class="form-control" name="from">
-                                                                <option value="">-=Select=-</option>
-                                                                @foreach($users as $user)
-                                                                    <option {{ old('from') == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->name }}</option>
-                                                                @endforeach
-                                                            </select>
+                                                            <span class="span-dvidder">User From Nane</span>
+                                                            <input  class="form-control" rows="5" name="name" type="text" required placeholder="User From Nane">
                                                         </div>
 
                                                         <div class="form-group">
-                                                            <span class="span-dvidder">User To</span>
-                                                            <select form="submit-form" class="form-control" name="to">
+                                                            <span class="span-dvidder">Project To</span>
+                                                            <select form="submit-form" class="form-control" name="project_id">
                                                                 <option value="">-=Select=-</option>
-                                                                @foreach($users as $user)
-                                                                    <option {{ old('to') == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->name }}</option>
+                                                                @foreach($projects as $project)
+                                                                    <option {{ old('project_id') == $project->id ? 'selected' : '' }} value="{{ $project->id }}">{{ $project->name }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>

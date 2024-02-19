@@ -1,11 +1,11 @@
 <x-layout>
 
     <x-inc.home.search />
-    <x-inc.home.categories :categories="$categories" />
+    <x-inc.home.categories  />
     <x-inc.home.banner />
-    <x-inc.home.projects :categories="$categories" />
-    <x-inc.home.reviews />
-    <x-inc.home.faq />
+    <x-inc.home.projects :projects="$projects" />
+    <x-inc.home.reviews :comments="$comments" />
+    <x-inc.home.faq :faq="$faq" />
     <x-inc.home.banner-join />
     @push('meta')
         <title>

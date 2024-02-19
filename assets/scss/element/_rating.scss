@@ -17,3 +17,22 @@
 	background-size: 15px 15px;
 	height: 100%;
 }
+.rating-stars-bg {
+	background-image: url('/images/icons/star-grey.svg');
+	background-size: 15px 15px;
+	width: 75px;
+	height: 15px;
+	margin-right: 10px;
+}
+
+.rating-stars {
+	background-image: url('/images/icons/star.svg');
+	background-size: 15px 15px;
+	height: 100%;
+}
+
+.rating-stars-white {
+	background-image: url('/images/icons/star-white.svg');
+	background-size: 15px 15px;
+	height: 100%;
+}
