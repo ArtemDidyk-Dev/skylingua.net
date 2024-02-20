@@ -1084,6 +1084,40 @@ input:focus-visible {
   background: #0F0F34;
   color: #FFF;
 }
+.btn-chat {
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #FFF;
+  border: 2px solid #0F0F34;
+  display: flex;
+  align-items: center;
+  width: -moz-fit-content;
+  width: fit-content;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 16px;
+  color: #0F0F34;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  justify-content: center;
+}
+.btn-chat img {
+  margin-right: 8px;
+}
+.btn-chat.favourited {
+  color: #F5B841;
+}
+@media (max-width: 992px) {
+  .btn-chat {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  .btn-chat img {
+    width: 14px;
+    height: 14px;
+  }
+}
 .btn-details {
   border-radius: 8px;
   border: 2px solid #0F0F34;
@@ -1138,6 +1172,8 @@ input:focus-visible {
   padding: 12px 14px;
   border-radius: 8px;
   border: 2px solid #0F0F34;
+  background: #0F0F34;
+  color: #FFF;
   display: flex;
   align-items: center;
   width: -moz-fit-content;
@@ -1145,7 +1181,6 @@ input:focus-visible {
   font-size: 15px;
   font-weight: 700;
   line-height: 20px;
-  color: #0F0F34;
   width: 100%;
   text-align: center;
   justify-content: center;

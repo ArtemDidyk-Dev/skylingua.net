@@ -87,6 +87,41 @@
             color: $color-white;
         }
     }
+    &-chat {
+        padding: 12px 14px;
+         border-radius: 8px;
+        background: $color-white;
+        border: 2px solid $color-second;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 16px;
+        color: $color-second;
+        width: 100%;
+        text-align: center;
+        text-transform: uppercase;
+        justify-content: center;
+
+        img {
+            margin-right: 8px;
+        }
+
+        &.favourited {
+            color: $color-third;
+        }
+
+        @media #{$mq-mobile} {
+            padding: 10px 14px;
+            font-size: 13px;
+
+            img {
+                width: 14px;
+                height: 14px;
+            }
+        }
+    }
 
     &-details {
         border-radius: 8px;
@@ -151,13 +186,14 @@
         padding: 12px 14px;
         border-radius: 8px;
         border: 2px solid $color-second;
+        background: $color-second;
+        color: $color-white;
         display: flex;
         align-items: center;
         width: fit-content;
         font-size: 15px;
         font-weight: 700;
         line-height: 20px;
-        color: $color-second;
         width: 100%;
         text-align: center;
         justify-content: center;
