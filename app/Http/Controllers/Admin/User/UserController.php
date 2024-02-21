@@ -79,13 +79,14 @@ class UserController extends Controller
 
     public function store(AdminAddUserRequest $request)
     {
+
         $name = stripinput($request->name);
         $email = stripinput($request->email);
         $password = $request->password;
         $roles = $request->roles;
         $status = $request->status > 0 ? (int)$request->status : 0;
         $approve = $request->approve > 0 ? (int)$request->approve : 0;
-
+        $subTitle = $request->sub_title ?? null;
         $user_category = (int)$request->user_category;
         $phone = stripinput($request->phone);
         $description = strip_tags($request->description);
@@ -122,6 +123,18 @@ class UserController extends Controller
             }
 
         }
+        $range = $request->range;
+
+        $range = array_map(function ($title, $price) {
+            if ($title && $price) {
+                return ['title' => $title, 'price' => $price];
+            }
+
+        }, $range['title'], $range['price']);
+
+        $range = array_filter($range, function ($value) {
+            return !empty($value);
+        });
 
         $this->validatorCheck->validate();
         //CUSTOM VALIDATE END
@@ -129,11 +142,12 @@ class UserController extends Controller
 
         $user = User::create([
             'name' => $name,
+            'sub_title' => $subTitle,
             'email' => $email,
             'password' => bcrypt($password),
             'status' => $status,
             'approve' => $approve,
-
+            'range_price' => (!empty($range)  ? json_encode($range, JSON_FORCE_OBJECT) : null)
 //            'user_category' => $user_category,
 //            'phone' => $phone,
 //
@@ -145,7 +159,6 @@ class UserController extends Controller
 //            'gender' => $gender,
 //            'date_of_birth' => $date_of_birth,
         ]);
-
         $user->syncRoles($roles);
 
 
@@ -204,7 +217,7 @@ class UserController extends Controller
 
         $user->gender = $gender;
 //        $user->date_of_birth = $date_of_birth;
-
+        $user->approve = $approve;
         $user->save();
         $user_from = 1;
         $user_to = (int)$user->id;
@@ -284,7 +297,7 @@ class UserController extends Controller
         $roles = $request->roles;
         $status = $request->status > 0 ? (int)$request->status : 0;
         $approve = $request->approve > 0 ? (int)$request->approve : 0;
-
+        $subTitle = $request->sub_title ?? null;
         $user_category = (int)$request->user_category;
         $phone = stripinput($request->phone);
         $description = stripinput($request->description);
@@ -412,7 +425,7 @@ class UserController extends Controller
         $user->email = $email;
         $user->status = $status;
         $user->approve = $approve;
-
+        $user->sub_title = $subTitle ?? null;
         $user->user_category = $user_category;
         $user->phone = $phone;
         $user->description = $description;

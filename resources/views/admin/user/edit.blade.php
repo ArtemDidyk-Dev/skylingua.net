@@ -84,6 +84,13 @@
                                                 </div>
 
 
+                                                <div class="form-group row">
+                                                    <label for="name" class="col-lg-3 col-form-label">Sub Title <e></e></label>
+                                                    <div class="col-lg-9">
+                                                        <input id="name" type="text" name="sub_title" value="{{ old('sub_title',$user->sub_title) }}" class="form-control form-control-lg" placeholder="Sub Title"/>
+                                                    </div>
+                                                </div>
+
                                                 <!--  Phone  -->
                                                 <div class="form-group row form-phone">
                                                     <label for="phone" class="col-lg-3 col-form-label">Phone</label>

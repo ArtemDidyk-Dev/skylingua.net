@@ -23,8 +23,8 @@
 
 
     <div class="filters-input-wrapper">
-        <x-inc.inputs.category title="{{ language('Categories') }}" :categoryActive="$filter['project_category'] ?? ''" :default="[
-            ]" :values="$selectCategories" name="project_category" />
+        <x-inc.inputs.category title="{{ language('Categories') }}" :categoryActive="$filter['user_category'] ?? ''" :default="[
+            ]" :values="$selectCategories" name="user_category" />
     </div>
     <div class="filters-input-prices">
         <div class="filters-input-price">

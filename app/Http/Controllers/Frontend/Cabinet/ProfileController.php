@@ -15,6 +15,7 @@ use App\Models\Reviews\Reviews;
 use App\Models\User;
 use App\Models\UserCategory\UserCategory;
 use App\Services\CommonService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -30,7 +31,7 @@ class ProfileController extends Controller
 
     public function index(Request $request)
     {
-       
+
         $user_id = (int)$request->id;
 
         $user_filter = [
@@ -40,10 +41,16 @@ class ProfileController extends Controller
         if ($user == null) {
             return redirect()->back();
         }
-
+        $diffInDays = Carbon::parse($user->created_at)->diffInDays();
+        $showDiff = Carbon::parse($user->created_at)->diffForHumans();
+        if ($diffInDays > 0) {
+            $showDiff .= ', ' . Carbon::parse($user->created_at)->addDays($diffInDays)->diffInHours() . ' Hours';
+        }
+        $user->created_at_view = $showDiff;
+        $user->range_price = $user->range_price ? json_decode($user->range_price) : [];
         if ($user->role_id == 3) {
-            $user->profile_photo = !empty($user->profile_photo) ? asset('storage/profile/'. $user->profile_photo) : asset('storage/no-image.jpg');
-            $user->banner_image = !empty($user->banner_image) ? asset('storage/profile/'. $user->banner_image) :
+            $user->profile_photo = !empty($user->profile_photo) ? asset('storage/profile/' . $user->profile_photo) : asset('storage/no-image.jpg');
+            $user->banner_image = !empty($user->banner_image) ? asset('storage/profile/' . $user->banner_image) :
                 asset('storage/company-bg.jpg');
         } else if ($user->role_id == 4) {
             $user->profile_photo = !empty($user->profile_photo) ? asset('storage/profile/' . $user->profile_photo) : asset('storage/no-photo.jpg');
@@ -52,9 +59,9 @@ class ProfileController extends Controller
         $user->user_country_image = !empty($user->user_country_image) ? asset($user->user_country_image) : "";
         $user->user_profile_link = $request->fullUrl();
 
-        if($user->description) {
+        if ($user->description) {
             $user->description = str_replace("\n", "<br />", html_entity_decode($user->description, ENT_QUOTES, 'UTF-8'));
-           
+
         }
 
         if ($user->social) {
@@ -84,7 +91,7 @@ class ProfileController extends Controller
                     'status' => 1
                 ];
                 $getProjectsList = Projects::getTotalProjectsList($project_filter);
-             
+
                 if ($getProjectsList) {
                     foreach ($getProjectsList as $getProjectList) {
                         $proposal = ProjectProposals::getProposal($user->id, $getProjectList->id);
@@ -94,10 +101,9 @@ class ProfileController extends Controller
 
                     }
                 }
-            
+
             }
         }
-
 
 
         $getReviews = Reviews::getReviewsByUserId($user_id);
@@ -108,23 +114,20 @@ class ProfileController extends Controller
                 $diffInDays = \Carbon\Carbon::parse($review->created_at)->diffInDays();
                 $showDiff = \Carbon\Carbon::parse($review->created_at)->diffForHumans();
                 $review->review = str_replace("\r\n", "<br />", html_entity_decode($review->review, ENT_QUOTES, 'UTF-8'));
-                $review->rating_view = number_format($review->rating, 1, ".", "" );
-                $review->created_at_view =  \Carbon\Carbon::parse($review->created_at)->format('M d, Y');
-              
-                $review->user_profile_photo = !empty($review->user_profile_photo) ? asset('storage/profile/'. $review->user_profile_photo) : asset('storage/no-photo.jpg');
+                $review->rating_view = number_format($review->rating, 1, ".", "");
+                $review->created_at_view = \Carbon\Carbon::parse($review->created_at)->format('M d, Y');
+
+                $review->user_profile_photo = !empty($review->user_profile_photo) ? asset('storage/profile/' . $review->user_profile_photo) : asset('storage/no-photo.jpg');
                 $reviews[] = $review;
 
-                $average_rating = $average_rating+(float)$review->rating;
+                $average_rating = $average_rating + (float)$review->rating;
             }
             $reviews_count = count($reviews);
-            if($reviews_count > 0) {
+            if ($reviews_count > 0) {
                 $average_rating = $average_rating / $reviews_count;
             }
-            $average_rating = number_format($average_rating, 1, ".", "" );
+            $average_rating = number_format($average_rating, 1, ".", "");
         }
-
-
-
 
 
         if ($user->role_id == 3) {
@@ -154,7 +157,6 @@ class ProfileController extends Controller
                     $projects[] = $getProject;
                 }
             }
-           
             return view('pages.employer.single', compact(
                 'auth_user',
                 'user',
@@ -165,8 +167,26 @@ class ProfileController extends Controller
                 'average_rating'
             ));
         } else if ($user->role_id == 4) {
-        
+
             $portfolios = Portfolio::getByUserId($user_id, 999);
+            $id = $user->id;
+            $user_filter = [
+                'language_id' => $request->languageID,
+                'status' => 1,
+                'approve' => 1,
+                'limit' => 20
+            ];
+            $freelancers = User::getFreelancer($user_filter)->reject(function ($user) use ($id) {
+                if ($user->id == $id) {
+                    return $user->id == $id;
+                }
+                $diffInDays = \Carbon\Carbon::parse($user->created_at)->diffInDays();
+                $showDiff = \Carbon\Carbon::parse($user->created_at)->diffForHumans();
+                if ($diffInDays > 0) {
+                    $showDiff .= ', ' . \Carbon\Carbon::parse($user->created_at)->addDays($diffInDays)->diffInHours() . ' Hours';
+                }
+                $user->created_at_view = $showDiff;
+            });
             return view('pages.freelancers.single', compact(
                 'auth_user',
                 'user',
@@ -174,7 +194,8 @@ class ProfileController extends Controller
                 'reviews',
                 'average_rating',
                 'projects_list',
-                'reviews_count'
+                'reviews_count',
+                'freelancers'
             ));
         }
 
@@ -212,7 +233,7 @@ class ProfileController extends Controller
         ];
         $countries = Country::getCountries($countries_filter);
 
-        $user->description = html_entity_decode( $user->description, ENT_QUOTES, 'UTF-8');
+        $user->description = html_entity_decode($user->description, ENT_QUOTES, 'UTF-8');
 
         return view('frontend.dashboard.freelancer.profile-settings', compact(
             'auth_user',
@@ -227,12 +248,12 @@ class ProfileController extends Controller
     public function editFrelancerStore(Request $request)
     {
         $user_id = (int)$request->user_id;
-
+        $subTitle = $request->sub_title ?? null;
         //CUSTOM VALIDATE START
         $this->validatorCheck = Validator::make(request()->all(), []);
 
         if ($user_id != Auth::id()) {
-            $this->validateCheck( 'user_id', language('frontend.edit_profile.error_user_id') );
+            $this->validateCheck('user_id', language('frontend.edit_profile.error_user_id'));
         }
 
         $user_filter = [
@@ -240,7 +261,7 @@ class ProfileController extends Controller
         ];
         $user = User::getParentUser($user_id, $user_filter);
         if ($user == null) {
-            $this->validateCheck('user_id', language('frontend.edit_profile.error_user') );
+            $this->validateCheck('user_id', language('frontend.edit_profile.error_user'));
         }
 
 
@@ -262,7 +283,6 @@ class ProfileController extends Controller
         }
 
         $this->validatorCheck->validate();
-
 
 
         $id = $user_id;
@@ -316,7 +336,7 @@ class ProfileController extends Controller
         $user->address = $address;
         $user->gender = $gender;
         $user->description = html_entity_decode($description, ENT_QUOTES, 'UTF-8');;
-
+        $user->sub_title = $subTitle ?? null;
 
         //profile_photo
         if ($request->hasFile('profile_photo')) {
@@ -380,7 +400,7 @@ class ProfileController extends Controller
         }
 
         //Foto Legv olunmushsa
-        if($request->not_photo == '1') {
+        if ($request->not_photo == '1') {
 
             if (!empty($user->profile_photo)) {
                 Storage::delete('public/profile/' . $user->profile_photo);
@@ -390,7 +410,7 @@ class ProfileController extends Controller
         }
 
         //Banner Image Legv olunmushsa
-        if($request->not_photoBanner == '1') {
+        if ($request->not_photoBanner == '1') {
 
             if (!empty($user->banner_image)) {
                 Storage::delete('public/profile/' . $user->banner_image);
@@ -421,9 +441,8 @@ class ProfileController extends Controller
         if ($user->social) {
             $user->social = json_decode($user->social);
         }
-        
-        $user->description = html_entity_decode( $user->description, ENT_QUOTES, 'UTF-8');
 
+        $user->description = html_entity_decode($user->description, ENT_QUOTES, 'UTF-8');
 
 
         if ($user == null) {
@@ -447,8 +466,6 @@ class ProfileController extends Controller
         $countries = Country::getCountries($countries_filter);
 
 
-
-
         return view('frontend.dashboard.employer.profile-settings', compact(
             'auth_user',
             'user',
@@ -461,15 +478,15 @@ class ProfileController extends Controller
 
     public function editEmployerStore(Request $request)
     {
-       
-        
+
+
         $user_id = (int)$request->user_id;
 
         //CUSTOM VALIDATE START
         $this->validatorCheck = Validator::make(request()->all(), []);
 
         if ($user_id != Auth::id()) {
-            $this->validateCheck( 'user_id', language('frontend.edit_profile.error_user_id') );
+            $this->validateCheck('user_id', language('frontend.edit_profile.error_user_id'));
         }
 
         $user_filter = [
@@ -477,7 +494,7 @@ class ProfileController extends Controller
         ];
         $user = User::getParentUser($user_id, $user_filter);
         if ($user == null) {
-            $this->validateCheck('user_id', language('frontend.edit_profile.error_user') );
+            $this->validateCheck('user_id', language('frontend.edit_profile.error_user'));
         }
 
 
@@ -494,7 +511,6 @@ class ProfileController extends Controller
         $this->validatorCheck->validate();
 
 
-
         $id = $user_id;
         $name = stripinput($request->name);
         $email = stripinput($request->email);
@@ -507,7 +523,6 @@ class ProfileController extends Controller
         $established = stripinput($request->established);
 
         $description = stripinput(strip_tags($request->description));
-
 
 
         $rules = [
@@ -537,8 +552,6 @@ class ProfileController extends Controller
         $user->postalcode = $postalcode;
         $user->address = $address;
         $user->description = html_entity_decode($description, ENT_QUOTES, 'UTF-8');;
-
-
 
 
         //profile_photo
@@ -572,9 +585,8 @@ class ProfileController extends Controller
         }
 
 
-    
         //Foto Legv olunmushsa
-        if($request->not_photo == '1') {
+        if ($request->not_photo == '1') {
 
             if (!empty($user->profile_photo)) {
                 Storage::delete('public/profile/' . $user->profile_photo);
@@ -582,15 +594,13 @@ class ProfileController extends Controller
             $user->profile_photo = '';
 
         }
-       
+
         $user->save();
 
 
         return redirect()->route('frontend.dashboard.employer.profile-settings')->with('message', language('frontend.edit_profile.success_updated'));
 
     }
-
-
 
 
     public function changePassword(Request $request)
@@ -624,16 +634,16 @@ class ProfileController extends Controller
         $this->validatorCheck = Validator::make(request()->all(), []);
 
         if ($user_id != Auth::id()) {
-            $this->validateCheck( 'user_id', language('frontend.edit_profile.error_user_id') );
+            $this->validateCheck('user_id', language('frontend.edit_profile.error_user_id'));
         }
 
         $user = User::where('id', $user_id)->first();
         if ($user == null) {
-            $this->validateCheck( 'user_id', language( 'frontend.edit_profile.error_user') );
+            $this->validateCheck('user_id', language('frontend.edit_profile.error_user'));
         }
 
-        if(!empty($old_password) && $user != null && !Hash::check($old_password, $user->password)) {
-            $this->validateCheck( 'old_password', language( 'frontend.edit_profile.error_old_password') );
+        if (!empty($old_password) && $user != null && !Hash::check($old_password, $user->password)) {
+            $this->validateCheck('old_password', language('frontend.edit_profile.error_old_password'));
         }
 
         $this->validatorCheck->validate();
@@ -698,16 +708,16 @@ class ProfileController extends Controller
         $this->validatorCheck = Validator::make(request()->all(), []);
 
         if ($user_id != Auth::id()) {
-            $this->validateCheck( 'user_id', language('frontend.edit_profile.error_user_id') );
+            $this->validateCheck('user_id', language('frontend.edit_profile.error_user_id'));
         }
 
         $user = User::getParentUser($user_id);
         if ($user == null) {
-            $this->validateCheck( 'user_id', language( 'frontend.edit_profile.error_user') );
+            $this->validateCheck('user_id', language('frontend.edit_profile.error_user'));
         }
 
-        if(!empty($password) && $user != null && !Hash::check($password, $user->password)) {
-            $this->validateCheck( 'password', language( 'frontend.edit_profile.error_old_password') );
+        if (!empty($password) && $user != null && !Hash::check($password, $user->password)) {
+            $this->validateCheck('password', language('frontend.edit_profile.error_old_password'));
         }
 
         $this->validatorCheck->validate();

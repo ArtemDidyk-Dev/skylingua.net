@@ -105,7 +105,6 @@ class Reviews extends Model
         return Reviews::create([
             'from' => $reviewDTO->from,
             'to' => $reviewDTO->to,
-            'project_id' => $reviewDTO->projectId,
             'rating' => $reviewDTO->rating,
             'review' => $reviewDTO->review,
             'status' => $reviewDTO->status,

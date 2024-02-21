@@ -70,6 +70,12 @@ class HomeController extends Controller
             }
 
             foreach ($freelancers as $freelancer_key => $freelancer) {
+                $diffInDays = Carbon::parse($freelancer->created_at)->diffInDays();
+                $showDiff = Carbon::parse($freelancer->created_at)->diffForHumans();
+                if ($diffInDays > 0) {
+                    $showDiff .= ', ' . Carbon::parse($freelancer->created_at)->addDays($diffInDays)->diffInHours() . ' Hours';
+                }
+                $freelancer['created_at_view'] = $showDiff;
                 $freelancers[$freelancer_key] = $freelancer;
                 $freelancers[$freelancer_key]->favourites = (isset($freelancer_favourites_arr[$freelancer->id]) ? true :
                     false);
@@ -149,7 +155,7 @@ class HomeController extends Controller
             } // foreach
         } // if
 
-   
+
         $blogs = Blog::getBlogs($request->languageID, 3)->map(function ($blog) {
             $blog->updated_at = Carbon::parse($blog->updated_at);
             return $blog;
@@ -159,10 +165,10 @@ class HomeController extends Controller
         $employerCount = User::getEmployerCount();
         $freelancersCount = User::getFreelancerCount();
         $projectsCount = Projects::getProjectsCount();
-        
+
         $faq = $this->faqRepository->limit(3)->get();
         $comments = $this->commentRepository->all();
-       
+
         return view('pages.home', compact(
                 'freelancers',
                 'getProjects',

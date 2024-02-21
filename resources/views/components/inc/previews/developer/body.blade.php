@@ -1,32 +1,20 @@
-<div class="preview-user__body">
-    <div class="preview-user__body-content-list">
-        <span class="preview-user__body-content-title">
-            About the designer:
-        </span>
-        <div class="preview-user__body-list-item">
-            <p>Rating:</p>
-            <div class="preview-user__body-list-item-dots"></div>
-            <x-inc.previews.rating :ratingStars="$ratingStars" :ratingCount="$ratingCount" />
-        </div>
-        @if ($price)
-            <div class="preview-user__body-list-item">
-                <p>Price:</p>
-                <div class="preview-user__body-list-item-dots"></div>
-                <span>{{ $price }}</span>
-            </div>
-        @endif
+@if($subTitle )
+    <h4>{{ $subTitle }}</h4>
+@endif
+<div class="project__item-descrip">
+    <span class="project__item-price">
+        <img loading="lazy" width="16" height="16" src="{{ asset('build/website/images/icons/cash.svg') }}"
+             alt="price">
+        Starts at {{$price }}
 
-        <div class="preview-user__body-list-item">
-            <p>Member Since:</p>
-            <div class="preview-user__body-list-item-dots"></div>
-            <span>{{ $data }}</span>
-        </div>
-        @if ($country)
-            <div class="preview-user__body-list-item">
-                <p>Country:</p>
-                <div class="preview-user__body-list-item-dots"></div>
-                <span>{{ $country }}</span>
-            </div>
-        @endif
-    </div>
+    </span>
+    @if (!empty($category))
+        <span class="project__item-categor">
+            <img loading="lazy" width="16" height="16"
+                 src="{{ asset('build/website/images/icons/categor-project.svg') }}"
+                 alt=" {{ $category }}">
+            {{ $category }}
+        </span>
+    @endif
 </div>
+<p>  {!!  str_limit(strip_tags(html_entity_decode($content)), $limit = 230, $end = '...') !!}</p>

@@ -4,8 +4,8 @@
             {{ language('Reviews') }}
         </x-inc.single.title>
         @foreach ($reviews as $review)
-            <x-inc.single.freelancer.review name="{{ $review->user_name }}" text="{!! $review->review !!}"
-                rating="{{ $review->rating_view }}" data="{{ $review->created_at_view }}" />
+            <x-inc.single.project.review name="{{ $review->from }}" text="{!! $review->review !!}"
+                                         rating="{{ $review->rating_view }}" data="{{ $review->created_at_view }}" />
         @endforeach
     </div>
 @else
@@ -15,6 +15,7 @@
                 {{ language('Reviews') }}
             </x-inc.single.title>
             No {{ language('Reviews') }}
+
         </div>
     </div>
 @endif

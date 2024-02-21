@@ -2,25 +2,18 @@
 
 namespace App\View\Composers;
 
-use App\Models\Project\ProjectsCategories;
-use Illuminate\Http\Request;
+use App\Models\UserCategory\UserCategoryTranslation;
 use Illuminate\View\View;
 
 class CategoryViewComposer
-{   
+{
 
     public static $approvedProjectsWithCategories;
     public static $categoryes;
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'status' => 1,
-            'approve' => 1,
-        ];
-
         if(!self::$categoryes) {
-            self::$categoryes = ProjectsCategories::getCategories($project_filter)->take(7);
+            self::$categoryes = UserCategoryTranslation::active()->limit(7)->get();
         }
     }
 

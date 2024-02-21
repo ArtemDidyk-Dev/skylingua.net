@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend\Project;
 
+
 use App\DTO\ReviewDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Project\ProjectAddRequest;
@@ -304,7 +305,7 @@ class ProjectController extends Controller
             }
             $project->created_at_view = $showDiff;
         });
-       
+
         return view(
             'pages.projects.single',
             compact(
@@ -360,10 +361,11 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function storeComment(ReviewStoreRequest $request, int $project, int $user)
+    public function storeComment(ReviewStoreRequest $request, int $user)
     {
 
-        $reviewDTO = new ReviewDTO($request->input('name'), $user, $project, $request->input('rating'), $request->input('message'));
+        $reviewDTO = new ReviewDTO($request->input('name'), $user, $request->input('rating'), $request->input('message'));
+
         try {
             Reviews::addReview($reviewDTO);
             return response()->json(['success' => true], Response::HTTP_OK);
