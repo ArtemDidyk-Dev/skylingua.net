@@ -78,8 +78,14 @@
                                                         @error('email' )<span class="text-danger">{{ $message }}</span> @enderror
                                                     </div>
                                                 </div>
-
-
+                                                <!--  Sub Discription  -->
+                                                <div class="form-group row form-name">
+                                                    <label for="name" class="col-lg-3 col-form-label">Sub Title</label>
+                                                    <div class="col-lg-9">
+                                                        <input id="name" type="text" name="sub_title" value="{{ old('sub_title') }}" class="form-control form-control-lg" placeholder="Sub Title"/>
+                                                        @error('sub_title' )<span class="text-danger">{{ $message }}</span> @enderror
+                                                    </div>
+                                                </div>
                                                 <!--  Phone  -->
                                                 <div class="form-group row form-phone">
                                                     <label for="phone" class="col-lg-3 col-form-label">Phone</label>
@@ -200,6 +206,30 @@
                                                         <input id="time_rate" type="text" name="time_rate" value="{{ old('time_rate') }}" class="form-control form-control-lg" placeholder="Time Rate"/>
                                                         <p class="light-pink-text mb-0">Provide your hourly rate without currency symbol</p>
                                                         @error('time_rate' )<span class="text-danger">{{ $message }}</span> @enderror
+                                                    </div>
+                                                </div>
+
+                                                <!-- Add Range START -->
+                                                <div class="form-group form-range" style="display:none">
+                                                    <span class="span-dvidder">Price Range:</span>
+                                                    <div class="title-content">
+                                                        <div class="title-detail">
+                                                            <div class="range-info">
+                                                                <div class="row form-row range-cont">
+                                                                    <div class="col-12 col-md-11">
+                                                                        <div class="d-flex form-group mb-5">
+                                                                            <input placeholder="Title" type="text" name="range[title][]"  class="form-control mr-2 col-6">
+                                                                            <input placeholder="Price" type="text" name="range[price][]"  class="form-control col-6">
+                                                                            <p class="mb-0"></p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-1">
+                                                                        <a href="javascript:void(0);" class="btn project-add-range"><i class="fas fa-plus"></i></a>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -504,6 +534,7 @@
             $('.form-gender').show();
             $('.form-hourly_rate').show();
             $('.form-time_rate').show();
+            $('.form-range').show();
             $('.form-country').show();
             $('.form-address').show();
             $('.form-postalcode').show();
@@ -517,6 +548,7 @@
             $('.form-gender').hide();
             $('.form-hourly_rate').hide();
             $('.form-time_rate').hide();
+            $('.form-range').hide();
             $('.form-phone').hide();
             $('.form-address').hide();
             $('.form-longitude').hide();
@@ -766,6 +798,34 @@
         })
 
         /*   CROP IMG END   */
+    </script>
+
+    <!--  ADD RANGE  -->
+    <script>
+
+        $(".range-info").on('click','.trashRange', function () {
+            $(this).closest('.range-cont').remove();
+            return false;
+        });
+
+        $(".project-add-range").on('click', function () {
+
+            var experiencecontent = '<div class="row form-row range-cont">' +
+                '<div class="col-12 col-md-11 col-lg-11">' +
+                '<div class="d-flex form-group mt-2">' +
+                '<input placeholder="Title" type="text" name="range[title][]"  class="form-control mr-2 col-6">' +
+                '<input placeholder="Price" type="text" name="range[price][]"  class="form-control col-6">' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-12 col-md-1 col-lg-1">' +
+                '<a href="javascript:void(0);" class="btn btn-danger trash trashRange"><i class="far fa-trash-alt"></i></a>' +
+                '</div>' +
+                '</div>';
+
+            $(".range-info").append(experiencecontent);
+            return false;
+        });
+
     </script>
 
 @endsection

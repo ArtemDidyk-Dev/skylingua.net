@@ -1,6 +1,6 @@
 <x-layout>
 	<x-inc.single.layout>
-	
+
 		<x-slot name="breadcrumbs">
 			<x-inc.breadcrumbs
 				theme="white"
@@ -15,7 +15,7 @@
 				]"
 			/>
 		</x-slot>
-	
+
 		<x-slot name="profileTop">
 			<x-inc.single.project.top
 				name="{!! $project->name !!}"
@@ -24,7 +24,7 @@
 				:category="$projects_categories"
 			/>
 		</x-slot>
-	
+
 		<x-slot name="profileLeft">
 		<x-inc.single.project.description
 		photo="{{$project->user_profile_photo}}"
@@ -48,19 +48,19 @@
 			proposal="{{$proposal}}"
 			/>
 			<x-inc.single.project.review-form toId="{{$project->user_id}}" projectId="{{$project->id}}"
-	
+
 			/>
 		</x-slot>
 		<x-slot name="overview">
 			<x-inc.single.project.overview
 			content="{!! $project->description !!}"
 				/>
-	
+
 		</x-slot>
 		<x-slot name="about">
 			<x-inc.single.project.reviews :reviews="$reviews" />
 		</x-slot>
-	
+
 		<x-slot name="modal">
 			<x-inc.single.project.model
 				proposal="{{ $proposal }}"
@@ -68,31 +68,30 @@
 				id="{{ $project->id }}"
 			/>
 		</x-slot>
-	
+
 		<x-slot name="projects">
 			<x-inc.single.project.slider
 				:projects="$projects"
 			/>
 		</x-slot>
-	
-	
-	</x-inc.single.top>
-	
+
+
+	</x-inc.single.layout>
+
 	@push('css')
 	<style>
-	
+
 	</style>
 	@endPush
-	
+
 	@push('meta')
-	
+
 	<title>{!! $project->name ." - Projects" !!}</title>
 	<meta name="description" content="{{language('frontend.project.description')}}">
 	<meta name="keywords" content="{{language('frontend.project.keywords')}}">
 	<link rel="stylesheet" href="/css/swiper-bundle.min.css" />
 	<script src="/js/swiper-bundle.min.js"></script>
 	@endPush
-	
-	
+
+
 	</x-layout>
-	

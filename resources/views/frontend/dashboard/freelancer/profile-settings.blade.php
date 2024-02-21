@@ -60,6 +60,11 @@
                                                 @error('name' )<span class="text-danger">{{ $message }}</span> @enderror
                                             </div>
                                             <div class="form-group col-md-6">
+                                                <label for="name">{{ language('Sub Title') }}</label>
+                                                <input autocomplete="OFF" id="name" type="text" name="sub_title"
+                                                       class="form-control" value="{{ old('sub_title',$user->sub_title) }}">
+                                            </div>
+                                            <div class="form-group col-md-6">
                                                 <label for="email">{{ language('Email Address') }}</label>
                                                 <input autocomplete="OFF" id="email" type="text" name="email"
                                                        value="{{ old('email',$user->email) }}" class="form-control"
@@ -106,7 +111,7 @@
                                                     class="text-danger">{{ $message }}</span> @enderror
                                                 <p class="light-pink-text mb-0">{{ language('Provide your time rate') }} <u>{{ language('Example: Full Time') }}</u></p>
                                             </div>
-                                            
+
                                         </div>
                                         <div class="form-row pro-pad pt-0">
                                             <div class="form-group col-md-6 pro-pic">

@@ -4,7 +4,7 @@
         <div class="container">
             <x-inc.breadcrumbs :items="[
                 [
-                    'title' => 'Designers',
+                    'title' => 'Services',
                     'link' => '/',
                 ],
             ]" />
@@ -13,25 +13,20 @@
             @endif
             <div class="filter__wrapper">
                 <div class="filter__left">
-                    <x-inc.filter.filters route="{{ route('frontend.developer.index') }}" :firstElementCountry="$firstElementCountry" :firstElementCategory="$firstElementCategory" :filter="$filter"
-                    :countries="$countries" :minMaxPrice="$freelancersMinMaxPrice" :selectCategories="$userCategories" :selectCountries="$selectCountries" action="{{ route('frontend.developer.index') }}" />
+                    <x-inc.filter.filters route="{{ route('frontend.developer.index') }}"
+                                          :filter="$filter" :selectCategories="$userCategories" :minMaxPrice="$freelancersMinMaxPrice"
+                                          action="{{ route('frontend.developer.index') }}" />
                 </div>
                 <div class="filter__right">
                     @if ($freelancers && $freelancers->total() > 0)
                     <div class="filter__right-wrapper">
                         @foreach ($freelancers as $freelancer)
                             <x-inc.previews.developer.developer
-                            photo="{{ !empty($freelancer->profile_photo)
-                                ? asset('storage/profile/' . $freelancer->profile_photo)
-                                : asset('storage/no-photo.jpg') }}"
-                            alt="{{ $freelancer->name }}" name="{{ $freelancer->name }}"
+                            name="{{ $freelancer->name }}"
+                            subTitle="{{ $freelancer->sub_title }}"
                             position="{{ $freelancer->user_category_name ? $freelancer->user_category_name : '' }}"
-                            countryIco="{{ $freelancer->user_country_image }}"
-                            country="{{ $freelancer->user_country_name }}"
-                            ratingCount="{{ $freelancer->reviews_count }}"
-                            ratingStars="{{ $freelancer->average_rating }}" 
-                            jobType="{{ $freelancer->time_rate }}"
-                            data="{{ $freelancer->created_at->format('M d, Y') }}"
+                            content="{!!$freelancer->description !!}"
+                            data="{{ $freelancer->created_at_view }}"
                             price="{{ $freelancer->hourly_rate > 0 ? $freelancer->hourly_rate . ' ' . language('frontend.currency') . ' ' . language('Hourly') : language('Bidding Price') }}"
                             link="{{ route('frontend.profile.index', $freelancer->id) }}" />
                         @endforeach
@@ -50,7 +45,7 @@
         <title>
             {{ empty(language('frontend.developer.title')) ? language('frontend.developer.name') : language('frontend.developer.title')  }}
         </title>
-      
+
         <meta name="description" content="{{ language('frontend.developer.description') }}">
         <meta name="keywords" content="{{ language('frontend.developer.keywords') }}">
         <script src="/js/nouislider.min.js"></script>

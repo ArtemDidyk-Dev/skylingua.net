@@ -340,7 +340,7 @@ Route::namespace('Admin')->group(function () {
 
         /*   PROJECTS START   */
         Route::namespace('Project')->group(function () {
-            Route::prefix('services')->group(function () {
+            Route::prefix('projects')->group(function () {
                 Route::get('/', 'ProjectController@index')->name('admin.project.index');
                 Route::get('/search', 'ProjectController@search')->name('admin.project.search');
                 Route::get('/add', 'ProjectController@add')->name('admin.project.add');
@@ -478,30 +478,30 @@ Route::group(
                     // Employer Dashboard start
                     Route::namespace('Cabinet')->group(function (){
                         Route::prefix('dashboard')->group(function (){
-                            Route::get('employer', 'DashboardController@employer')->name('frontend.dashboard.employer');
-                            Route::get('employer/services-all', 'ProjectsController@employer')->name('frontend.dashboard.employer.projects-all');
-                            Route::get('employer/services-pending', 'ProjectsController@employerPending')->name('frontend.dashboard.employer.projects-pending');
-                            Route::get('employer/services-ongoing', 'ProjectsController@employerOngoing')->name('frontend.dashboard.employer.projects-ongoing');
-                            Route::get('employer/services-completed', 'ProjectsController@employerCompleted')->name('frontend.dashboard.employer.projects-completed');
-                            Route::post('employer/services-completed/accept', 'ProjectsController@employerProjectAccept')->name('frontend.dashboard.employer.projects-completed.accept');
-                            Route::post('employer/services-completed/correct', 'ProjectsController@employerProjectCorrect')->name('frontend.dashboard.employer.projects-completed.correct');
-                            Route::post('employer/services-repost', 'ProjectsController@employerProjectRepost')->name('frontend.dashboard.employer.projects-repost');
-                            Route::get('employer/services-cancelled', 'ProjectsController@employerCancelled')->name('frontend.dashboard.employer.projects-cancelled');
-                            Route::get('employer/services-add', 'ProjectsController@employerProjectAdd')->name('frontend.dashboard.employer.employerProjectAdd');
-                            Route::post('employer/services-store', 'ProjectsController@employerProjectStore')->name('frontend.dashboard.employer.employerProjectStore');
-                            Route::get('employer/services-edit/{id}', 'ProjectsController@employerProjectEdit')->name('frontend.dashboard.employer.employerProjectEdit');
-                            Route::post('employer/services-update', 'ProjectsController@employerProjectUpdate')->name('frontend.dashboard.employer.employerProjectUpdate');
-                            Route::post('employer/services-publish', 'ProjectsController@employerProjectPublish')->name('frontend.dashboard.employer.employerProjectPublish');
-                            Route::get('employer/services-proposals/{id}', 'ProjectsController@employerProposals')->name('frontend.dashboard.employer.project.proposals');
+                            Route::get('student', 'DashboardController@employer')->name('frontend.dashboard.employer');
+                            Route::get('student/projects-all', 'ProjectsController@employer')->name('frontend.dashboard.employer.projects-all');
+                            Route::get('student/projects-pending', 'ProjectsController@employerPending')->name('frontend.dashboard.employer.projects-pending');
+                            Route::get('student/projects-ongoing', 'ProjectsController@employerOngoing')->name('frontend.dashboard.employer.projects-ongoing');
+                            Route::get('student/projects-completed', 'ProjectsController@employerCompleted')->name('frontend.dashboard.employer.projects-completed');
+                            Route::post('student/projects-completed/accept', 'ProjectsController@employerProjectAccept')->name('frontend.dashboard.employer.projects-completed.accept');
+                            Route::post('student/projects-completed/correct', 'ProjectsController@employerProjectCorrect')->name('frontend.dashboard.employer.projects-completed.correct');
+                            Route::post('student/projects-repost', 'ProjectsController@employerProjectRepost')->name('frontend.dashboard.employer.projects-repost');
+                            Route::get('student/projects-cancelled', 'ProjectsController@employerCancelled')->name('frontend.dashboard.employer.projects-cancelled');
+                            Route::get('student/projects-add', 'ProjectsController@employerProjectAdd')->name('frontend.dashboard.employer.employerProjectAdd');
+                            Route::post('student/projects-store', 'ProjectsController@employerProjectStore')->name('frontend.dashboard.employer.employerProjectStore');
+                            Route::get('student/projects-edit/{id}', 'ProjectsController@employerProjectEdit')->name('frontend.dashboard.employer.employerProjectEdit');
+                            Route::post('student/projects-update', 'ProjectsController@employerProjectUpdate')->name('frontend.dashboard.employer.employerProjectUpdate');
+                            Route::post('student/projects-publish', 'ProjectsController@employerProjectPublish')->name('frontend.dashboard.employer.employerProjectPublish');
+                            Route::get('student/projects-proposals/{id}', 'ProjectsController@employerProposals')->name('frontend.dashboard.employer.project.proposals');
 
-                            Route::get('employer/favourites', 'FavouritesController@employer')->name('frontend.dashboard.employer.favourites');
-                            Route::get('employer/review', 'ReviewsController@employer')->name('frontend.dashboard.employer.review');
-                            Route::get('employer/membership-plans', 'MembershipController@employer')->name('frontend.dashboard.employer.membership-plans');
-                            Route::get('employer/milestones', 'MilestonesController@employer')->name('frontend.dashboard.employer.milestones');
-                            Route::get('employer/verify-identity', 'VerifyIdentityController@employer')->name('frontend.dashboard.employer.verify-identity');
-                            Route::get('employer/deposit-funds', 'DepositFundsController@employer')->name('frontend.dashboard.employer.deposit-funds');
-                            Route::get('employer/profile-settings', 'ProfileController@editEmployer')->name('frontend.dashboard.employer.profile-settings');
-                            Route::post('employer/profile-settings/store', 'ProfileController@editEmployerStore')->name('frontend.dashboard.employer.profile-settings.store');
+                            Route::get('student/favourites', 'FavouritesController@employer')->name('frontend.dashboard.employer.favourites');
+                            Route::get('student/review', 'ReviewsController@employer')->name('frontend.dashboard.employer.review');
+                            Route::get('student/membership-plans', 'MembershipController@employer')->name('frontend.dashboard.employer.membership-plans');
+                            Route::get('student/milestones', 'MilestonesController@employer')->name('frontend.dashboard.employer.milestones');
+                            Route::get('student/verify-identity', 'VerifyIdentityController@employer')->name('frontend.dashboard.employer.verify-identity');
+                            Route::get('student/deposit-funds', 'DepositFundsController@employer')->name('frontend.dashboard.employer.deposit-funds');
+                            Route::get('student/profile-settings', 'ProfileController@editEmployer')->name('frontend.dashboard.employer.profile-settings');
+                            Route::post('student/profile-settings/store', 'ProfileController@editEmployerStore')->name('frontend.dashboard.employer.profile-settings.store');
 
                         });
                     });
@@ -514,44 +514,44 @@ Route::group(
                     Route::namespace('Cabinet')->group(function (){
                         Route::prefix('dashboard')->group(function (){
                             Route::get('freelancer', 'DashboardController@freelancer')->name('frontend.dashboard.freelancer');
-                            Route::get('designer/service-proposals', 'ProjectsController@freelancer')->name('frontend.dashboard.freelancer.project-proposals');
-                            Route::get('designer/service-hireds', 'ProjectsController@freelancerHireds')->name('frontend.dashboard.freelancer.project-hireds');
-                            Route::post('designer/service-hireds/accept', 'ProjectsController@freelancerHiredsAccept')->name('frontend.dashboard.freelancer.project-hireds.accept');
-                            Route::post('designer/service-hireds/complete', 'ProjectsController@freelancerHiredsComplete')->name('frontend.dashboard.freelancer.project-hireds.complete');
-                            Route::post('designer/service-hireds/cancel', 'ProjectsController@freelancerHiredsCancel')->name('frontend.dashboard.freelancer.project-hireds.cancel');
-                            Route::post('designer/service-proposals/store', 'ProjectsController@freelancerProposalStore')->name('frontend.dashboard.freelancer.project-proposals.store');
-                            Route::post('designer/service-proposals/store/ajax', 'ProjectsController@freelancerProposalStoreAjax')->name('frontend.dashboard.freelancer.project-proposals.store.ajax');
-                            Route::post('designer/service-proposals/edit', 'ProjectsController@freelancerProposalEdit')->name('frontend.dashboard.freelancer.project-proposals.edit');
-                            Route::post('designer/service-proposals/delete', 'ProjectsController@freelancerProposalDelete')->name('frontend.dashboard.freelancer.project-proposals.delete');
-                            Route::get('designer/service-ongoing', 'ProjectsController@freelancerOngoing')->name('frontend.dashboard.freelancer.project-ongoing');
-                            Route::get('designer/service-completed', 'ProjectsController@freelancerCompleted')->name('frontend.dashboard.freelancer.project-completed');
-                            Route::post('designer/service-completed/review', 'ProjectsController@freelancerCompletedReview')->name('frontend.dashboard.freelancer.project-completed.review');
-                            Route::get('designer/service-cancelled', 'ProjectsController@freelancerCancelled')->name('frontend.dashboard.freelancer.project-cancelled');
-                            Route::get('designer/favourites', 'FavouritesController@freelancer')->name('frontend.dashboard.freelancer.favourites');
-                            Route::get('designer/reviews', 'ReviewsController@freelancer')->name('frontend.dashboard.freelancer.reviews');
+                            Route::get('teacher/service-proposals', 'ProjectsController@freelancer')->name('frontend.dashboard.freelancer.project-proposals');
+                            Route::get('teacher/service-hireds', 'ProjectsController@freelancerHireds')->name('frontend.dashboard.freelancer.project-hireds');
+                            Route::post('teacher/service-hireds/accept', 'ProjectsController@freelancerHiredsAccept')->name('frontend.dashboard.freelancer.project-hireds.accept');
+                            Route::post('teacher/service-hireds/complete', 'ProjectsController@freelancerHiredsComplete')->name('frontend.dashboard.freelancer.project-hireds.complete');
+                            Route::post('teacher/service-hireds/cancel', 'ProjectsController@freelancerHiredsCancel')->name('frontend.dashboard.freelancer.project-hireds.cancel');
+                            Route::post('teacher/service-proposals/store', 'ProjectsController@freelancerProposalStore')->name('frontend.dashboard.freelancer.project-proposals.store');
+                            Route::post('teacher/service-proposals/store/ajax', 'ProjectsController@freelancerProposalStoreAjax')->name('frontend.dashboard.freelancer.project-proposals.store.ajax');
+                            Route::post('teacher/service-proposals/edit', 'ProjectsController@freelancerProposalEdit')->name('frontend.dashboard.freelancer.project-proposals.edit');
+                            Route::post('teacher/service-proposals/delete', 'ProjectsController@freelancerProposalDelete')->name('frontend.dashboard.freelancer.project-proposals.delete');
+                            Route::get('teacher/service-ongoing', 'ProjectsController@freelancerOngoing')->name('frontend.dashboard.freelancer.project-ongoing');
+                            Route::get('teacher/service-completed', 'ProjectsController@freelancerCompleted')->name('frontend.dashboard.freelancer.project-completed');
+                            Route::post('teacher/service-completed/review', 'ProjectsController@freelancerCompletedReview')->name('frontend.dashboard.freelancer.project-completed.review');
+                            Route::get('teacher/service-cancelled', 'ProjectsController@freelancerCancelled')->name('frontend.dashboard.freelancer.project-cancelled');
+                            Route::get('teacher/favourites', 'FavouritesController@freelancer')->name('frontend.dashboard.freelancer.favourites');
+                            Route::get('teacher/reviews', 'ReviewsController@freelancer')->name('frontend.dashboard.freelancer.reviews');
 
-                            Route::get('designer/portfolio', 'PortfolioController@freelancer')->name('frontend.dashboard.freelancer.portfolio');
-                            Route::post('designer/portfolio/add/store', 'PortfolioController@addStore')->name('frontend.dashboard.freelancer.portfolio.add.tore');
-                            Route::post('designer/portfolio/edit/store', 'PortfolioController@editStore')->name('frontend.dashboard.freelancer.portfolio.edit.tore');
-                            Route::post('designer/portfolio/delete/store', 'PortfolioController@deleteStore')->name('frontend.dashboard.freelancer.portfolio.delete.tore');
+                            Route::get('teacher/portfolio', 'PortfolioController@freelancer')->name('frontend.dashboard.freelancer.portfolio');
+                            Route::post('teacher/portfolio/add/store', 'PortfolioController@addStore')->name('frontend.dashboard.freelancer.portfolio.add.tore');
+                            Route::post('teacher/portfolio/edit/store', 'PortfolioController@editStore')->name('frontend.dashboard.freelancer.portfolio.edit.tore');
+                            Route::post('teacher/portfolio/delete/store', 'PortfolioController@deleteStore')->name('frontend.dashboard.freelancer.portfolio.delete.tore');
 
-                            Route::get('designer/membership', 'MembershipController@freelancer')->name('frontend.dashboard.freelancer.membership');
-                            Route::get('designer/verify-identity', 'VerifyIdentityController@freelancer')->name('frontend.dashboard.freelancer.verify-identity');
-                            Route::get('designer/withdraw-money', 'WithdrawMoneyController@freelancer')->name('frontend.dashboard.freelancer.withdraw-money');
+                            Route::get('teacher/membership', 'MembershipController@freelancer')->name('frontend.dashboard.freelancer.membership');
+                            Route::get('teacher/verify-identity', 'VerifyIdentityController@freelancer')->name('frontend.dashboard.freelancer.verify-identity');
+                            Route::get('teacher/withdraw-money', 'WithdrawMoneyController@freelancer')->name('frontend.dashboard.freelancer.withdraw-money');
 
-                            Route::post('designer/withdraw-money/bank/step1', 'WithdrawMoneyController@bankStep1')->name('frontend.dashboard.freelancer.pay.bank.step1');
-                            Route::post('designer/withdraw-money/bank/step2', 'WithdrawMoneyController@bankStep2')->name('frontend.dashboard.freelancer.pay.bank.step2');
-                            Route::post('designer/withdraw-money/bank/step3', 'WithdrawMoneyController@bankStep3')->name('frontend.dashboard.freelancer.pay.bank.step3');
-                            Route::get('designer/withdraw-money/bank/step_status/{paymentId}', 'WithdrawMoneyController@bankStepStatus')->name('frontend.dashboard.freelancer.pay.bank.stepStatus');
-                            Route::get('designer/withdraw-money/bank/progress', 'WithdrawMoneyController@bankStepProgress')->name('frontend.dashboard.freelancer.pay.bank.stepProgress');
-                            Route::get('designer/withdraw-money/bank/success', 'WithdrawMoneyController@bankStepSuccess')->name('frontend.dashboard.freelancer.pay.bank.stepSuccess');
-                            Route::get('designer/withdraw-money/bank/error', 'WithdrawMoneyController@bankStepError')->name('frontend.dashboard.freelancer.pay.bank.stepError');
+                            Route::post('teacher/withdraw-money/bank/step1', 'WithdrawMoneyController@bankStep1')->name('frontend.dashboard.freelancer.pay.bank.step1');
+                            Route::post('teacher/withdraw-money/bank/step2', 'WithdrawMoneyController@bankStep2')->name('frontend.dashboard.freelancer.pay.bank.step2');
+                            Route::post('teacher/withdraw-money/bank/step3', 'WithdrawMoneyController@bankStep3')->name('frontend.dashboard.freelancer.pay.bank.step3');
+                            Route::get('teacher/withdraw-money/bank/step_status/{paymentId}', 'WithdrawMoneyController@bankStepStatus')->name('frontend.dashboard.freelancer.pay.bank.stepStatus');
+                            Route::get('teacher/withdraw-money/bank/progress', 'WithdrawMoneyController@bankStepProgress')->name('frontend.dashboard.freelancer.pay.bank.stepProgress');
+                            Route::get('teacher/withdraw-money/bank/success', 'WithdrawMoneyController@bankStepSuccess')->name('frontend.dashboard.freelancer.pay.bank.stepSuccess');
+                            Route::get('teacher/withdraw-money/bank/error', 'WithdrawMoneyController@bankStepError')->name('frontend.dashboard.freelancer.pay.bank.stepError');
 
-                            Route::get('designer/transaction-history', 'WithdrawMoneyController@freelancerTransactionHistory')->name('frontend.dashboard.freelancer.transaction-history');
-                            Route::get('designer/view-invoice/{id}', 'WithdrawMoneyController@freelancerViewInvoice')->name('frontend.dashboard.freelancer.view-invoice');
-                            Route::get('designer/profile-settings', 'ProfileController@editFrelancer')->name('frontend.dashboard.freelancer.profile-settings');
-                            Route::post('designer/profile-settings/store', 'ProfileController@editFrelancerStore')->name('frontend.dashboard.freelancer.-settings.store');
-                            Route::post('designer/profile-settings/store', 'ProfileController@editFrelancerStore')->name('frontend.dashboard.freelancer.profile-settings.store');
+                            Route::get('teacher/transaction-history', 'WithdrawMoneyController@freelancerTransactionHistory')->name('frontend.dashboard.freelancer.transaction-history');
+                            Route::get('teacher/view-invoice/{id}', 'WithdrawMoneyController@freelancerViewInvoice')->name('frontend.dashboard.freelancer.view-invoice');
+                            Route::get('teacher/profile-settings', 'ProfileController@editFrelancer')->name('frontend.dashboard.freelancer.profile-settings');
+                            Route::post('teacher/profile-settings/store', 'ProfileController@editFrelancerStore')->name('frontend.dashboard.freelancer.-settings.store');
+                            Route::post('teacher/profile-settings/store', 'ProfileController@editFrelancerStore')->name('frontend.dashboard.freelancer.profile-settings.store');
 
                         });
                     });
@@ -602,14 +602,14 @@ Route::group(
 
 
             /*   DEVELOPER START   */
-            Route::get('/designers', 'Developer\DeveloperController@index')->name('frontend.developer.index');
+            Route::get('/services', 'Developer\DeveloperController@index')->name('frontend.developer.index');
             /*   DEVELOPER END   */
 
             /*   PROJECT START   */
-            Route::get('/services', 'Project\ProjectController@index')->name('frontend.project.index');
-            Route::get('/services/detail/{id}', 'Project\ProjectController@detail')->name('frontend.project.detail');
-            Route::get('/services/ajax-list', 'Project\ProjectController@ajaxList')->name('frontend.project.ajax-list');
-            Route::post('/services/store-comment/{projectId}/user/{toId}', 'Project\ProjectController@storeComment')->name('frontend.service.store-comment');
+            Route::get('/projects', 'Project\ProjectController@index')->name('frontend.project.index');
+            Route::get('/projects/detail/{id}', 'Project\ProjectController@detail')->name('frontend.project.detail');
+            Route::get('/projects/ajax-list', 'Project\ProjectController@ajaxList')->name('frontend.project.ajax-list');
+            Route::post('/projects/store-comment/{toId}', 'Project\ProjectController@storeComment')->name('frontend.service.store-comment');
             /*   PROJECT END   */
 
 

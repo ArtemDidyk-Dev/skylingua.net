@@ -3,7 +3,7 @@
     <x-inc.home.search />
     <x-inc.home.categories  />
     <x-inc.home.banner />
-    <x-inc.home.projects :projects="$projects" />
+    <x-inc.home.catalog :freelancers="$freelancers" />
     <x-inc.home.reviews :comments="$comments" />
     <x-inc.home.faq :faq="$faq" />
     <x-inc.home.banner-join />

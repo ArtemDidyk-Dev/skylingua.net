@@ -3,39 +3,59 @@
         <x-slot name="breadcrumbs">
             <x-inc.breadcrumbs theme="white" :items="[
                 [
-                    'title' => 'Designers',
+                    'title' => 'Catalog',
                     'link' => route('frontend.developer.index'),
                 ],
                 [
-                    'title' => $user->name,
+                    'title' => $user->sub_title ?? $user->user_category_name,
                 ],
-            ]" />
+            ]"/>
         </x-slot>
+
+        <x-slot name="profileTop">
+            <x-inc.single.freelancer.top
+                name="{{$user->sub_title}}"
+                category="{{$user->user_category_name}}"
+                price="{{ $user->hourly_rate > 0 ? $user->hourly_rate . ' ' . language('frontend.currency') . ' ' . language('Hourly') : language('Bidding Price') }}"
+            />
+        </x-slot>
+
         <x-slot name="profileLeft">
-            <x-inc.single.freelancer.profile name="{{ $user->name }}" category="{{ $user->user_category_name }}"
-                profileLink="{{ $user->user_profile_link }}  " rate="{{ $user->hourly_rate }}"
-                proflieImg="{{ $user->profile_photo }}" id="{{ $user->id }}"  rating="{{ $average_rating }}" ratingCount="{{ $reviews_count }}" 
-                data="{{ $user->created_at->format('d M Y') }}"
-                geo="{{ $user->user_country_name }}"
-                gender="{{ $user->gender == 1 ? language('Male') : language('Famele') }}"
-                />
+
+            <x-inc.single.freelancer.description
+                photo="{{$user->profile_photo}}"
+                name="{{$user->name}}"
+                created="{{$user->created_at_view}}"
+                rating="{{$average_rating ?? 0}}"
+                ratingCount="{{$user->reviews_count}}"
+            />
         </x-slot>
         <x-slot name="profiledescription">
-            <x-inc.single.freelancer.details data="{{ $user->created_at->format('d M Y') }}"
-                geo="{{ $user->user_country_name }}" geoImg="{{ $user->user_country_image }}"
-                gender="{{ $user->gender == 1 ? language('Male') : language('Famele') }}"
-                rating="{{ $average_rating }}" ratingCount="{{ $reviews_count }}" id="{{ $user->id }}"
-                favourites="{{ $user->favourites }}" />
+            <x-inc.single.freelancer.details
+                :user="$user"
+                favourites="{{$user->favourites}}"
+                id="{{ $user->id }}"
+            />
+            <x-inc.single.freelancer.review-form toId="{{$user->id}}" />
         </x-slot>
+
         <x-slot name="overview">
-            <x-inc.single.freelancer.overview description="{!! $user->description !!}" />
+            <x-inc.single.freelancer.overview
+                content="{!! $user->description !!}"
+            />
         </x-slot>
         <x-slot name="about">
-            <x-inc.single.freelancer.portfolio :portfolios="$portfolios" />
-            <x-inc.single.freelancer.reviews :reviews="$reviews" />
+            <x-inc.single.freelancer.portfolio :portfolios="$portfolios"/>
+            <x-inc.single.freelancer.reviews :reviews="$reviews"/>
         </x-slot>
         <x-slot name="modal">
-            <x-inc.single.freelancer.model id="{{ $user->id }}" :projectslist="$projects_list" />
+            <x-inc.single.freelancer.model id="{{ $user->id }}" :projectslist="$projects_list"/>
+        </x-slot>
+
+        <x-slot name="projects">
+            <x-inc.single.freelancer.slider
+                :freelancers="$freelancers"
+            />
         </x-slot>
     </x-inc.single.layout>
 
@@ -44,6 +64,8 @@
         <title>{{ $user->name . ' - Freelancer' }}</title>
         <meta name="description" content="{{ language('frontend.developer.description') }}">
         <meta name="keywords" content="{{ language('frontend.developer.keywords') }}">
+        <link rel="stylesheet" href="/css/swiper-bundle.min.css" />
+        <script src="/js/swiper-bundle.min.js"></script>
     @endPush
 
 </x-layout>

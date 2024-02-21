@@ -70,7 +70,7 @@
                 <ul>
                     @foreach ($categoryes as $category)
                         @if ($loop->index < 3)
-                        <li><a href="{{ route('frontend.project.index', ['project_category' => $category->user_category_id]) }}">{{ $category->user_category_name }}</a></li>
+                        <li><a href="{{ route('frontend.developer.index', ['user_category' => $category->user_category_id]) }}">{{ $category->name }}</a></li>
                         @endif
                     @endforeach
                 </ul>
@@ -80,7 +80,7 @@
                 <ul>
                     @foreach ($categoryes as $category)
                         @if ($loop->index > 3)
-                        <li><a href="{{ route('frontend.project.index', ['project_category' => $category->user_category_id]) }}">{{ $category->user_category_name }}</a></li>
+                        <li><a href="{{ route('frontend.developer.index', ['user_category' => $category->user_category_id]) }}">{{ $category->name }}</a></li>
                         @endif
                     @endforeach
                 </ul>

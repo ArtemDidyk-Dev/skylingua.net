@@ -19,7 +19,7 @@ class DeveloperController extends Controller
 
     public function index(Request $request)
     {
-        
+
         $user_id = Auth::id();
 
         $filter = [];
@@ -37,7 +37,7 @@ class DeveloperController extends Controller
             $filter['country'] = (int) $request->country;
         }
         if (isset($request->user_category) && !empty($request->user_category)) {
-            $filter['user_category'] = (int) $request->user_category;
+            $filter['user_category'] = (array) $request->user_category;
         }
 
         $freelancer_filter = [
@@ -60,6 +60,13 @@ class DeveloperController extends Controller
             }
 
             foreach ($freelancers as $freelancer_key => $freelancer) {
+                $diffInDays = Carbon::parse($freelancer->created_at)->diffInDays();
+                $showDiff = Carbon::parse($freelancer->created_at)->diffForHumans();
+                if ($diffInDays > 0) {
+                    $showDiff .= ', ' . Carbon::parse($freelancer->created_at)->addDays($diffInDays)->diffInHours() . ' Hours';
+                }
+                $freelancer['created_at_view'] = $showDiff;
+                $freelancers[$freelancer_key] = $freelancer;
                 $freelancers[$freelancer_key] = $freelancer;
                 $freelancers[$freelancer_key]->favourites = (isset($freelancer_favourites_arr[$freelancer->id]) ? true :
                     false);
@@ -69,7 +76,6 @@ class DeveloperController extends Controller
 
             }
         }
-
 
         $freelancersMinMaxPrice = User::getFreelancerMinMaxPrice();
 
@@ -105,7 +111,6 @@ class DeveloperController extends Controller
                 'value' => $country->id,
             ];
         });
-
         return view(
             'pages.freelancers.list',
             compact(

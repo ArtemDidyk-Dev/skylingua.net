@@ -28,6 +28,7 @@ class User extends Authenticatable
         'password',
         'status',
         'profile_photo',
+        'range_price',
     ];
 
     /**
@@ -109,7 +110,7 @@ class User extends Authenticatable
 
     public static function getFreelancer($filter = [])
     {
-      
+
         $user = User::select(
             'users.*',
             'model_has_roles.role_id',
@@ -166,7 +167,7 @@ class User extends Authenticatable
             $user = $user->where('users.country', (int)$filter['country']);
         }
         if (isset($filter['user_category']) && !empty($filter['user_category']) && $filter['user_category'] > 0) {
-            $user = $user->where('users.user_category', (int)$filter['user_category']);
+            $user = $user->whereIn('users.user_category',  (array)$filter['user_category']);
         }
 
         if (isset($filter['order']) && !empty($filter['order'])) {
@@ -309,10 +310,10 @@ class User extends Authenticatable
         return $this->hasMany(ProjectProposals::class, 'freelancer_id', 'id');
     }
 
-    public function reviews() 
+    public function reviews()
     {
         return $this->hasMany(Reviews::class, 'to', 'id');
     }
 
-   
+
 }
