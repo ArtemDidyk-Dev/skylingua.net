@@ -14,10 +14,12 @@
                              <span>{{$freelancer['created_at_view']}}</span>
                         </div>
                     </div>
+
                     @if($freelancer['sub_title'] )
                         <h4>{{ $freelancer['sub_title'] }}</h4>
                     @endif
                     <div class="project__item-descrip">
+                        <img class="project__item-author" width="60" height="60" src="{{ !empty($freelancer->profile_photo) ? asset('storage/profile/' . $freelancer->profile_photo): asset('storage/no-photo.jpg') }}" alt="{{ $freelancer['user_name'] }}" >
                         <span class="project__item-price">
                             <img loading="lazy" width="16" height="16"
                                 src="{{ asset('build/website/images/icons/cash.svg') }}" alt="price">

@@ -22,6 +22,9 @@
                     <div class="filter__right-wrapper">
                         @foreach ($freelancers as $freelancer)
                             <x-inc.previews.developer.developer
+                            photo="{{ !empty($freelancer->profile_photo)
+                                    ? asset('storage/profile/' . $freelancer->profile_photo)
+                                    : asset('storage/no-photo.jpg') }}"
                             name="{{ $freelancer->name }}"
                             subTitle="{{ $freelancer->sub_title }}"
                             position="{{ $freelancer->user_category_name ? $freelancer->user_category_name : '' }}"

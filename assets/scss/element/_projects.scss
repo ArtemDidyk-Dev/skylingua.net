@@ -15,7 +15,17 @@
             margin-left: -10px;
         }
     }
-
+    &__item-author {
+        border-radius: 12px;
+        margin-right: 10px;
+    }
+    &__item-descrip {
+        margin-top: 20px;
+        align-items: center;
+        @media #{$mq-mobile} {
+            margin-top: 10px;
+        }
+    }
     &__item {
         margin-top: 30px;
         background: $color-service;
@@ -81,7 +91,24 @@
             padding: 0px;
             margin-left: 0px;
             flex-basis: auto;
+            .project__top-item {
+                margin-left: 25px;
+                margin-top: 25px;
+            }
+            .project__item-descrip, h4, p  {
+                margin-left: 25px;
+            }
+            @media #{$mq-mobile} {
+                .project__top-item {
+                    margin-left: 0px;
+                    margin-top: 10px;
 
+                }
+                .project__item-descrip, h4, p  {
+                    margin-left: 0px;
+                }
+
+            }
         }
         &-slider {
             margin: 25px;
@@ -93,7 +120,7 @@
                margin-left: 0px;
             }
         }
-        
+
 
     }
 
@@ -167,7 +194,6 @@
     &__item-price,
     &__item-categor {
         display: flex;
-        margin-top: 20px;
         font-weight: 700;
         font-size: 14px;
         color: $color-second;
@@ -257,7 +283,7 @@
                 top: auto;
             }
 
-           
+
         }
     }
 }
