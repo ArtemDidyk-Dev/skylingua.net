@@ -52,10 +52,7 @@
                                                     <a href="{{ route('frontend.profile.index', $pay->freelancer_id) }}"
                                                        target="_blank">{{ $pay->user_name }}</a>
                                                 </td>
-                                                <td>
-                                                    <a href="{{ route('frontend.profile.index', $pay->project_id) }}"
-                                                       target="_blank">{{ $pay->project_name }}</a>
-                                                </td>
+                                                
                                                 <td>{{ $pay->orderId }}</td>
                                                 <td>
                                                     @if($pay->status == 2)

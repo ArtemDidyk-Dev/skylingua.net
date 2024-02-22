@@ -20,7 +20,6 @@ class Pay extends Model
         $pay = Pay::create([
             'employer_id' => (int)$data['employer_id'],
             'freelancer_id' => (int)$data['freelancer_id'],
-            'project_id' => (int)$data['project_id'],
             'type' => (int)$data['type'],
             'amount' => (float)$data['amount'],
             'currency' => (int)$data['currency'],
@@ -129,10 +128,8 @@ class Pay extends Model
                 'pays.*',
                 'users.name as user_name',
                 'users.profile_photo as user_profile_photo',
-                'projects.name as project_name'
             )
             ->leftJoin('users', 'pays.freelancer_id', '=', 'users.id')
-            ->leftJoin('projects', 'pays.project_id', '=', 'projects.id')
             ->where('pays.employer_id', (int)$user_id)
             ->orderBy('pays.id', 'DESC')
             ->paginate($limit);

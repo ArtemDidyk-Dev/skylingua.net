@@ -33,7 +33,7 @@ class ProjectProposals extends Model
         return $proposalsCount;
     }
 
-    public static function getProposalsByProjectId($project_id)
+    public static function getProposalsByProjectId($employer_id)
     {
         $proposals = ProjectProposals::select(
             'project_proposals.*',
@@ -48,7 +48,7 @@ class ProjectProposals extends Model
             ) as reviews_count"),
         )
             ->leftJoin('users', 'project_proposals.freelancer_id', '=', 'users.id')
-            ->where('project_proposals.project_id', $project_id)
+            ->where('project_proposals.employer_id', $employer_id)
             ->groupBy('project_proposals.id')
             ->get();
 
@@ -71,18 +71,18 @@ class ProjectProposals extends Model
         return $proposals;
     }
 
-    public static function getProposalsCountByProjectId($project_id)
+    public static function getProposalsCountByProjectId($employer_id)
     {
-        $proposalsCount = ProjectProposals::where('project_id', $project_id)
+        $proposalsCount = ProjectProposals::where('employer_id', $employer_id)
             ->count();
 
         return $proposalsCount;
     }
 
-    public static function getProposal($freelancer_id, $project_id)
+    public static function getProposal($freelancer_id, $employer_id)
     {
         $proposal = ProjectProposals::where('freelancer_id', $freelancer_id)
-            ->where('project_id', $project_id)
+            ->where('employer_id', $employer_id)
             ->first();
 
         return $proposal;
@@ -92,20 +92,15 @@ class ProjectProposals extends Model
     {
 
         $freelancer_id = (int) $data['freelancer_id'];
-        $project_id = (int) $data['project_id'];
+        $employer_id = (int) $data['employer_id'];
         $price = (float) $data['price'];
         $hours = (int) $data['hours'];
         $letter = stripinput(strip_tags($data['letter']));
         $type = isset($data['type']) ? 1 : 0;
 
-        $proposal = ProjectProposals::getProposal($freelancer_id, $project_id);
-        if ($proposal) {
-            return false;
-        }
-
         $proposals = ProjectProposals::create([
             'freelancer_id' => $freelancer_id,
-            'project_id' => $project_id,
+            'employer_id' => $employer_id,
             'price' => $price,
             'hours' => $hours,
             'letter' => $letter,
@@ -118,14 +113,14 @@ class ProjectProposals extends Model
 
     public static function editProposals($data = [])
     {
-
+        $proposal_id = (int) $data['proposal_id'];
         $freelancer_id = (int) $data['freelancer_id'];
-        $project_id = (int) $data['project_id'];
+        $employer_id = (int) $data['employer_id'];
         $price = (float) $data['price'];
         $hours = (int) $data['hours'];
         $letter = stripinput(strip_tags($data['letter']));
 
-        $proposal = ProjectProposals::getProposal($freelancer_id, $project_id);
+        $proposal = ProjectProposals::getProposalsById($proposal_id);
         if ($proposal == null) {
             return false;
         } else {
@@ -133,18 +128,16 @@ class ProjectProposals extends Model
             $proposal->hours = $hours;
             $proposal->letter = $letter;
             $proposal->updated_at = Carbon::today();
-
             $proposal->save();
         }
 
         return $proposal;
 
     }
-
-    public static function removeProposal($freelancer_id, $project_id, $type = "")
+    public static function removeProposal($freelancer_id, $employer_id, $type = "")
     {
         $proposal = ProjectProposals::where('freelancer_id', (int) $freelancer_id)
-            ->where('project_id', (int) $project_id);
+            ->where('employer_id', (int) $employer_id);
 
         if (isset($type) && $type !== "") {
             $proposal = $proposal->where('type', (int) $type);
@@ -155,9 +148,9 @@ class ProjectProposals extends Model
         return $proposal;
     }
 
-    public static function removeProposalsByProjectId($project_id)
+    public static function removeProposalsByProjectId($employer_id)
     {
-        $proposal = ProjectProposals::where('project_id', $project_id)
+        $proposal = ProjectProposals::where('employer_id', $employer_id)
             ->delete();
 
         return $proposal;

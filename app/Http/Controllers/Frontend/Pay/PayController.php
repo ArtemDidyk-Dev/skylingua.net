@@ -27,21 +27,15 @@ class PayController extends Controller
 
     public function go(PayGoRequest $request)
     {
-
-        if ($request->method() == "GET") {
-            $employer_id = (int)$request->employer_id;
-        } else {
-            $employer_id = Auth::id();
-        }
-
+       
         $freelancer_id = (int)$request->freelancer_id;
-        $project_id = (int)$request->project_id;
-
+        $employer_id = (int)$request->employer_id;
+    
         $price = (isset($request->price) && !empty($request->price) && (float)$request->price > 0 ? (float)$request->price : "");
         $hours = (isset($request->hours) && !empty($request->hours) && (int)$request->hours > 0 ? (int)$request->hours : "");
         $letter = (isset($request->letter) && !empty($request->letter) ? stripinput(strip_tags($request->letter)) : "");
-
-
+        $proposal = ProjectProposals::getProposalsById($request->proposal_id);
+        
         if (CommonService::userRoleId($employer_id) != 3 && $request->method() == "POST") {
             return redirect()->back();
         }
@@ -50,38 +44,22 @@ class PayController extends Controller
             'language_id' => $request->languageID
         ];
         $freelancer = User::getUserInfo($freelancer_id, $freelancer_filter);
+      
         if ($freelancer == null || $freelancer->role_id != 4) {
             return redirect()->back();
         }
 
-
+        
         $project_filter = [
             'language_id' => $request->languageID,
             'status' => 1,
             'employer_id' => $employer_id
         ];
-        $project = Projects::getProject($project_id, $project_filter);
-        if ($project == null) {
-            return redirect()->back();
-        }
-
-        if (!empty($price) && !empty($hours)) {
-            $data = [
-                'freelancer_id' => $freelancer_id,
-                'project_id' => $project_id,
-                'price' => $price,
-                'hours' => $hours,
-                'letter' => $letter,
-                'type' => true
-            ];
-            ProjectProposals::addProposals($data);
-        }
-
-        $proposal = ProjectProposals::getProposal($freelancer_id, $project_id);
+      
+        
         if ($proposal == null) {
             return redirect()->back();
         }
-
         $amount = (float)$proposal->price;
 
 
@@ -101,19 +79,17 @@ class PayController extends Controller
             'type' => 1,
             'employer_id' => $employer_id,
             'freelancer_id' => $freelancer_id,
-            'project_id' => $project_id,
             'amount' => $amount,
             'currency' => config('pay.currency'),
         ];
+       
         $pay = Pay::addPay($data);
-
         if (!$pay) {
             return redirect()->back()->with('message', language('frontend.pay.error_not_created_pay'));
         } else {
-
             $amount = (int)$amount * 100;
-            $orderNumber = $pay->id;
-
+            $orderNumber = rand($pay->id * 200, $pay->id * 5000);
+            
             $curl_url = config('pay.base_url') . '/epg/rest/register.do?userName=' . config('pay.username') . '&password=' . config('pay.password') . '&orderNumber=' . $orderNumber . '&amount=' . $amount . '&currency=' . config('pay.currency') . '&returnUrl=' . route('frontend.pay.status') . '&language=' . config('pay.language') . '&sid=' . config('pay.sid');
             $curl = curl_init();
             curl_setopt_array($curl, array(
@@ -135,14 +111,12 @@ class PayController extends Controller
 
             $response_arr = json_decode($response);
 
-//            dd($response_arr);
-
             if ($err || (isset($response_arr->errorCode) && $response_arr->errorCode > 0)) {
                 return redirect()->route('frontend.pay.error')->with('message', language('cURL Error #:') . $err . " " . $response_arr->errorMessage);
             } else {
 
                 if ($response_arr->orderId) {
-
+                   
                     $request->session()->put('guavapay_orderId', $response_arr->orderId);
 
                     $data = [
@@ -162,14 +136,13 @@ class PayController extends Controller
             }
 
         } // if pay
-
-    }
+    }   
 
 
     public function status(Request $request)
     {
 
-//        dd($request);
+       
 
         $session_guavapay_orderId = "";
         if ($request->session()->exists('guavapay_orderId')) {
@@ -181,16 +154,16 @@ class PayController extends Controller
             $pay_info = Pay::getByOrderId($orderId);
 
             if ($pay_info) {
-
-
-                if (CommonService::userRoleId($pay_info->employer_id) != 3) {
-                    return redirect()->route('frontend.pay.error')->with('message', language('User Role Error.'));
-                }
+               
+                // if (CommonService::userRoleId($pay_info->employer_id) != 3) {
+                //     return redirect()->route('frontend.pay.error')->with('message', language('User Role Error.'));
+                // }
 
                 $freelancer_filter = [
                     'language_id' => $request->languageID
                 ];
                 $freelancer = User::getUserInfo($pay_info->freelancer_id, $freelancer_filter);
+           
                 if ($freelancer == null) {
                     return redirect()->route('frontend.pay.error')->with('message', language('Freelancer Error.'));
                 }
@@ -201,11 +174,13 @@ class PayController extends Controller
                     'employer_id' => $pay_info->employer_id
                 ];
                 $project = Projects::getProject($pay_info->project_id, $project_filter);
+               
                 if ($project == null) {
                     return redirect()->route('frontend.pay.error')->with('message', "Project Error.");
                 }
 
-                $proposal = ProjectProposals::getProposal($pay_info->freelancer_id, $pay_info->project_id);
+                $proposal = ProjectProposals::getProposal($pay_info->freelancer_id, $pay_info->employer_id);
+
                 if ($proposal == null) {
                     return redirect()->route('frontend.pay.error')->with('message', language('Proposal Error.'));
                 }
@@ -244,7 +219,7 @@ class PayController extends Controller
                     if ($editPay) {
                         Notification::addNotification($pay_info->employer_id, $err . (!empty($err) ? " " : "") . $response_arr->ErrorMessage, $request->languageID);
 
-                        ProjectProposals::removeProposal($pay_info->freelancer_id, $pay_info->project_id, 1);
+                        ProjectProposals::removeProposal($pay_info->freelancer_id, $pay_info->employer_id, 1);
                     }
 
 
@@ -263,7 +238,7 @@ class PayController extends Controller
                     if ($editPay) {
                         $data = [
                             'freelancer_id' => $pay_info->freelancer_id,
-                            'project_id' => $pay_info->project_id,
+                            'employer_id' => $pay_info->employer_id,
                             'price' => $pay_info->amount,
                             'hours' => $proposal->hours,
                             'letter' => language('I accepted your proposal and made payment. Please start doing work.')
@@ -316,7 +291,6 @@ class PayController extends Controller
 
     public function link(Request $request)
     {
-
         $proposal_id = (int)$request->id;
         $proposal = ProjectProposals::getProposalsById($proposal_id);
         if ($proposal == null) {
@@ -327,32 +301,21 @@ class PayController extends Controller
             'language_id' => $request->languageID,
             'status' => 1
         ];
-        $project = Projects::getProject($proposal->project_id, $project_filter);
-        if ($project == null) {
-            return redirect()->back();
-        }
-//        dd($project);
 
         $request->session()->put('proposal.id', $proposal->id);
-        $request->session()->put('proposal.employer_id', $project->employer_id);
+        $request->session()->put('proposal.employer_id', $proposal->employer_id);
         $request->session()->put('proposal.freelancer_id', $proposal->freelancer_id);
-        $request->session()->put('proposal.project_id', $proposal->project_id);
         $request->session()->put('proposal.price', $proposal->price);
         $request->session()->put('proposal.hours', $proposal->hours);
         $request->session()->put('proposal.letter', $proposal->letter);
-
-
+    
         return redirect()->route('frontend.pay.go_get', [
             'proposal_id'   => $proposal->id,
-            'employer_id'   => $project->employer_id,
+            'employer_id'   => $proposal->employer_id,
             'freelancer_id' => $proposal->freelancer_id,
-            'project_id'    => $proposal->project_id,
             'price'         => $proposal->price,
             'hours'         => $proposal->hours,
-            '$proposal'     => $proposal->$proposal
         ])->withInput($request->all());
-
-
     }
 
 

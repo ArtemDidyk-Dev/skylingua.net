@@ -18,7 +18,6 @@ class PayGoRequest extends FormRequest
     {
         return [
             'freelancer_id' => 'required|integer',
-            'project_id' => 'required|integer'
         ];
     }
 

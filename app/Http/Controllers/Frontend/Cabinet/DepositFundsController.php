@@ -19,6 +19,7 @@ class DepositFundsController extends Controller
 
     public function employer(Request $request)
     {
+      
         $user_id = Auth::id();
 
         $user_filter = [
@@ -28,6 +29,7 @@ class DepositFundsController extends Controller
         $auth_user = $user;
 
         $getPays = Pay::getByEmployerId($user_id);
+       
         $pays = [];
         if ($getPays) {
             foreach ($getPays as $getPay) {
@@ -37,9 +39,7 @@ class DepositFundsController extends Controller
             }
         }
 
-
-//        @dd($pays);
-
+     
         return view('frontend.dashboard.employer.deposit-funds', compact(
             'auth_user',
             'user',

@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Frontend\Project;
 
-
-use App\DTO\ReviewDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Project\ProjectAddRequest;
 use App\Http\Requests\Project\ProjectEditRequest;
-use App\Http\Requests\ReviewStoreRequest;
 use App\Models\Country\Country;
 use App\Models\Project\Projects;
 use App\Models\Project\ProjectsCategories;
@@ -18,26 +15,16 @@ use App\Models\Setting\Setting;
 use App\Models\User;
 use App\Models\UserCategory\UserCategory;
 use App\Services\CommonService;
-use App\Services\ReviewInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\Response;
 use function PHPUnit\Framework\isNull;
 
 class ProjectController extends Controller
 {
-    public ReviewInterface $reviewService;
-
-
-    public function __construct(ReviewInterface $reviewService)
-    {
-        $this->reviewService = $reviewService;
-    }
-
     public function index(Request $request)
     {
 
@@ -49,19 +36,19 @@ class ProjectController extends Controller
             $filter['keyword'] = stripinput(strip_tags($request->keyword));
         }
         if (isset($request->minPrice) && !empty($request->minPrice)) {
-            $filter['minPrice'] = (float)$request->minPrice;
+            $filter['minPrice'] = (float) $request->minPrice;
         }
         if (isset($request->maxPrice) && !empty($request->maxPrice)) {
-            $filter['maxPrice'] = (float)$request->maxPrice;
+            $filter['maxPrice'] = (float) $request->maxPrice;
         }
         if (isset($request->price_type) && !empty($request->price_type)) {
-            $filter['price_type'] = (int)$request->price_type;
+            $filter['price_type'] = (int) $request->price_type;
         }
         if (isset($request->country) && !empty($request->country)) {
-            $filter['country'] = (int)$request->country;
+            $filter['country'] = (int) $request->country;
         }
         if (isset($request->project_category) && !empty($request->project_category)) {
-            $filter['project_category'] = (array)$request->project_category;
+            $filter['project_category'] = (int) $request->project_category;
         }
 
 
@@ -72,7 +59,6 @@ class ProjectController extends Controller
             'limit' => 10
         ];
         $project_filter = array_merge($project_filter, $filter);
-
         $getProjects = Projects::getProjects($project_filter);
 
 
@@ -117,8 +103,7 @@ class ProjectController extends Controller
 
                 $projects[] = [
                     'id' => $project->id,
-                    'name' => html_entity_decode($project->name, ENT_QUOTES, 'UTF-8'),
-                    'image' => $project->project_photo,
+                    'name' => $project->name,
                     'price_type' => $project->price_type,
                     'price' => $project->price,
                     'price_view' => ($project->price ? number_format($project->price, 2, ".", " ") : 0),
@@ -129,16 +114,12 @@ class ProjectController extends Controller
                     'user_profile_photo' => $project->user_profile_photo ? asset('storage/profile/' . $project->user_profile_photo) : asset('storage/no-image.jpg'),
                     'created_at_view' => $showDiff,
                     'projects_categories' => $projects_categories,
-                    'project_categories_first' => $ProjectsCategories->first()->user_category_name ?? "",
                     'deadline' => $project->deadline,
                     'favourites' => (isset($project_favourites_arr[$project->id]) ? true : false),
-                    'proposals_count' => $proposals_count,
-                    'description' => $project->description ? htmlspecialchars_decode($project->description) : "",
-                    'reviews' => $this->reviewService->getReviewProjectRatingAvg($project->id)
-
+                    'proposals_count' => $proposals_count
                 ];
-            }
-        }
+            } // foreach
+        } // if
 
 
         $getProjectsMinMaxPrice = Projects::getProjectsMinMaxPrice($project_filter);
@@ -170,22 +151,16 @@ class ProjectController extends Controller
             ];
         });
 
-
-        $categories = ProjectsCategories::getCategories($project_filter);
-
-        return view(
-            'pages.projects.list',
-            compact(
-                'getProjects',
-                'projects',
-                'getProjectsMinMaxPrice',
-                'countries',
-                'userCategories',
-                'filter',
-                'selectCountries',
-                'firstElementCountry',
-                'categories'
-            )
+        return view('pages.services.list', compact(
+            'getProjects',
+            'projects',
+            'getProjectsMinMaxPrice',
+            'countries',
+            'userCategories',
+            'filter',
+            'selectCountries',
+            'firstElementCountry'
+        )
         );
     }
 
@@ -193,7 +168,7 @@ class ProjectController extends Controller
     public function detail(Request $request)
     {
         $user_id = Auth::id();
-        $project_id = (int)$request->id;
+        $project_id = (int) $request->id;
 
         $user_filter = [
             'language_id' => $request->languageID
@@ -220,12 +195,11 @@ class ProjectController extends Controller
         $project->user_country_image = $project->user_country_image ? asset($project->user_country_image) : "";
         $project->user_profile_photo = $project->user_profile_photo ? asset('storage/profile/' . $project->user_profile_photo) : asset('storage/no-image.jpg');
         $project->links = $project->links ? json_decode($project->links) : [];
-        $project->range_price = $project->range_price ? json_decode($project->range_price) : [];
         $project->user_social = $project->user_social ? json_decode($project->user_social) : [];
         $project->description = $project->description ? htmlspecialchars_decode($project->description) : "";
         $project->price_view = $project->price ? number_format($project->price, 2, ".", " ") : 0;
         $project->document = $project->document ? explode("|", $project->document) : [];
-        $project->name = html_entity_decode($project->name, ENT_QUOTES, 'UTF-8');
+
         $diffInDays = \Carbon\Carbon::parse($project->created_at)->diffInDays();
         $showDiff = \Carbon\Carbon::parse($project->created_at)->diffForHumans();
         if ($diffInDays > 0) {
@@ -256,7 +230,8 @@ class ProjectController extends Controller
 
         $proposal = ProjectProposals::getProposal($user_id, $project->id);
 
-        $getReviews = Reviews::getReviewsByProjectId($project->id);
+
+        $getReviews = Reviews::getReviewsByUserId($project->user_id);
         $reviews = [];
         $average_rating = 0;
         if ($getReviews) {
@@ -272,7 +247,7 @@ class ProjectController extends Controller
                 $review->user_profile_photo = !empty($review->user_profile_photo) ? asset('storage/profile/' . $review->user_profile_photo) : asset('storage/no-photo.jpg');
                 $reviews[] = $review;
 
-                $average_rating = $average_rating + (float)$review->rating;
+                $average_rating = $average_rating + (float) $review->rating;
             }
             $reviews_count = count($reviews);
             if ($reviews_count > 0) {
@@ -281,47 +256,26 @@ class ProjectController extends Controller
             $average_rating = number_format($average_rating, 1, ".", "");
         }
 
-        $socials = array_map(function ($social) {
-            return [
+        $socials = array_map(function($social) {
+            return  [
                 'link' => $social->link,
                 'img' => "/images/icons/contacts-$social->name.svg",
             ];
         }, $project->user_social);
-
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'status' => 1,
-            'approve' => 1,
-            'limit' => 20
-        ];
-        $projects = Projects::getProjects($project_filter)->reject(function ($project) use ($project_id) {
-            if($project->id == $project_id) {
-                return $project->id == $project_id;
-            }
-            $diffInDays = \Carbon\Carbon::parse($project->created_at)->diffInDays();
-            $showDiff = \Carbon\Carbon::parse($project->created_at)->diffForHumans();
-            if ($diffInDays > 0) {
-                $showDiff .= ', ' . \Carbon\Carbon::parse($project->created_at)->addDays($diffInDays)->diffInHours() . ' Hours';
-            }
-            $project->created_at_view = $showDiff;
-        });
-
-        return view(
-            'pages.projects.single',
-            compact(
-                'auth_user',
-                'user',
-                'project',
-                'projects_count',
-                'projects_categories',
-                'proposal',
-                'reviews',
-                'average_rating',
-                'reviews_count',
-                'socials',
-                'projects',
-
-            )
+     
+        return view('pages.services.single', compact(
+            'auth_user',
+            'user',
+            'project',
+            'projects_count',
+            'projects_categories',
+            'proposal',
+            'reviews',
+            'average_rating',
+            'reviews_count',
+            'socials'
+            
+        )
         );
     }
 
@@ -329,49 +283,11 @@ class ProjectController extends Controller
     public function ajaxList(Request $request)
     {
 
-        $success = false;
-        $data = [];
-
-        if (Auth::check()) {
-            $user_id = Auth::id();
-            $employer_id = (int)$request->employer_id;
-
-
-            $project_filter = [
-                'employer_id' => $employer_id,
-                'status' => 1
-            ];
-            $getProjectsList = Projects::getTotalProjectsList($project_filter);
-            if (count($getProjectsList) > 0) {
-                $success = true;
-                foreach ($getProjectsList as $getProjectList) {
-
-                    $proposal = ProjectProposals::getProposal($user_id, $getProjectList->id);
-                    if (!$proposal) {
-                        $data[] = $getProjectList;
-                    }
-                }
-            }
-        }
-
 
         return response()->json([
-            'success' => $success,
-            'data' => $data
+            'success' => true,
         ]);
     }
 
-    public function storeComment(ReviewStoreRequest $request, int $user)
-    {
 
-        $reviewDTO = new ReviewDTO($request->input('name'), $user, $request->input('rating'), $request->input('message'));
-
-        try {
-            Reviews::addReview($reviewDTO);
-            return response()->json(['success' => true], Response::HTTP_OK);
-        }
-        catch (\Exception $e) {
-            return response()->json(['success' => false], Response::HTTP_BAD_REQUEST);
-        }
-    }
 }
