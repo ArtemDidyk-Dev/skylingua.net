@@ -177,6 +177,7 @@ class HomeController extends Controller
                 'freelancersCount',
                 'projectsCount',
                 'faq',
+                'blogs',
                 'comments'
 
             )

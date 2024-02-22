@@ -1,10 +1,9 @@
 <x-layout>
-
     <x-inc.home.search />
     <x-inc.home.categories  />
     <x-inc.home.banner />
     <x-inc.home.catalog :freelancers="$freelancers" />
-    <x-inc.home.reviews :comments="$comments" />
+    <x-inc.home.posts :blogs="$blogs" />
     <x-inc.home.faq :faq="$faq" />
     <x-inc.home.banner-join />
     @push('meta')
