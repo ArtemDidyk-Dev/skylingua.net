@@ -39,7 +39,6 @@ class RegisterController extends Controller
     {
 
         $verify = Str::random(100);
-
         $user['roles'] = ($request->roles == 4 ? 4 : 3);
         $user['name'] = stripinput($request->name);
         $user['email'] = stripinput($request->email);
@@ -47,29 +46,47 @@ class RegisterController extends Controller
         $user['password_confirmation'] = $request->password_confirmation;
         $user['agree'] = ($request->agree == 1 ? 1 : 0);
         $user['verify'] = $verify;
+        $user = User::add($user);
 
+        if ($user) {
+            $user->verify = "";
+            $user->status = 1;
+            $user->email_verified_at = date("Y-m-d H:i:s");
+            $user->save();
 
-        $new_user = User::add($user);
+            // TODO:: Add Admin Message
+            $user_from = 1;
+            $user_to = (int)$user->id;
+            $message = language('Welcome to our platform, if you have any questions write to us.');
+            $file = "";
 
-        if ($new_user->id > 0) {
+            $chat = Chats::getChat($user_from, $user_to);
+            if (!$chat) {
+                Chats::createChat($user_from, $user_to);
+            }
+            ChatMessages::addMessages($user_from, $user_to, $message, $file);
 
-            $toMail = $user['email'];
+            $request->session()->put('chat_user_to', $user_to);
 
-            $mail_data = [
-                'verify' => $verify,
-            ];
+            $remember = $request->has('remember') ? true : false;
 
-            Mail::to($toMail)
-                ->send(new RegisterMail($mail_data));
+            Auth::login($user,$remember);
 
-            return redirect()->route('frontend.cabinet.success');
+            return redirect()->route('frontend.dashboard.index');
+
         } else {
-            return redirect()->route('frontend.cabinet.register');
-        }
+
+            $data['status'] = false;
+            $data['message'] = language('frontend.register.not_verified');
+            return view('frontend.cabinet.verify', compact('data'));
+        } //
+
+
 
     } // public function store
 
     public function verify(Request $request) {
+
 
         $data = [];
 

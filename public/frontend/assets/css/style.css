@@ -1387,6 +1387,7 @@ label {
 .avatar-lg {
     width: 3.75rem;
     height: 3.75rem;
+    border-radius: 12px !important;
 }
 
 .avatar-lg .border {
@@ -2054,7 +2055,7 @@ label {
     transition: all 0.3s ease 0s;
     background-color: transparent;
 }
-/* 
+/*
 .header {
     width: 100%;
     position: fixed;
@@ -7005,7 +7006,7 @@ html.menu-opened body header:before {
 .account-page .content {
     padding: 144px 0 60px;
     background: #fffcfc;
-    
+
 }
 
 .login-header {
@@ -12179,7 +12180,7 @@ label.file-upload input[type="file"] {
     flex-wrap: wrap;
     position: relative;
     margin-top: 25px;
-    
+
 }
 
 .chat-cont-left {
@@ -15870,7 +15871,7 @@ h2.footer-title:after {
 .header-menu {
     margin-bottom: 0px;
 }
-/* 
+/*
 .header.sticky {
     position: fixed;
     top: 0;
@@ -22966,7 +22967,7 @@ body.chat-page {
         text-align: left !important;
     }
     .projects-action .projects-btn ~ .projects-btn {
-        margin: 10px 0px !important; 
+        margin: 10px 0px !important;
     }
 
     .proposal-delete {
