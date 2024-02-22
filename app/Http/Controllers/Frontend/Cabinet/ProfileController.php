@@ -308,7 +308,6 @@ class ProfileController extends Controller
             'banner_image' => 'mimes:jpg,png',
             'user_category' => 'required',
             'country' => 'required',
-            'phone' => 'required',
 
             'gender' => 'required',
             'hourly_rate' => 'required',
@@ -530,7 +529,6 @@ class ProfileController extends Controller
             'name' => 'required',
             'profile_photo' => 'mimes:jpg,png',
             'country' => 'required',
-            'phone' => 'required',
         ];
 
         $customMessages = [
