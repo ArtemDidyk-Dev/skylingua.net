@@ -420,7 +420,10 @@ Route::group(
             Route::get('/page/{slug}', 'Page\PageController@page')->name('frontend.page.index');
             /*   PAGE END   */
 
-
+            /*   BLOG START   */
+            Route::get('/blogs', 'Blog\BlogController@index')->name('frontend.blog.index');
+            Route::get('/blogs/{slug}', 'Blog\BlogController@detail')->name('frontend.blog.detail');
+            /*   BLOG END   */
 
             /*   Faq START   */
             Route::get('/faq', 'Faq\FaqController@index')->name('frontend.faq.index');
