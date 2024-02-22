@@ -49,27 +49,27 @@
                     <div class="proposals-section">
                         <h3 class="page-subtitle">{{ language('My Proposals') }}</h3>
 
-                        @if($proposals)
-                            @foreach($proposals as $proposal)
+                        @if($getProposals)
+                            @foreach($getProposals as $proposal)
                                 <!-- Proposals -->
                                 <div class="freelancer-proposals">
                                     <div class="project-proposals align-items-center freelancer">
                                         <div class="proposals-info">
                                             <div class="proposals-detail">
                                                 <h3 class="proposals-title">
-                                                    <a href="{{ route('frontend.project.detail', $proposal->id) }}">{!! $proposal->name !!}</a>
+                                                    <a href="{{ route('frontend.project.detail', $proposal->id) }}">{{ $proposal->name }}</a>
                                                 </h3>
                                                 <div class="proposals-content">
-                                                    @if($proposal->user_id > 0)
+                                                    @if($proposal->employer_id > 0)
                                                     <div class="proposal-img">
                                                         <div class="text-md-center">
-                                                            <a href="{{ route('frontend.profile.index', $proposal->user_id) }}"
-                                                               target="_blank">
-                                                                <img src="{{ $proposal->user_profile_photo }}"
-                                                                     alt="{{ $proposal->user_name }}" class="img-fluid">
-                                                                <h4>{{ $proposal->user_name }}</h4>
-                                                                <span class="info-btn">{{ $proposal->user_category_name }}</span>
-                                                            </a>
+                                                            <a href="{{ route('frontend.profile.index', $proposal->employer_id) }}"
+                                                                target="_blank">
+                                                                
+                                                                 <img src="{{ $proposal->employer->profile_photo ? asset('storage/profile/'.  $proposal->employer->profile_photo) : asset('storage/no-image.jpg') }}"
+                                                                      alt="{{ $proposal->employer->name }}" class="img-fluid">
+                                                                 <h4>{{ $proposal->employer->name}}</h4>
+                                                             </a>
                                                         </div>
                                                     </div>
                                                     @endif
@@ -77,7 +77,7 @@
                                                         <h4 class="title-info">Price</h4>
                                                         <h3 class="client-price">
                                                             @if($proposal->price > 0)
-                                                                {{ $proposal->price_view }}{{ language('frontend.currency') }}
+                                                                {{ $proposal->price }}{{ language('frontend.currency') }}
                                                             @else
                                                                 {{ language('Bidding Price') }}
                                                             @endif
@@ -86,9 +86,9 @@
                                                     <div class="proposal-type">
                                                         <h4 class="title-info">{{ language('Price Type') }}</h4>
                                                         <h3>
-                                                            @if($proposal->price_type == 1)
+                                                            @if($proposal->type == 1)
                                                                 {{ language('Fixed Price') }}
-                                                            @elseif($proposal->price_type == 2)
+                                                            @elseif($proposal->type == 2)
                                                                 {{ language('Hourly Pricing') }}
                                                             @else
                                                                 {{ language('Bidding Price') }}
@@ -100,9 +100,7 @@
                                             <div class="project-hire-info">
                                                 <div class="content-divider-1"></div>
                                                 <div class="projects-amount">
-                                                    <p>{{ language('Your Price') }}</p>
-                                                    <h3>{{ $proposal->proposal_price_view }}{{ language('frontend.currency') }}</h3>
-                                                    <h5>{{ language('Estimated') }} {{ $proposal->proposal_hours }} {{ language('Days') }}</h5>
+                                                    <h5>{{ language('Estimated') }} {{ $proposal->hours }} {{ language('Days') }}</h5>
                                                 </div>
                                                 <div class="content-divider-1"></div>
                                                 <div class="projects-action text-center">
@@ -110,13 +108,11 @@
                                                         data-bs-toggle="modal"
                                                         href="#proposal"
                                                         data-proposal_id="{{ $proposal->id }}"
-                                                        data-proposal_price="{{ $proposal->proposal_price }}"
-                                                        data-proposal_hours="{{ $proposal->proposal_hours }}"
-                                                        data-proposal_letter="{{ $proposal->proposal_letter }}"
+                                                        data-proposal_price="{{ $proposal->price }}"
+                                                        data-proposal_hours="{{ $proposal->hours }}"
+                                                        data-proposal_letter="{{ $proposal->letter }}"
                                                         class="projects-btn editProposal"
                                                     >{{ language('Edit Proposals') }}</a>
-                                                    <a href="{{ route('frontend.project.detail', $proposal->id) }}"
-                                                       class="projects-btn">{{ language('View Project') }}</a>
                                                     <a
                                                         data-bs-toggle="modal"
                                                         href="#proposal-delete"
@@ -126,9 +122,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @if( $proposal->proposal_letter)
+                                        @if( $proposal->letter)
                                             <div class="description-proposal">
-                                                <p>{{ $proposal->proposal_letter }}</p>
+                                                <p>{{ $proposal->letter }}</p>
                                             </div>
                                         @endif
                                     </div>

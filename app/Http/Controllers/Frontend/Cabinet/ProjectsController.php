@@ -41,33 +41,16 @@ class ProjectsController extends Controller
         $user = User::getUserInfo($user_id, $user_filter);
         $auth_user = $user;
 
-
-        $proposals = [];
         $getProposals = ProjectProposals::getProposals($user_id);
-        if ($getProposals) {
-            foreach ($getProposals as $getProposal) {
-                $project_filter = [
-                    'language_id' => $request->languageID
-                ];
-                $getProject = Projects::getProject($getProposal->project_id, $project_filter);
-                if ($getProject) {
-                    $getProject->name = html_entity_decode($getProject->name, ENT_QUOTES, 'UTF-8');
-                    $getProject->user_profile_photo = $getProject->user_profile_photo ? asset('storage/profile/'. $getProject->user_profile_photo) : asset('storage/no-image.jpg');
-                    $getProject->price_view = ($getProject->price ? number_format($getProject->price, 2, ".", " ") : 0);
-                    $getProject->proposal_price = $getProposal->price;
-                    $getProject->proposal_price_view = ($getProposal->price ? number_format($getProposal->price, 2, ".", " ") : 0);
-                    $getProject->proposal_hours = $getProposal->hours;
-                    $getProject->proposal_letter = $getProposal->letter;
-                    $proposals[] = $getProject;
-                }
-            } // foraech
-        } // if
 
-
+        $getProposals->each(function($proposal) {
+           $user = User::getUser($proposal->employer_id);
+           $proposal->setRelation('employer', $user);
+        });
         return view('frontend.dashboard.freelancer.project-proposals', compact(
             'auth_user',
             'user',
-            'proposals',
+            'getProposals',
         ));
     }
 
@@ -102,7 +85,6 @@ class ProjectsController extends Controller
             return redirect()->back();
         }
 
-
         $data = [
             'freelancer_id' => $user_id,
             'project_id' => $project_id,
@@ -124,11 +106,12 @@ class ProjectsController extends Controller
         $message = "";
         $data = [];
         $user_id = Auth::id();
-        $project_id = (int)$request->project_id;
+        $employer_id = (int)$request->employer_id;
         $price = (float)$request->price;
         $hours = (int)$request->hours;
         $letter = stripinput(strip_tags($request->letter));
 
+       
         $user_filter = [
             'language_id' => $request->languageID
         ];
@@ -148,47 +131,19 @@ class ProjectsController extends Controller
             'language_id' => $request->languageID,
             'status' => 1
         ];
-        $project = Projects::getProject($project_id, $project_filter);
-        if ($project == null) {
-
-            $success = false;
-            $message = language('Project not found.');
-
-            return response()->json([
-                'success' => $success,
-                'message' => $message
-            ]);
-        }
-
-
-        $proposal = ProjectProposals::getProposal($user_id, $project_id);
-        if ($proposal != null) {
-
-            $success = false;
-            $message = language('Your Proposalled.');
-
-            return response()->json([
-                'success' => $success,
-                'message' => $message
-            ]);
-        }
-
+    
         $data = [
             'freelancer_id' => $user_id,
-            'project_id' => $project_id,
+            'employer_id' => $employer_id,
             'price' => $price,
             'hours' => $hours,
             'letter' => $letter
         ];
         $proposal = ProjectProposals::addProposals($data);
 
-//        dd($proposal);
-
-
         $data['proposal_id'] = $proposal->id;
-        $data['employer_id'] = $project->employer_id;
+        $data['employer_id'] = $employer_id;
         $data['freelancer_id'] = $user_id;
-        $data['project_id'] = $project_id;
         $data['project_url'] = route('frontend.pay.link', $proposal->id);
 
        
@@ -203,8 +158,9 @@ class ProjectsController extends Controller
 
     public function freelancerProposalEdit(ProjectProposalRequest $request)
     {
+   
         $user_id = Auth::id();
-        $project_id = (int)$request->project_id;
+        $proposal_id = (int)$request->project_id;
         $price = (float)$request->price;
         $hours = (int)$request->hours;
         $letter = stripinput(strip_tags($request->letter));
@@ -220,17 +176,17 @@ class ProjectsController extends Controller
         $project_filter = [
             'language_id' => $request->languageID
         ];
-        $project = Projects::getProject($project_id, $project_filter);
-        if ($project == null || $project->status != 1) {
-            return redirect()->back();
-        }
+
+
+        $proposal = ProjectProposals::getProposalsById($proposal_id);
 
         $data = [
             'freelancer_id' => $user_id,
-            'project_id' => $project_id,
             'price' => $price,
             'hours' => $hours,
-            'letter' => $letter
+            'letter' => $letter,
+            'employer_id' => $proposal->employer_id,
+            'proposal_id' => $proposal_id,
         ];
         $proposal = ProjectProposals::editProposals($data);
 
@@ -240,15 +196,15 @@ class ProjectsController extends Controller
 
     public function freelancerProposalDelete(Request $request)
     {
+     
         $user_id = Auth::id();
-        $project_id = (int)$request->id;
-
-        $getProposal = ProjectProposals::getProposal($user_id, $project_id);
+        $proposal_id = (int)$request->id;
+        $getProposal = ProjectProposals::getProposalsById($proposal_id);
+      
         if ($getProposal == null) {
             return redirect()->back();
         }
-
-        $proposal = ProjectProposals::removeProposal($user_id, $project_id);
+        $getProposal->delete();
 
         return redirect()->route('frontend.dashboard.freelancer.project-proposals')->with('message', language('Proposal successfully deleted.'));
 
@@ -701,7 +657,6 @@ class ProjectsController extends Controller
         $projects = [];
         if ($getProjects) {
             foreach ($getProjects as $getProject) {
-                $getProject->name = html_entity_decode($getProject->name, ENT_QUOTES, 'UTF-8');
                 $getProject->user_country_image = $getProject->user_country_image ? asset($getProject->user_country_image) : "";
                 $getProject->links = $getProject->links ? json_decode($getProject->links) : [];
                 $getProject->description = $getProject->description ? htmlspecialchars($getProject->description) : "";

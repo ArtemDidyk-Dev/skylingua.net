@@ -218,14 +218,7 @@
 
                                 <div class="feedback-form">
                                     <div class="row">
-                                        <div class="col-md-12 form-group">
-                                            <label for="project_id">{{ language('Projects list') }}</label>
-                                            <select class="form-control select" name="project_id" id="project_id"
-                                                required="required" disabled>
-                                                <option value="">{{ language('--Select Projects--') }}</option>
-                                            </select>
-                                            <span class="text-danger"></span>
-                                        </div>
+                                        
                                         <div class="col-md-6 form-group">
                                             <label for="price">{{ language('Your Price') }}</label>
                                             <input name="price" id="price" type="number" min="0"
@@ -1051,12 +1044,12 @@
 
                 if (payment_url_generator_form.valid() == true) {
 
-                    let project_id = $('#payment_url').find('#project_id').val();
+                    
                     let price = $('#payment_url').find('#price').val();
                     let hours = $('#payment_url').find('#hours').val();
                     let letter = $('#payment_url').find('#letter').val();
                     let agree = $('#payment_url').find('#agree').val();
-
+                    let employer_id = $('#user_to').val();   
 
                     $('#payment_url').find('#project_id').prop("disabled", true);
                     $('#payment_url').find('#price').prop("disabled", true);
@@ -1069,11 +1062,11 @@
                         url: '{{ route('frontend.dashboard.freelancer.project-proposals.store.ajax') }}',
                         type: 'POST',
                         data: {
-                            project_id: project_id,
                             price: price,
                             hours: hours,
                             letter: letter,
                             agree: agree,
+                            employer_id: employer_id,
                             _token: "{{ csrf_token() }}",
                         },
                         dataType: 'json',
