@@ -13,6 +13,9 @@
 			]"
 		/>
 	</x-slot>
+	<x-slot name="profileTop">
+		
+	</x-slot>
 	<x-slot name="profileLeft">
 		<x-inc.single.employer.profile
 		name="{{$user->name}}"
@@ -44,6 +47,9 @@
 	</x-slot>
 	<x-slot name="modal">
 
+	</x-slot>
+	<x-slot name="projects">
+		
 	</x-slot>
 </x-inc.single.layout>
 

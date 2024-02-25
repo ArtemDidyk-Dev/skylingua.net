@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend\Cabinet;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Frontend\Traid\TraitSendChatInterestingTeacher;
 use App\Mail\Frontend\CreateChatMail;
 use App\Models\Chats\ChatMessages;
 use App\Models\Chats\Chats;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Mail;
 
 class ChatsController extends Controller
 {
-
+    use TraitSendChatInterestingTeacher;
     public function __construct()
     {
 
@@ -79,32 +80,14 @@ class ChatsController extends Controller
 
     public function createChat(Request $request)
     {
-        $user_from = Auth::id();
-        $user_to = (int)$request->id;
-
+        $user_to = (int) $request->freelancer_id;
+        $user_from = (int) auth()->id();
+        $subject = (string) $request->letter;
         $user = User::getUser($user_to);
+        
         if ($user) {
-            $chat = Chats::getChat($user_from, $user_to);
-            if (!$chat) {
-                Chats::createChat($user_from, $user_to);
-            }
+            return $this->sendChatInterestingTeacher($request, (int) $user_from,  (int) $user_to, $subject);
 
-            $request->session()->put('chat_user_to', $user_to);
-
-
-
-
-
-            $toMail = setting('email');
-            $mailData = [
-                'user_from' => Auth::user(),
-                'user_to' => $user,
-            ];
-            Mail::to($toMail)
-                ->send(new CreateChatMail( $mailData ));
-
-
-            return redirect()->route('frontend.dashboard.chats');
         } else {
             return redirect()->back();
         }

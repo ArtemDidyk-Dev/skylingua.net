@@ -9,9 +9,6 @@
 			<div class="freelancer-profile-subtitle">
 				{{ $category }}
 			</div>
-			<x-inc.single.profile-link class="offset">
-				{{ $profileLink }}
-			</x-inc.single.profile-link>
 		</div>
   
 	</div>

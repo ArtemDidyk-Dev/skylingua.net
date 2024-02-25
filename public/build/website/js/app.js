@@ -369,6 +369,22 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+document.addEventListener('DOMContentLoaded', function () {
+  var modalActiveChat = document.querySelector('.btn-chat');
+  if (modalActiveChat) {
+    var modelChat = document.querySelector('#chat');
+    var bodyChat = document.querySelector("body");
+    modalActiveChat.addEventListener("click", function () {
+      modelChat.classList.add('fade');
+      bodyChat.classList.add('model');
+    });
+    var closeModel = document.querySelector('.modal-close.chat');
+    closeModel.addEventListener("click", function () {
+      modelChat.classList.remove('fade');
+      bodyChat.classList.remove('model');
+    });
+  }
+});
 
 /***/ }),
 

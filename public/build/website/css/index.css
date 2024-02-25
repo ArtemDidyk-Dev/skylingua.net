@@ -4411,6 +4411,15 @@ textarea.form-control {
   height: 100%;
   z-index: 1;
 }
+.modal__order {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.modal__order span {
+  font-weight: 500;
+  font-size: 17px;
+}
 
 .modal.fade {
   display: block;

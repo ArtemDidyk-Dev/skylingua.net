@@ -49,9 +49,17 @@
             <x-inc.single.freelancer.reviews :reviews="$reviews"/>
         </x-slot>
         <x-slot name="modal">
-            <x-inc.single.freelancer.model id="{{ $user->id }}" :projectslist="$projects_list"/>
+            <x-inc.single.freelancer.model 
+            price="{{ $user->hourly_rate > 0 ? $user->hourly_rate . ' ' . language('frontend.currency') . ' ' . language('Hourly') : language('Bidding Price') }}"
+                id="{{ $user->id }}"  
+                link="{{auth()->check() ? route('frontend.dashboard.create-chat', $user->id) : route('frontend.registration.employer') }}" />
+            <x-inc.single.freelancer.model-chat 
+            id="{{ $user->id }}"
+            link="{{auth()->check() ? route('frontend.dashboard.create-chat', $user->id) : route('frontend.registration.employer') }}"
+            />
         </x-slot>
-
+        
+        {{-- route('frontend.registration.employer') --}}
         <x-slot name="projects">
             <x-inc.single.freelancer.slider
                 :freelancers="$freelancers"

@@ -14,3 +14,21 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    let modalActiveChat = document.querySelector('.btn-chat');
+    if (modalActiveChat) {
+        let modelChat = document.querySelector('#chat');
+        let bodyChat = document.querySelector("body");
+        modalActiveChat.addEventListener("click", () => {
+            modelChat.classList.add('fade');
+            bodyChat.classList.add('model')
+        })
+        let closeModel = document.querySelector('.modal-close.chat');
+        closeModel.addEventListener("click", () => {
+            modelChat.classList.remove('fade');
+            bodyChat.classList.remove('model')
+        })
+    }
+});
