@@ -1,20 +1,16 @@
-<div class="modal" id="proposal">
+<div class="modal" id="chat">
     <div class="modal-dialog modal-dialog-centered modal-lg container">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="contacts-form-title h3">
-                    {{ language('Your Order') }}
+                    {{ language('Chat Now') }}
                 </div>
-                <span class="modal-close">
+                <span class="modal-close chat">
                     <img width="25" height="25" src="/images/close.png" alt="close">
                 </span>
             </div>
             <div class="modal-body">
                 <div class="modal-info">
-                    <div class="modal__order">
-                        <span>Total</span>
-                        <span>{{$price}}</span>
-                    </div>
                     <form action="{{ $link }}"
                         method="POST">
                         @csrf
@@ -68,7 +64,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-12 submit-section text-end">
-                                <x-inc.btns.filter color="black" title="{{ language('Place Order') }}" />
+                                <x-inc.btns.filter color="black" title="{{ language('GO TO CHAT') }}" />
                             </div>
                         </div>
                     </form>

@@ -15,23 +15,12 @@
 @endif
 
 <div class="single-project-description-btns">
-    @if (auth()->check())
-        @if (\App\Services\CommonService::userRoleId(auth()->id()) == 3)
-            <x-inc.btns.profile link="javascript:void(0)" classMod="model-active" color="transparent"
+    <x-inc.btns.profile link="javascript:void(0)" classMod="model-active" color="transparent"
                                 image="{{ asset('build/website/images/icons/send.svg') }}" title="{{ language('Order now') }}" />
-
             @if (auth()->id() != $id)
-                <x-inc.btns.profile-chat color="black" image="{{ asset('build/website/images/icons/chat.svg') }}"
-                                         title="{{ language('Chat now') }}" link="{{ route('frontend.dashboard.create-chat', $id) }}" />
+                    <x-inc.btns.profile-chat color="black" image="{{ asset('build/website/images/icons/chat.svg') }}"
+                    title="{{ language('Chat now') }}" link="javascript:void(0)"  />
             @endif
-
-        @endif
-    @else
-        <x-inc.btns.profile link="{{ route('frontend.login.index') }}" color="transparent"
-                            image="{{ asset('build/website/images/icons/send.svg') }}" title="Order now" />
-        <x-inc.btns.profile-chat color="black" image="{{ asset('build/website/images/icons/chat.svg') }}"
-                                 title="{{ language('Chat now') }}" link="{{ route('frontend.login.index') }}" />
-    @endif
 </div>
 
 
