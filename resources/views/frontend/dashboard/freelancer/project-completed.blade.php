@@ -20,7 +20,7 @@
 
                 <div class="col-xl-9 col-md-8">
                     <div class="page-title">
-                        <h3>{{ language('Complated Projects') }}</h3>
+                        <h3>{{ language('Complated Courses') }}</h3>
                     </div>
 
                     @if ($errors->any())
@@ -144,7 +144,7 @@
                             <!-- /project list -->
                         @endforeach
                     @else
-                        <p>{{ language('No Projects') }}</p>
+                        <p>{{ language('No Courses') }}</p>
                     @endif
 
 

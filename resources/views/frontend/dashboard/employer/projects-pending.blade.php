@@ -23,7 +23,7 @@
 
                 <div class="col-xl-9 col-md-8">
                     <div class="page-title">
-                        <h3>{{ language('Pending Projects') }}</h3>
+                        <h3>{{ language('Pending Courses') }}</h3>
                     </div>
                     @include('frontend.dashboard.employer._projectNav', ['user' => $user])
 

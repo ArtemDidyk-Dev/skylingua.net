@@ -346,7 +346,7 @@
                                 <div class="feedback-form">
                                     <div class="row">
                                         <div class="col-md-12 form-group">
-                                            <label for="price">{{ language('Your Projects') }}</label>
+                                            <label for="price">{{ language('Your Courses') }}</label>
                                             <select class="form-control select" name="project_id" id="project_id">
                                                 @foreach($projects_list as $project)
                                                 <option  value="{{ $project->id }}" @if(old('project_id') == $project->id) selected @endif >{{ $project->name }}</option>

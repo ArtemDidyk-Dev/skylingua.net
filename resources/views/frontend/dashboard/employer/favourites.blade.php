@@ -28,7 +28,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header d-flex">
-                                        <h5 class="card-title">{{ language('Bookmarked Freelancers') }}</h5>
+                                        <h5 class="card-title">{{ language('Bookmarked Teachers') }}</h5>
                                     </div>
                                     <div class="freelance-box book-mark favour-book">
                                         <div class="row">

@@ -59,13 +59,7 @@
                                                        class="form-control" value="{{ old('name',$user->name) }}">
                                                 @error('name' )<span class="text-danger">{{ $message }}</span> @enderror
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="hourly_rate">{{ language('Company Owner') }}</label>
-                                                <input autocomplete="OFF" id="owner" type="text" name="owner"
-                                                       value="{{ old('owner', $user->owner) }}" class="form-control">
-                                                @error('owner' )<span
-                                                    class="text-danger">{{ $message }}</span> @enderror
-                                            </div>
+
                                             <div class="form-group col-md-6">
                                                 <label for="email">{{ language('Email Address') }}</label>
                                                 <input autocomplete="OFF" id="email" type="text" name="email"
@@ -81,8 +75,8 @@
                                                 @error('phone' )<span
                                                     class="text-danger">{{ $message }}</span> @enderror
                                             </div>
-                                            
-                                            
+
+
                                         </div>
                                         <div class="form-row pro-pad pt-0">
                                             <div class="form-group col-md-6 pro-pic">
@@ -113,16 +107,8 @@
                                                 @enderror
                                                 <p>{{ language('Image size 300*300, formats (jpg,jpeg,png)') }}</p>
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="time_rate">{{ language('Established') }}</label>
-                                                <input autocomplete="OFF" id="established" type="date"
-                                                       name="established"
-                                                       value="{{ old('established', $user->established) }}"
-                                                       class="form-control">
-                                                @error('established' )<span
-                                                    class="text-danger">{{ $message }}</span> @enderror
-                                            </div>  
-                                            
+
+
 
                                         </div>
                                     </div>

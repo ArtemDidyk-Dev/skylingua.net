@@ -6,7 +6,7 @@
                                                         'frontend.dashboard.employer.projects-all',
                                                         ]
                                                         )? " active" : "" }}" href="{{ route('frontend.dashboard.employer.projects-all') }}">
-                {{ language('All Projects') }}
+                {{ language('All Courses') }}
                 <div class="badge bgg-yellow badge-pill ms-1 allProjects" style="vertical-align: top; display: none">0</div>
             </a>
         </li>
@@ -16,7 +16,7 @@
                                                         'frontend.dashboard.employer.projects-pending',
                                                         ]
                                                         )? " active" : "" }}" href="{{ route('frontend.dashboard.employer.projects-pending') }}">
-                {{ language('Pending Projects') }}
+                {{ language('Pending Courses') }}
                 <div class="badge bgg-yellow badge-pill ms-1 pendingProjects" style="vertical-align: top; display: none">0</div>
             </a>
         </li>
@@ -26,7 +26,7 @@
                                                         'frontend.dashboard.employer.projects-ongoing',
                                                         ]
                                                         )? " active" : "" }}" href="{{ route('frontend.dashboard.employer.projects-ongoing') }}">
-                {{ language('Ongoing Projects') }}
+                {{ language('Ongoing Courses') }}
                 <div class="badge bgg-yellow badge-pill ms-1 ongoingProjects" style="vertical-align: top; display: none">0</div>
             </a>
         </li>
@@ -36,7 +36,7 @@
                                                         'frontend.dashboard.employer.projects-completed',
                                                         ]
                                                         )? " active" : "" }}" href="{{ route('frontend.dashboard.employer.projects-completed') }}">
-                {{ language('Completed Projects') }}
+                {{ language('Completed Courses') }}
                 <div class="badge bgg-yellow badge-pill ms-1 completedProjects" style="vertical-align: top; display: none">0</div>
             </a>
         </li>
@@ -46,7 +46,7 @@
                                                         'frontend.dashboard.employer.projects-cancelled',
                                                         ]
                                                         )? " active" : "" }}" href="{{ route('frontend.dashboard.employer.projects-cancelled') }}">
-                {{ language('Cancelled Projects') }}
+                {{ language('Cancelled Courses') }}
                 <div class="badge bgg-yellow badge-pill ms-1 cancelledProjects" style="vertical-align: top; display: none">0</div>
             </a>
         </li>

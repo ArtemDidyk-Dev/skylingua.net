@@ -306,7 +306,6 @@ class ProfileController extends Controller
             'name' => 'required',
             'profile_photo' => 'mimes:jpg,png',
             'banner_image' => 'mimes:jpg,png',
-            'user_category' => 'required',
             'country' => 'required',
 
             'gender' => 'required',
@@ -327,7 +326,6 @@ class ProfileController extends Controller
         $user->name = $name;
         $user->email = $email;
         $user->phone = $phone;
-        $user->user_category = $user_category;
         $user->hourly_rate = $hourly_rate;
         $user->time_rate = $time_rate;
         $user->country = $country;

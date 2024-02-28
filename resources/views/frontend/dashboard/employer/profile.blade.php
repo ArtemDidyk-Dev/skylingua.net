@@ -79,7 +79,7 @@
                                        data-bs-toggle="tab">
                                         <img src="{{ asset('frontend/assets/images/icon/tab-icon-09.png') }}"
                                              alt="">
-                                        <p>{{ language('Projects') }}</p>
+                                        <p>{{ language('Courses') }}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -110,7 +110,7 @@
                             <!-- Projects Tab Content -->
                             <div role="tabpanel" id="project" class="tab-pane fade active show ">
                                 <div class="pro-post widget-box company-post" >
-                                <h3 class="pro-title">{{ language('Projects') }}</h3>
+                                <h3 class="pro-title">{{ language('Courses') }}</h3>
                                     @if($getProjects)
                                         @foreach($projects as $project)
                                         <div class="projects-card flex-fill project-company">
@@ -179,7 +179,7 @@
                                         @endforeach
 
                                     @else
-                                        <p>{{ language('No Projects') }}</p>
+                                        <p>{{ language('No Courses') }}</p>
                                     @endif
 
                                 <!-- pagination -->

@@ -20,7 +20,7 @@
 
                 <div class="col-xl-9 col-md-8">
                     <div class="page-title">
-                        <h3>{{ language('Cancelled Projects') }}</h3>
+                        <h3>{{ language('Cancelled Courses') }}</h3>
                     </div>
 
 
@@ -110,7 +110,7 @@
                             <!-- /project list -->
                         @endforeach
                     @else
-                        <p>{{ language('No Projects') }}</p>
+                        <p>{{ language('No Courses') }}</p>
                     @endif
 
 

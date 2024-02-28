@@ -25,9 +25,9 @@
                     <div class="page-title">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3>{{ language('Manage Projects') }}</h3>
+                                <h3>{{ language('Manage Courses') }}</h3>
                             </div>
-                            
+
                         </div>
                     </div>
 

@@ -80,19 +80,6 @@
                                                     class="text-danger">{{ $message }}</span> @enderror
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <label for="user_category">{{ language('Designation') }}</label>
-                                                <select class="form-control select" name="user_category"
-                                                        id="user_category">
-                                                    <option value="">{{ language('frontend.common.select') }}</option>
-                                                    @foreach($user_categories as $user_category)
-                                                        <option
-                                                            {{ old('user_category',$user->user_category) == $user_category->id ? 'selected':null }} value="{{ $user_category->id }}">{{ $user_category->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('user_category' )<span
-                                                    class="text-danger">{{ $message }}</span> @enderror
-                                            </div>
-                                            <div class="form-group col-md-6">
                                                 <label for="hourly_rate">{{ language('Hourly Rate') }}</label>
                                                 $<input autocomplete="OFF" id="hourly_rate" type="number" min="0"
                                                         step="0.01" name="hourly_rate"

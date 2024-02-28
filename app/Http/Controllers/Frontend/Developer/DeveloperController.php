@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Frontend\Developer;
 
+use App\DTO\ReviewDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ReviewStoreRequest;
 use App\Models\Country\Country;
 use App\Models\FreelancerFavourites;
 use App\Models\Project\Projects;
@@ -13,6 +15,7 @@ use App\Models\UserCategory\UserCategory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class DeveloperController extends Controller
 {
@@ -28,16 +31,16 @@ class DeveloperController extends Controller
             $filter['keyword'] = stripinput(strip_tags($request->keyword));
         }
         if (isset($request->minPrice) && !empty($request->minPrice)) {
-            $filter['minPrice'] = (float) $request->minPrice;
+            $filter['minPrice'] = (float)$request->minPrice;
         }
         if (isset($request->maxPrice) && !empty($request->maxPrice)) {
-            $filter['maxPrice'] = (float) $request->maxPrice;
+            $filter['maxPrice'] = (float)$request->maxPrice;
         }
         if (isset($request->country) && !empty($request->country)) {
-            $filter['country'] = (int) $request->country;
+            $filter['country'] = (int)$request->country;
         }
         if (isset($request->user_category) && !empty($request->user_category)) {
-            $filter['user_category'] = (array) $request->user_category;
+            $filter['user_category'] = (array)$request->user_category;
         }
 
         $freelancer_filter = [
@@ -126,6 +129,16 @@ class DeveloperController extends Controller
         );
     }
 
+    public function storeComment(ReviewStoreRequest $request, int $user): \Illuminate\Http\JsonResponse
+    {
 
+        $reviewDTO = new ReviewDTO($request->input('name'), $user, $request->input('rating'), $request->input('message'));
+        try {
+            Reviews::addReview($reviewDTO);
+            return response()->json(['success' => true], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false], Response::HTTP_BAD_REQUEST);
+        }
 
+    }
 }

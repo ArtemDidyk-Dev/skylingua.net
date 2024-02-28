@@ -431,7 +431,7 @@ Route::group(
             /*  Faq END   */
 
             /* REGISTER & LOGIN BEGIN*/
-                
+
             Route::middleware('auth.check.true')->group(function () {
                 Route::get('/register', 'Cabinet\RegisterController@register')->name('frontend.cabinet.register');
                 Route::post('/register/store', 'Cabinet\RegisterController@store')->name('frontend.cabinet.registerStore');
@@ -447,7 +447,7 @@ Route::group(
                 Route::get('/forgot/error', 'Cabinet\ForgotController@error')->name('frontend.forgot.error');
                 Route::get('/password_resets', 'Cabinet\ForgotController@passwordresets')->name('frontend.forgot.password_resets');
                 Route::post('/password_resets/store', 'Cabinet\ForgotController@passwordresetstore')->name('frontend.password_resets.store');
-                
+
                 Route::get('/dashboard/recovery-account', 'Cabinet\ProfileController@recoveryAccount')->name('frontend.dashboard.recovery-account');
                 Route::post('/register/store/employer', 'Cabinet\RegisterController@storeEmployer')->name('frontend.registration.employer');
             });
@@ -606,14 +606,14 @@ Route::group(
 
 
             /*   DEVELOPER START   */
-            Route::get('/services', 'Developer\DeveloperController@index')->name('frontend.developer.index');
+            Route::get('/teachers', 'Developer\DeveloperController@index')->name('frontend.developer.index');
             /*   DEVELOPER END   */
 
             /*   PROJECT START   */
             Route::get('/projects', 'Project\ProjectController@index')->name('frontend.project.index');
             Route::get('/projects/detail/{id}', 'Project\ProjectController@detail')->name('frontend.project.detail');
             Route::get('/projects/ajax-list', 'Project\ProjectController@ajaxList')->name('frontend.project.ajax-list');
-            Route::post('/projects/store-comment/{toId}', 'Project\ProjectController@storeComment')->name('frontend.service.store-comment');
+
             /*   PROJECT END   */
 
 
@@ -621,6 +621,7 @@ Route::group(
 //            Route::get('/institution', 'Profile\ProfileController@institution')->name('frontend.profile.institution');
 //            Route::get('/employee', 'Profile\ProfileController@employee')->name('frontend.profile.employee');
             Route::get('/profile/{id}', 'Cabinet\ProfileController@index')->name('frontend.profile.index');
+            Route::post('/profile/store-comment/{toId}', 'Developer\DeveloperController@storeComment')->name('frontend.service.store-comment');
             /*   PROFILE END   */
 
 
