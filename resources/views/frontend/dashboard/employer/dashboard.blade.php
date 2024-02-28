@@ -27,7 +27,7 @@
                             <div class="col-md-6 col-lg-4">
                                 <div class="dash-widget">
                                     <div class="dash-info">
-                                        <div class="dash-widget-info">{{ language('Pending Projects') }}</div>
+                                        <div class="dash-widget-info">{{ language('Pending Courses') }}</div>
                                         <div class="dash-widget-count">{{ $projects_count['pendingProjects'] }}</div>
                                     </div>
                                     <div class="dash-widget-more">
@@ -40,7 +40,7 @@
                             <div class="col-md-6 col-lg-4">
                                 <div class="dash-widget">
                                     <div class="dash-info">
-                                        <div class="dash-widget-info">{{ language('Ongoing Projects') }}</div>
+                                        <div class="dash-widget-info">{{ language('Ongoing Courses') }}</div>
                                         <div class="dash-widget-count">{{ $projects_count['ongoingProjects'] }}</div>
                                     </div>
                                     <div class="dash-widget-more">
@@ -53,7 +53,7 @@
                             <div class="col-md-6 col-lg-4">
                                 <div class="dash-widget">
                                     <div class="dash-info">
-                                        <div class="dash-widget-info">{{ language('Completed Projects') }}</div>
+                                        <div class="dash-widget-info">{{ language('Completed Courses') }}</div>
                                         <div class="dash-widget-count">{{ $projects_count['completedProjects'] }}</div>
                                     </div>
                                     <div class="dash-widget-more">
@@ -89,100 +89,22 @@
                                     <div class="card-body">
                                         <div id="chartAnalytics"></div>
                                         <ul class="static-list">
-                                            <li><span><i class="fas fa-circle text-warning me-1"></i> {{ language('Pending Projects') }}</span>
+                                            <li><span><i class="fas fa-circle text-warning me-1"></i> {{ language('Pending Courses') }}</span>
                                                 <span class="sta-count">{{ $projects_count['pendingProjects'] }}</span></li>
                                             <li><span><i
-                                                        class="fas fa-circle text-primary me-1" style="color: #0dcaf0 !important;"></i> {{ language('Ongoing Projects') }}</span>
+                                                        class="fas fa-circle text-primary me-1" style="color: #0dcaf0 !important;"></i> {{ language('Ongoing Courses') }}</span>
                                                 <span class="sta-count">{{ $projects_count['ongoingProjects'] }}</span></li>
                                             <li><span><i
-                                                        class="fas fa-circle text-success me-1"></i> {{ language('Completed Projects') }}</span>
+                                                        class="fas fa-circle text-success me-1"></i> {{ language('Completed Courses') }}</span>
                                                 <span class="sta-count">{{ $projects_count['completedProjects'] }}</span></li>
                                             <li><span><i
-                                                        class="fas fa-circle text-danger me-1"></i> {{ language('Cancelled Projects') }}</span>
+                                                        class="fas fa-circle text-danger me-1"></i> {{ language('Cancelled Courses') }}</span>
                                                 <span class="sta-count">{{ $projects_count['cancelledProjects'] }}</span></li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- /Chart Content -->
-
-                        <!-- Past Earnings -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card card-table">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col">
-                                                <h4 class="card-title">{{ language('Recently Posted Project') }}</h4>
-                                            </div>
-                                            <div class="col-auto">
-                                                <a href="{{ route('frontend.dashboard.employer.projects-all') }}"
-                                                   class="btn-right btn btn-sm fund-btn">
-                                                    {{ language('View All') }}
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive table-job">
-                                            @if($projects)
-                                                <table class="table table-hover table-center mb-0">
-                                                    <thead class="thead-pink">
-                                                    <tr>
-                                                        <th>{{ language('Details') }}</th>
-                                                        <th>{{ language('Job Type') }}</th>
-                                                        <th>{{ language('Budget') }}</th>
-                                                        <th>{{ language('Created on') }}</th>
-                                                        <th>{{ language('Proposals') }}</th>
-                                                        <th class="text-end">{{ language('Action') }}</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    @foreach($projects as $project)
-                                                        <tr>
-                                                            <td>
-                                                                <span class="detail-text">{{ $project->name }}</span>
-                                                                <span
-                                                                    class="d-block text-expiry">{{ language('Expiring on:') }} {{ \Carbon\Carbon::parse($project->deadline)->format('M d, Y') }}</span>
-                                                            </td>
-                                                            <td>
-                                                                @if($project->price_type == 1)
-                                                                    {{ language('Fixed Price') }}
-                                                                @elseif($project->price_type == 2)
-                                                                    {{ language('Hourly Pricing') }}
-                                                                @else
-                                                                    {{ language('Bidding Price') }}
-                                                                @endif
-                                                            </td>
-                                                            <td><span class="table-budget">{{ language('BUDGET') }}</span> <span
-                                                                    class="d-block text-danger">
-                                                            @if($project->price > 0)
-                                                                        ${{ $project->price }}
-                                                                    @else
-                                                                        {{ language('Bidding Price') }}
-                                                                    @endif
-                                                        </span></td>
-                                                            <td>
-                                                                {{ \Carbon\Carbon::parse($project->created_at)->format('M d, Y') }}
-                                                            </td>
-                                                            <td>{{ $project->proposals_count }}</td>
-                                                            <td class="text-end"><a href="{{ route('frontend.project.detail', $project->id) }}"
-                                                                                    class="text-success">{{ language('View') }}</a></td>
-                                                        </tr>
-                                                    @endforeach
-                                                    </tbody>
-                                                </table>
-                                            @else
-                                                <p class="m-4">{{ language('No Projects') }}</p>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /Past Earnings -->
-
 
                     </div>
                 </div>

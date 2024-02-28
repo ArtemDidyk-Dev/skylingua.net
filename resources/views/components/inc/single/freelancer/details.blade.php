@@ -15,8 +15,6 @@
 @endif
 
 <div class="single-project-description-btns">
-    <x-inc.btns.profile link="javascript:void(0)" classMod="model-active" color="transparent"
-                                image="{{ asset('build/website/images/icons/send.svg') }}" title="{{ language('Order now') }}" />
             @if (auth()->id() != $id)
                     <x-inc.btns.profile-chat color="black" image="{{ asset('build/website/images/icons/chat.svg') }}"
                     title="{{ language('Chat now') }}" link="javascript:void(0)"  />

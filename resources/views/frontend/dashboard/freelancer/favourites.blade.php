@@ -32,7 +32,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header d-flex">
-                                        <h5 class="card-title">{{ language('Bookmarked Projects') }}</h5>
+                                        <h5 class="card-title">{{ language('Bookmarked Courses') }}</h5>
                                     </div>
                                     <div class="freelance-box book-mark bookmark-projects">
                                         <div class="row">

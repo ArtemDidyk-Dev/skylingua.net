@@ -17,7 +17,7 @@
                                                         'frontend.dashboard.freelancer.project-hireds',
                                                         ]
                                                         )? " active" : "" }}" href="{{ route('frontend.dashboard.freelancer.project-hireds') }}">
-                {{ language('Hireds Projects') }}
+                {{ language('Hireds Courses') }}
                 <div class="badge bgg-yellow badge-pill ms-1 hiredsProjects" style="vertical-align: top; display: none">0</div>
             </a>
         </li>
@@ -27,7 +27,7 @@
                                                         'frontend.dashboard.freelancer.project-ongoing',
                                                         ]
                                                         )? " active" : "" }}" href="{{ route('frontend.dashboard.freelancer.project-ongoing') }}">
-                {{ language('Ongoing Projects') }}
+                {{ language('Ongoing Courses') }}
                 <div class="badge bgg-yellow badge-pill ms-1 ongoingProjects" style="vertical-align: top; display: none">0</div>
             </a>
         </li>
@@ -37,7 +37,7 @@
                                                         'frontend.dashboard.freelancer.project-completed',
                                                         ]
                                                         )? " active" : "" }}" href="{{ route('frontend.dashboard.freelancer.project-completed') }}">
-                {{ language('Completed Projects') }}
+                {{ language('Completed Courses') }}
                 <div class="badge bgg-yellow badge-pill ms-1 completedProjects" style="vertical-align: top; display: none">0</div>
             </a>
         </li>
@@ -47,7 +47,7 @@
                                                         'frontend.dashboard.freelancer.project-cancelled',
                                                         ]
                                                         )? " active" : "" }}" href="{{ route('frontend.dashboard.freelancer.project-cancelled') }}">
-                {{ language('Cancelled Projects') }}
+                {{ language('Cancelled Courses') }}
                 <div class="badge bgg-yellow badge-pill ms-1 cancelledProjects" style="vertical-align: top; display: none">0</div>
             </a>
         </li>

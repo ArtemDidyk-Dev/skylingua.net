@@ -22,7 +22,7 @@
                             <div class="col-md-6 col-lg-4">
                                 <div class="dash-widget">
                                     <div class="dash-info">
-                                        <div class="dash-widget-info">{{ language('Cancelled Projects') }}</div>
+                                        <div class="dash-widget-info">{{ language('Cancelled Courses') }}</div>
                                         <div class="dash-widget-count">{{ $projects_count['myProposals'] }}</div>
                                     </div>
                                     <div class="dash-widget-more">
@@ -35,7 +35,7 @@
                             <div class="col-md-6 col-lg-4">
                                 <div class="dash-widget">
                                     <div class="dash-info">
-                                        <div class="dash-widget-info">{{ language('Ongoing Projects') }}</div>
+                                        <div class="dash-widget-info">{{ language('Ongoing Courses') }}</div>
                                         <div class="dash-widget-count">{{ $projects_count['ongoingProjects'] }}</div>
                                     </div>
                                     <div class="dash-widget-more">
@@ -48,7 +48,7 @@
                             <div class="col-md-6 col-lg-4">
                                 <div class="dash-widget">
                                     <div class="dash-info">
-                                        <div class="dash-widget-info">{{ language('Completed Projects') }}</div>
+                                        <div class="dash-widget-info">{{ language('Completed Courses') }}</div>
                                         <div class="dash-widget-count">{{ $projects_count['completedProjects'] }}</div>
                                     </div>
                                     <div class="dash-widget-more">
@@ -92,15 +92,15 @@
                                             </li>
                                             <li><span><i class="fas fa-circle text-primary me-1"
                                                         style="color: #0dcaf0 !important;"></i>
-                                                    {{ language('Ongoing Projects') }}</span>
+                                                    {{ language('Ongoing Courses') }}</span>
                                                 <span class="sta-count">{{ $projects_count['ongoingProjects'] }}</span>
                                             </li>
                                             <li><span><i class="fas fa-circle text-success me-1"></i>
-                                                    {{ language('Completed Projects') }}</span>
+                                                    {{ language('Completed Courses') }}</span>
                                                 <span class="sta-count">{{ $projects_count['completedProjects'] }}</span>
                                             </li>
                                             <li><span><i
-                                                        class="fas fa-circle text-danger me-1"></i>{{ language('Cancelled Projects') }}</span>
+                                                        class="fas fa-circle text-danger me-1"></i>{{ language('Cancelled Courses') }}</span>
                                                 <span class="sta-count">{{ $projects_count['cancelledProjects'] }}</span>
                                             </li>
                                         </ul>
@@ -117,7 +117,7 @@
                             <div class="col-xl-6 d-flex">
                                 <div class="card flex-fill">
                                     <div class="pro-head">
-                                        <h2>{{ language('Hired Projects') }}</h2>
+                                        <h2>{{ language('Hired Courses') }}</h2>
                                         <a href="{{ route('frontend.dashboard.freelancer.project-hireds') }}"
                                             class="btn fund-btn">{{ language('View All') }}</a>
                                     </div>
@@ -175,7 +175,7 @@
                                                 </div>
                                             @endforeach
                                         @else
-                                            <p class="m-4">{{ language('No Projects') }}</p>
+                                            <p class="m-4">{{ language('No Courses') }}</p>
                                         @endif
                                     </div>
                                 </div>
@@ -186,7 +186,7 @@
                             <div class="col-xl-6 d-flex">
                                 <div class="card flex-fill">
                                     <div class="pro-head">
-                                        <h2>{{ language('Ongoing Projects') }}</h2>
+                                        <h2>{{ language('Ongoing Courses') }}</h2>
                                         <a href="{{ route('frontend.dashboard.freelancer.project-ongoing') }}"
                                             class="btn fund-btn">{{ language('View All') }}</a>
                                     </div>
@@ -244,7 +244,7 @@
                                                 </div>
                                             @endforeach
                                         @else
-                                            <p class="m-4">{{ language('No Projects') }}</p>
+                                            <p class="m-4">{{ language('No Courses') }}</p>
                                         @endif
                                     </div>
                                 </div>
@@ -317,7 +317,7 @@
 
     <style>
         .history-wrapper {
-            overflow-x: scroll; 
+            overflow-x: scroll;
         }
         .history-wrapper .table {
             min-width: 760px;

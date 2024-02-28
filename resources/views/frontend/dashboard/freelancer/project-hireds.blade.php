@@ -20,7 +20,7 @@
 
                 <div class="col-xl-9 col-md-8">
                     <div class="page-title">
-                        <h3>{{ language('Hired Projects') }}</h3>
+                        <h3>{{ language('Hired Courses') }}</h3>
                     </div>
                     @include('frontend.dashboard.freelancer._projectNav', ['user' => $user])
 

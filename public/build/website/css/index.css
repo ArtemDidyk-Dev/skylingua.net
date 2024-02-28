@@ -282,6 +282,7 @@ input:focus-visible {
 .header__left nav ul li {
   position: relative;
   color: #111;
+  padding-bottom: 8px;
 }
 .header__left nav ul li a {
   color: #111;
@@ -305,6 +306,7 @@ input:focus-visible {
   transform: rotate(180deg);
 }
 .header__left nav ul li.has-submenu:hover .submenu {
+  display: flex;
   opacity: 1;
   z-index: 1;
   transition: all 0.3s;
@@ -317,11 +319,11 @@ input:focus-visible {
   height: 11px;
   background-size: contain;
   background-repeat: no-repeat;
-  top: 8px;
+  top: 6px;
   transition: all 0.3s;
 }
 .header__left nav ul li.has-submenu .submenu {
-  display: flex;
+  display: none;
   z-index: -2;
   opacity: 0;
   flex-direction: column;

@@ -45,7 +45,7 @@ reviewForm.addEventListener('submit', (e) => {
             }
             if(data.success) {
                 resultForm.innerHTML = "";
-                resultForm.innerHTML = "<p>Your message has been sent for admin approval</p>"
+                resultForm.innerHTML = "<p>The review is being reviewed and will appear shortly.</p>"
             }
 
         })

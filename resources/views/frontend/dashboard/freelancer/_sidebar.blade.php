@@ -41,7 +41,7 @@
                                                         'frontend.dashboard.freelancer.project-hireds',
                                                         ]
                                                         )? " active" : "" }}">
-                    <i class="material-icons">business_center</i> {{ language('frontend.dashboard.projects') }}
+                    <i class="material-icons">business_center</i> {{ language('Courses') }}
                 </a>
             </li>
 

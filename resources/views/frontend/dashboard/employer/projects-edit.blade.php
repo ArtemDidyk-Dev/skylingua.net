@@ -279,7 +279,7 @@
                                         <!-- Project Description -->
                                         <div class="title-content pb-0">
                                             <div class="title-detail">
-                                                <h3>{{ language('Write Description of Projects') }}</h3>
+                                                <h3>{{ language('Write Description of Courses') }}</h3>
                                                 <div class="form-group mb-0">
                                                     <textarea class="form-control summernote" name="description"  rows="5">{!! old('description', $project->description) !!} </textarea>
                                                     @error('description')
