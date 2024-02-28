@@ -38,7 +38,8 @@ class ProfileController extends Controller
             'language_id' => $request->languageID
         ];
         $user = User::getUserInfo($user_id, $user_filter);
-        if ($user == null) {
+
+        if ($user == null || $user->role_id == 3) {
             return redirect()->back();
         }
         $diffInDays = Carbon::parse($user->created_at)->diffInDays();
