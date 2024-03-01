@@ -91,7 +91,9 @@ class ChatMessages extends Model
 
     public static function addMessages($user_from, $user_to, $message, $file = "")
     {
-
+        if(empty($message) && empty($file)) {
+            return  false;
+        }
         $chat = Chats::getChat($user_from, $user_to);
         if ($chat) {
             $message = ChatMessages::create([
