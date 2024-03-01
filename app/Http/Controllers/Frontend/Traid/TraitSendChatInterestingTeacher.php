@@ -13,9 +13,8 @@ trait TraitSendChatInterestingTeacher
 {
     public function sendChatInterestingTeacher(Request $request, int $user_from, int $user_to, string $subject)
     {
-      
-        $profile = route('frontend.profile.index', $user_to);
-        $message = language('I am interesting in trying your service:') . ' ' . $profile;
+
+        $message = language('Hello! I am interested in your language course');
         $chat = Chats::getChat($user_from, $user_to);
         if (!$chat) {
             $toMail = setting('email');
@@ -27,9 +26,11 @@ trait TraitSendChatInterestingTeacher
             Mail::to($toMail)
                 ->send(new CreateChatMail($mailData));
            Chats::createChat($user_from, $user_to);
+           ChatMessages::addMessages($user_from, $user_to, $message);
+            if ($subject) {
+                ChatMessages::addMessages($user_from, $user_to, $subject);
+            }
         }
-       
-        ChatMessages::addMessages($user_from, $user_to, $message);
         if ($subject) {
             ChatMessages::addMessages($user_from, $user_to, $subject);
         }

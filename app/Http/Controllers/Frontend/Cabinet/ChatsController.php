@@ -78,13 +78,12 @@ class ChatsController extends Controller
     }
 
 
-    public function createChat(Request $request)
+    public function createChat(Request $request, $id)
     {
-        $user_to = (int) $request->freelancer_id;
+        $user_to = (int) $id;
         $user_from = (int) auth()->id();
         $subject = (string) $request->letter;
         $user = User::getUser($user_to);
-        
         if ($user) {
             return $this->sendChatInterestingTeacher($request, (int) $user_from,  (int) $user_to, $subject);
 

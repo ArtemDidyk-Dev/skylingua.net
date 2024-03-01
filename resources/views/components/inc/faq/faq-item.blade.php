@@ -10,6 +10,6 @@
                 alt=""></span>
     </div>
     <div class="faq__content">
-        {{ $content }}
+        {!! html_entity_decode($content) !!}
     </div>
 </div>

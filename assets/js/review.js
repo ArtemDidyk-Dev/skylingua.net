@@ -1,56 +1,59 @@
 let reviewForm = document.querySelector(".review-form");
 
-reviewForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    let route = reviewForm.getAttribute('action');
-    let name = document.querySelector('[name="name"]').value
-    let email = document.querySelector('[name="email"]').value;
-    let message = document.querySelector('[name="message"]').value;
-    let rating = +document.querySelector('.promo__rating-items').getAttribute('rating');
-    let resultForm = document.querySelector('.review-form__result');
+if (reviewForm) {
+    reviewForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let route = reviewForm.getAttribute('action');
+        let name = document.querySelector('[name="name"]').value
+        let email = document.querySelector('[name="email"]').value;
+        let message = document.querySelector('[name="message"]').value;
+        let rating = +document.querySelector('.promo__rating-items').getAttribute('rating');
+        let resultForm = document.querySelector('.review-form__result');
 
-    let data = {
-        "name": name,
-        'rating': rating,
-        'email': email
-    }
-     for (const dataKey in data) {
-       if (data[dataKey] == '') {
-             return  resultForm.innerHTML = `<p> ${dataKey.toUpperCase()} should not be empty</p>`
+        let data = {
+            "name": name,
+            'rating': rating,
+            'email': email
         }
-     }
-    data['message'] = message;
-    resultForm.innerHTML = "";
-    fetch(route, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                'content')
-        },
-        body: JSON.stringify(data)
+        for (const dataKey in data) {
+            if (data[dataKey] == '') {
+                return  resultForm.innerHTML = `<p> ${dataKey.toUpperCase()} should not be empty</p>`
+            }
+        }
+        data['message'] = message;
+        resultForm.innerHTML = "";
+        fetch(route, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                    'content')
+            },
+            body: JSON.stringify(data)
 
-    })
-        .then(response => {
-            return response.json();
         })
-        .then(data => {
-            if(data.errors) {
-                for (const key in data.errors) {
-                    for (const keyError in data.errors[key]) {
-                        let dataError =  data.errors[key];
-                        resultForm.innerHTML += `<p>${dataError[keyError]}</p>`
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                if(data.errors) {
+                    for (const key in data.errors) {
+                        for (const keyError in data.errors[key]) {
+                            let dataError =  data.errors[key];
+                            resultForm.innerHTML += `<p>${dataError[keyError]}</p>`
+                        }
                     }
                 }
-            }
-            if(data.success) {
-                resultForm.innerHTML = "";
-                resultForm.innerHTML = "<p>The review is being reviewed and will appear shortly.</p>"
-            }
+                if(data.success) {
+                    resultForm.innerHTML = "";
+                    resultForm.innerHTML = "<p>The review is being reviewed and will appear shortly.</p>"
+                }
 
-        })
+            })
 
-})
+    })
+}
+
 
 
 

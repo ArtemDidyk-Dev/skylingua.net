@@ -188,6 +188,8 @@ class ProfileController extends Controller
                 }
                 $user->created_at_view = $showDiff;
             });
+            $hasRoleEmployer = (bool) CommonService::userRoleId(auth()->id()) == 3;
+
             return view('pages.freelancers.single', compact(
                 'auth_user',
                 'user',
@@ -196,7 +198,8 @@ class ProfileController extends Controller
                 'average_rating',
                 'projects_list',
                 'reviews_count',
-                'freelancers'
+                'freelancers',
+                'hasRoleEmployer'
             ));
         }
 

@@ -33,6 +33,7 @@
         <x-slot name="profiledescription">
             <x-inc.single.freelancer.details
                 :user="$user"
+                role="{{$hasRoleEmployer}}"
                 favourites="{{$user->favourites}}"
                 id="{{ $user->id }}"
             />

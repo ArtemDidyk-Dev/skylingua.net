@@ -22,7 +22,7 @@
                     <div class="categories__item">
                 @endif
                     <img loading="lazy" width="44" height="44"
-                        src="{{ asset('build/website/images/icons/categories.svg') }}" alt=""
+                        src="{{ !empty($category->userCategory->first()->image) ? $category->userCategory->first()->image : asset('build/website/images/icons/categories.svg') }}" alt=""
                         class="categories__item-img">
                     <span>{{ $category->name  }}</span>
                     @if ($category->text)

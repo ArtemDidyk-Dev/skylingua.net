@@ -460,7 +460,7 @@ Route::group(
 
                 Route::get('/dashboard', 'Cabinet\DashboardController@index')->name('frontend.dashboard.index');
                 Route::get('/dashboard/chats', 'Cabinet\ChatsController@index')->name('frontend.dashboard.chats');
-                Route::post('/dashboard/create-chat/{id}', 'Cabinet\ChatsController@createChat')->name('frontend.dashboard.create-chat');
+                Route::any('/dashboard/create-chat/{id}', 'Cabinet\ChatsController@createChat')->name('frontend.dashboard.create-chat');
                 Route::get('/dashboard/delete-chat/{id}', 'Cabinet\ChatsController@deleteChat')->name('frontend.dashboard.delete-chat');
                 Route::post('/dashboard/getMessages', 'Cabinet\ChatsController@getMessagesAjax')->name('frontend.dashboard.getMessages');
                 Route::post('/dashboard/getCount', 'Cabinet\ChatsController@getCountAjax')->name('frontend.dashboard.getCount');
