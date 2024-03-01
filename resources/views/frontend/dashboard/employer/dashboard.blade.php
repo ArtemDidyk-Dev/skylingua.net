@@ -1,6 +1,6 @@
 @extends('frontend.layouts.index')
 
-@section('title',empty(language('frontend.dashboard.title')) ? language('frontend.dashboard.name') : language('frontend.dashboard.title'))
+@section('title',empty(language('frontend.dashboard.emplayer.title')) ? language('frontend.dashboard.name') : language('frontend.dashboard.emplayer.title'))
 @section('keywords', language('frontend.dashboard.keywords') )
 @section('description',language('frontend.dashboard.description') )
 
