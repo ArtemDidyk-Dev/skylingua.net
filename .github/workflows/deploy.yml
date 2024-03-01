@@ -19,4 +19,5 @@ jobs:
         script: |
           cd /home/skylingua.net
           git pull origin master
-          
+          php artisan cache:clear
+          php artisan view:clear
