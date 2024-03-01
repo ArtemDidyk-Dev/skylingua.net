@@ -16,26 +16,28 @@ trait TraitSendChatInterestingTeacher
 
         $message = language('Hello! I am interested in your language course');
         $chat = Chats::getChat($user_from, $user_to);
-        if (!$chat) {
-            $toMail = setting('email');
-            $user = User::find($user_to);
-            $mailData = [
-                'user_from' => Auth::user(),
-                'user_to' => $user,
-            ];
-            Mail::to($toMail)
-                ->send(new CreateChatMail($mailData));
-           Chats::createChat($user_from, $user_to);
-           ChatMessages::addMessages($user_from, $user_to, $message);
-            if ($subject) {
-                ChatMessages::addMessages($user_from, $user_to, $subject);
-            }
+        if($chat) {
+            ChatMessages::addMessages($user_from, $user_to, $subject);
+            $request->session()->put('chat_user_to', $user_to);
+            return redirect()->route('frontend.dashboard.chats');
         }
+
+        $toMail = setting('email');
+        $user = User::find($user_to);
+        $mailData = [
+            'user_from' => Auth::user(),
+            'user_to' => $user,
+        ];
+        Mail::to($toMail)
+            ->send(new CreateChatMail($mailData));
+        Chats::createChat($user_from, $user_to);
+        ChatMessages::addMessages($user_from, $user_to, $message);
         if ($subject) {
             ChatMessages::addMessages($user_from, $user_to, $subject);
         }
         $request->session()->put('chat_user_to', $user_to);
         return redirect()->route('frontend.dashboard.chats');
+
     }
 
 }
