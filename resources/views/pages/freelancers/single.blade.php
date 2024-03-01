@@ -3,7 +3,7 @@
         <x-slot name="breadcrumbs">
             <x-inc.breadcrumbs theme="white" :items="[
                 [
-                    'title' => 'Catalog',
+                    'title' => 'Teachers',
                     'link' => route('frontend.developer.index'),
                 ],
                 [
