@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let modalActiveChat = document.querySelector('.btn-chat');
     if (modalActiveChat) {
+        if(modalActiveChat.classList.contains('no-model')) {
+            return false;
+        }
         let modelChat = document.querySelector('#chat');
         let bodyChat = document.querySelector("body");
         modalActiveChat.addEventListener("click", () => {

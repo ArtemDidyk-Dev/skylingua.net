@@ -372,6 +372,9 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function () {
   var modalActiveChat = document.querySelector('.btn-chat');
   if (modalActiveChat) {
+    if (modalActiveChat.classList.contains('no-model')) {
+      return false;
+    }
     var modelChat = document.querySelector('#chat');
     var bodyChat = document.querySelector("body");
     modalActiveChat.addEventListener("click", function () {
@@ -450,50 +453,52 @@ document.addEventListener('DOMContentLoaded', function () {
 /***/ (() => {
 
 var reviewForm = document.querySelector(".review-form");
-reviewForm.addEventListener('submit', function (e) {
-  e.preventDefault();
-  var route = reviewForm.getAttribute('action');
-  var name = document.querySelector('[name="name"]').value;
-  var email = document.querySelector('[name="email"]').value;
-  var message = document.querySelector('[name="message"]').value;
-  var rating = +document.querySelector('.promo__rating-items').getAttribute('rating');
-  var resultForm = document.querySelector('.review-form__result');
-  var data = {
-    "name": name,
-    'rating': rating,
-    'email': email
-  };
-  for (var dataKey in data) {
-    if (data[dataKey] == '') {
-      return resultForm.innerHTML = "<p> ".concat(dataKey.toUpperCase(), " should not be empty</p>");
-    }
-  }
-  data['message'] = message;
-  resultForm.innerHTML = "";
-  fetch(route, {
-    method: "POST",
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-    },
-    body: JSON.stringify(data)
-  }).then(function (response) {
-    return response.json();
-  }).then(function (data) {
-    if (data.errors) {
-      for (var key in data.errors) {
-        for (var keyError in data.errors[key]) {
-          var dataError = data.errors[key];
-          resultForm.innerHTML += "<p>".concat(dataError[keyError], "</p>");
-        }
+if (reviewForm) {
+  reviewForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var route = reviewForm.getAttribute('action');
+    var name = document.querySelector('[name="name"]').value;
+    var email = document.querySelector('[name="email"]').value;
+    var message = document.querySelector('[name="message"]').value;
+    var rating = +document.querySelector('.promo__rating-items').getAttribute('rating');
+    var resultForm = document.querySelector('.review-form__result');
+    var data = {
+      "name": name,
+      'rating': rating,
+      'email': email
+    };
+    for (var dataKey in data) {
+      if (data[dataKey] == '') {
+        return resultForm.innerHTML = "<p> ".concat(dataKey.toUpperCase(), " should not be empty</p>");
       }
     }
-    if (data.success) {
-      resultForm.innerHTML = "";
-      resultForm.innerHTML = "<p>The review is being reviewed and will appear shortly.</p>";
-    }
+    data['message'] = message;
+    resultForm.innerHTML = "";
+    fetch(route, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      },
+      body: JSON.stringify(data)
+    }).then(function (response) {
+      return response.json();
+    }).then(function (data) {
+      if (data.errors) {
+        for (var key in data.errors) {
+          for (var keyError in data.errors[key]) {
+            var dataError = data.errors[key];
+            resultForm.innerHTML += "<p>".concat(dataError[keyError], "</p>");
+          }
+        }
+      }
+      if (data.success) {
+        resultForm.innerHTML = "";
+        resultForm.innerHTML = "<p>The review is being reviewed and will appear shortly.</p>";
+      }
+    });
   });
-});
+}
 var ratings = document.querySelectorAll('.promo__recall-rating');
 if (ratings.length > 0) {
   initRatings();

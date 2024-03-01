@@ -10,7 +10,7 @@
 				{{ $category }}
 			</div>
 		</div>
-  
+
 	</div>
 	<span class="freelancer-profile-tags-title">{{ language('About the Employer:') }}</span>
 
@@ -18,18 +18,18 @@
 		<x-inc.single.tag-img img="{{ asset('build/website/images/icons/rating.svg') }}" title="{{ $rating }} ({{ $ratingCount }})" />
 		<x-inc.single.tag-img img="{{ asset('build/website/images/icons/time.svg') }}" title="{{$data}}" />
 		@if ($geo)
-			<x-inc.single.tag-img img="{{ asset('build/website/images/icons/geo.svg') }}" title="{{$geo}}" />    
+			<x-inc.single.tag-img img="{{ asset('build/website/images/icons/geo.svg') }}" title="{{$geo}}" />
 		@endif
 		<x-inc.single.tag-img img="{{ asset('build/website/images/icons/gender.svg') }}" title="{{$gender}}" />
 		<x-inc.single.tag-img img="{{ asset('build/website/images/icons/pay.svg') }}" title="{{ $rate }} {{ language('frontend.currency') }}" />
-	  
+
 	</div>
 
 	@if (auth()->id() != $id)
 	<x-inc.btns.with-image color="black" image="{{ asset('build/website/images/icons/arrow-btn.svg') }}" title="{{ language('Send message') }}"
 		link="{{ route('frontend.dashboard.create-chat', $id) }}" />
 	@endif
-	
+
 </div>
 
 

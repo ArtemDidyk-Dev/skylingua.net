@@ -9,12 +9,12 @@
                             <img width="16" height="16" src="{{ asset('build/website/images/icons/owner.svg') }}" alt="{{ $freelancer['user_name'] }}" >
                            <span>Owner: {{ $freelancer['name'] }}</span>
                         </div>
-                        <div class="project__top-item">
-                            <img width="16" height="16" src="{{ asset('build/website/images/icons/time.svg') }}" alt="{{$freelancer['created_at_view']}}" >
-                             <span>{{$freelancer['created_at_view']}}</span>
-                        </div>
+                        @if(!empty($freelancer['user_category_name']))
+                            <div class="project__top-item">
+                                 <span>{{$freelancer['user_category_name']}}</span>
+                            </div>
+                        @endif
                     </div>
-
                     @if($freelancer['sub_title'] )
                         <h4>{{ $freelancer['sub_title'] }}</h4>
                     @endif
