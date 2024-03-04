@@ -9,6 +9,41 @@
                 ],
             ]" />
             <div class="contacts__wrapper">
+                <form action="{{ route('frontend.home.contactSendAjax') }}" method="POST" class="contacts-form">
+                    @csrf
+                    <h2>
+                        {{ language('Send us a message') }}
+                    </h2>
+                    <p>If you have questions or suggestions, leave your details and we will contact you</p>
+                    <div class="contacts-form__top">
+                        <div class="contacts-form__top-element contacts-form-input-sm">
+                            <x-inc.inputs.input >
+                                <x-inc.inputs.text name="name" placeholder="{{ language('Name*') }}" />
+                            </x-inc.inputs.input>
+                        </div>
+                        <div class="contacts-form__top-element contacts-form-input-sm">
+                            <x-inc.inputs.input >
+                                <x-inc.inputs.text name="email" placeholder="{{ language('Email*') }}" />
+                            </x-inc.inputs.input>
+                        </div>
+                        <div class="contacts-form__top-element contacts-form-input">
+                            <x-inc.inputs.input >
+                                <x-inc.inputs.text placeholder="{{ language('Subject') }}" name="subject" />
+                            </x-inc.inputs.input>
+                        </div>
+                    </div>
+                    <div class="contacts-form__bottom">
+                        <div class="contacts-form__top-element contacts-form-input">
+                            <x-inc.inputs.input >
+                                <x-inc.inputs.textarea placeholder="{{ language('Message') }}"
+                                                       name="message" />
+                            </x-inc.inputs.input>
+                        </div>
+                    </div>
+                    <x-inc.btns.filter color="black" title="send a message" />
+
+                    <div class="result"></div>
+                </form>
                 <div class="contacts__left">
                     <h1 class="contacts__info-title">
                         {{ language('Love to hear from you, get in touch') }}
@@ -37,55 +72,18 @@
                             @foreach (json_decode(setting('social')) as $key => $value)
                                 <a href="{{ $value->link }}" target="_blank" rel="nofollow" class="footer-social-link">
                                     <img  loading="lazy" src="/images/icons/{{ $value->name }}-white.svg" alt="{{ $value->name }}"
-                                        class="footer-social-link-img">
+                                          class="footer-social-link-img">
                                 </a>
                             @endforeach
                         @endif
                     </div>
                 </div>
-                
             </div>
-           
-            <form action="{{ route('frontend.home.contactSendAjax') }}" method="POST" class="contacts-form">
-                @csrf
-                <h2>
-                    {{ language('Send us a message') }}
-                </h2>
-                <p>If you have questions or suggestions, leave your details and we will contact you</p>
-                <div class="contacts-form__top">
-                    <div class="contacts-form__top-element contacts-form-input-sm">
-                        <x-inc.inputs.input >
-                            <x-inc.inputs.text name="name" placeholder="{{ language('Name*') }}" />
-                        </x-inc.inputs.input>
-                    </div>
-                    <div class="contacts-form__top-element contacts-form-input-sm">
-                        <x-inc.inputs.input >
-                            <x-inc.inputs.text name="email" placeholder="{{ language('Email*') }}" />
-                        </x-inc.inputs.input>
-                    </div>
-                    <div class="contacts-form__top-element contacts-form-input">
-                        <x-inc.inputs.input >
-                            <x-inc.inputs.text placeholder="{{ language('Subject') }}" name="subject" />
-                        </x-inc.inputs.input>
-                    </div>
-                </div>
-                <div class="contacts-form__bottom">
-                    <div class="contacts-form__top-element contacts-form-input">
-                        <x-inc.inputs.input >
-                            <x-inc.inputs.textarea placeholder="{{ language('Message') }}"
-                                name="message" />
-                        </x-inc.inputs.input>
-                    </div>
-                    <x-inc.btns.filter color="black" title="send a message" />
-                </div>
-
-                <div class="result"></div>
-            </form> 
 
         </div>
     </section>
 
-  
+
     @push('meta')
         <title>
             {{ empty(language('frontend.contact.title')) ? language('frontend.contact.name') : language('frontend.contact.title') }}

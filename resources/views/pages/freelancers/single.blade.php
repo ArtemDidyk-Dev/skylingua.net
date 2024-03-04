@@ -60,7 +60,7 @@
             />
         </x-slot>
 
-        {{-- route('frontend.registration.employer') --}}
+
         <x-slot name="projects">
             <x-inc.single.freelancer.slider
                 :freelancers="$freelancers"

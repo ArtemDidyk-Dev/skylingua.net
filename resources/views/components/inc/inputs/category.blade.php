@@ -1,5 +1,6 @@
 <div class="input category__wrapper">
-    <span class="category__wrapper-title">{{ $title }}</span>
+    <span class="category__wrapper-title filter-toggle">{{ $title }}</span>
+    <span class="arrow"></span>
     <div class="category__box">
 
         @foreach ($values as $item)

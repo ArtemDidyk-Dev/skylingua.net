@@ -1,5 +1,5 @@
 .input {
-    
+
     &-wrapper {
         border: 1px solid #cbcbcb;
         border-radius: 8px;
@@ -28,7 +28,7 @@
         padding: 13px 15px;
         border: 0;
         border-radius: 8px;
-        
+
     }
 
     &-textarea {
@@ -48,14 +48,42 @@
             font-size: 16px;
             font-weight: 700;
             display: block;
-
+            position: relative;
+            cursor: pointer;
+            &:before {
+                content: "";
+                background-image: url(/images/icons/arrow-hed.svg);
+                position: absolute;
+                right: auto;
+                width: 16px;
+                height: 16px;
+                background-size: contain;
+                background-repeat: no-repeat;
+                top: 5px;
+                transition: all 0.3s;
+                left: 97px;
+            }
+        }
+        &.active {
+            .category__box {
+                max-height: 194px;
+                opacity: 1;
+            }
+            .category__wrapper-title {
+                &:before {
+                    transform: rotate(180deg);
+                }
+            }
         }
 
     }
 
     .category__box {
+        transition: all 0.3s;
         margin-top: 12px;
-        max-height: 194px;
+        opacity: 0;
+        max-height: 0px;
+
         overflow-y: scroll;
         .category__item {
             position: relative;
@@ -122,16 +150,16 @@
     }
     .category__box::-webkit-scrollbar {
         width: 2px;
-       
+
     }
-    
+
     .category__box::-webkit-scrollbar-track {
         background-color: #D9D9D9;
-        
+
     }
-    
+
     .category__box::-webkit-scrollbar-thumb {
         background: $color-second;
-       
+
     }
 }
