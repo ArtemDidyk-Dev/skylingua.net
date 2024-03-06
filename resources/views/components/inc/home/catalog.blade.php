@@ -7,7 +7,7 @@
                     <div class="project__item-top">
                         <div class="project__top-item">
                             <img width="16" height="16" src="{{ asset('build/website/images/icons/owner.svg') }}" alt="{{ $freelancer['user_name'] }}" >
-                           <span>Owner: {{ $freelancer['name'] }}</span>
+                           <span>{{ $freelancer['name'] }}</span>
                         </div>
                         @if(!empty($freelancer['user_category_name']))
                             <div class="project__top-item">

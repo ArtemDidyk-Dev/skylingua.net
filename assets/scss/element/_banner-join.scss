@@ -11,13 +11,13 @@
         background-color: $color-second;
         border-radius: 12px;
         overflow: hidden;
-       
+
         &::before {
             content: '';
             background-image: url("/build/website/images/icons/banner-join-left.svg");
             position: absolute;
             width: 309px;
-            height: 278px;
+            height: 2728px;
             bottom: 0px;
             left: 0px;
         }
@@ -71,7 +71,7 @@
                 background-size: contain;
                 background-repeat: no-repeat;
                 background-position: right;
-            
+
             }
 
             &::before {
