@@ -25,4 +25,4 @@
 @else
 	<meta property="og:image" content="{{url('/images/og.jpg')}}">
 @endif
-<link rel="stylesheet" href="{{ asset('build/website/css/index.css') }}" />
+<link rel="stylesheet" href="{{ mix('css/index.css') }}" />
