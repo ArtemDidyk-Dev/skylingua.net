@@ -449,7 +449,7 @@ Route::group(
                 Route::post('/password_resets/store', 'Cabinet\ForgotController@passwordresetstore')->name('frontend.password_resets.store');
 
                 Route::get('/dashboard/recovery-account', 'Cabinet\ProfileController@recoveryAccount')->name('frontend.dashboard.recovery-account');
-                Route::post('/register/store/employer', 'Cabinet\RegisterController@storeEmployer')->name('frontend.registration.employer');
+                Route::any('/register/store/employer', 'Cabinet\RegisterController@storeEmployer')->name('frontend.registration.employer');
             });
             /* REGISTER & LOGIN END*/
 
