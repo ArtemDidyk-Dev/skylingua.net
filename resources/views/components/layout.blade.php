@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="{{ Config::get('app.locale') }}">
-	
+
 	<head>
-		@include('inc.head')        
+		@include('inc.head')
 	</head>
 
 	<body>
 		<x-inc.header />
 		<div class="main-content">
 			{{ $slot }}
-		</div>	
+		</div>
 		<x-inc.footer />
 		@stack('css')
 		@stack('js')
-		<script src="{{ asset('build/website/js/app.js') }}"></script>
+        <script src="{{ mix('js/app.js') }}"></script>
 	</body>
-    
+
 </html>

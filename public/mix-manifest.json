@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
     "/js/app.js": "/js/app.js",
     "/css/index.css": "/css/index.css",
+=======
+    "/js/app.js": "/js/app.js?id=c899a4c01fb774f1e8274b33132a8010",
+    "/css/index.css": "/css/index.css?id=ae9a0ab54b38807dbcde384270379712",
+>>>>>>> 81468e09d0f8cfc3396acb4fc7214a5a6ad28e42
     "/build/website/images/1logo-light.svg": "/build/website/images/1logo-light.svg?id=d02eb6131c2a6203cef672b2e20f5a73",
     "/build/website/images/Rectangle 643 (1).png": "/build/website/images/Rectangle 643 (1).png?id=02fc73fef26207ffea4999875334df24",
     "/build/website/images/android-chrome-72x72.png": "/build/website/images/android-chrome-72x72.png?id=caa9d8071676cec5c69d408001d66b9c",

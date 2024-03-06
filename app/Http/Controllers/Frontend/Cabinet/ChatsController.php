@@ -23,11 +23,11 @@ class ChatsController extends Controller
 
     public function index(Request $request)
     {
+
         $user_id = Auth::id();
 
         if ($request->session()->exists('chat_user_to')) {
             $chat_open = $request->session()->get('chat_user_to');
-
             $request->session()->forget('chat_user_to');
         } else {
             $chat_open = false;
@@ -58,7 +58,7 @@ class ChatsController extends Controller
             $chats[] = [
                 'id' => $chat->id,
                 'date' => $showDiff,
-                'users_id' => $chat->users_id,
+                'users_id' =>  $chat->users_id ,
                 'role_id' => User::getUser($chat->users_id)->role_id ?? 0,
                 'users_name' => $chat->users_name,
                 'users_profile_photo' => !empty($chat->users_profile_photo) ? asset('storage/profile/' . $chat->users_profile_photo) : asset('storage/no-photo.jpg'),
@@ -67,7 +67,6 @@ class ChatsController extends Controller
                 'total_messages' => $chat->total_messages,
             ];
         } //
-
 
         return view('frontend.dashboard.chats', compact(
             'auth_user',

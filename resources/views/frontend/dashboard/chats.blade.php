@@ -103,8 +103,8 @@
                                     <div class="media-body flex-grow-1">
                                         <div class="user-name"></div>
                                         <div class="user-status">
-                                            @if (!empty($chat))
-                                                <a href="{{ route('frontend.profile.index', $chat['users_id']) }}" target="_blank">{{ language('view profile') }}</a>
+                                            @if (!empty($chat) && $user->role_id <= 2)
+                                                <a href="{{ route('frontend.profile.index', $chat_open ?? $chat['users_id']) }}" target="_blank">{{ language('view profile') }}</a>
                                             @endif
                                         </div>
                                     </div>
