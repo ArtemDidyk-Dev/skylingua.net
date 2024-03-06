@@ -2847,11 +2847,7 @@ input:focus-visible {
   background-image: url("/build/website/images/icons/banner-join-left.svg");
   position: absolute;
   width: 309px;
-<<<<<<< HEAD
-  height: 278px;
-=======
   height: 2728px;
->>>>>>> 81468e09d0f8cfc3396acb4fc7214a5a6ad28e42
   bottom: 0px;
   left: 0px;
 }
