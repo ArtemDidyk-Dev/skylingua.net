@@ -26,8 +26,8 @@
                 photo="{{$user->profile_photo}}"
                 name="{{$user->name}}"
                 created="{{$user->created_at_view}}"
-                rating="{{$average_rating ?? 0}}"
-                ratingCount="{{$user->reviews_count}}"
+                rating="{{$user->review_rating ?? 0}}"
+                ratingCount="{{$user->review_count ?? 0}}"
             />
         </x-slot>
         <x-slot name="profiledescription">

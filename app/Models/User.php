@@ -315,5 +315,14 @@ class User extends Authenticatable
         return $this->hasMany(Reviews::class, 'to', 'id');
     }
 
+    public function getReviewCountAttribute()
+    {
+        return $this->reviews()->where('status', 1)->count();
+    }
+
+    public function getReviewRatingAttribute()
+    {
+        return bcdiv($this->reviews()->where('status', 1)->avg('rating'), 1, 1);
+    }
 
 }
