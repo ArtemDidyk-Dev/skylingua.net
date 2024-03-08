@@ -17,6 +17,12 @@ use Illuminate\Support\Str;
 class RegisterController extends Controller
 {
 
+    private ChatsController $chat;
+
+    public function __construct(ChatsController $chat)
+    {
+        $this->chat = $chat;
+    }
     public function register(Request $request)
     {
 
@@ -176,6 +182,12 @@ class RegisterController extends Controller
             $file = "";
             Chats::createChat($user_from, $user_to);
             ChatMessages::addMessages($user_from, $user_to, $message, $file);
+            if($freelancer) {
+                $remember = $request->has('remember') ? true : false;
+                Auth::login($user, $remember);
+                return $this->chat->createChat($request, $freelancer);
+
+            }
             $request->session()->put('chat_user_to', $user_to);
             $remember = $request->has('remember') ? true : false;
             Auth::login($user, $remember);

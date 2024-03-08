@@ -15,7 +15,7 @@
 @endif
 
 <div class="single-project-description-btns">
-    @if($role)
+    @if(\App\Services\CommonService::userRoleId(auth()->id()) == 3 &&  auth()->id() != $id)
         <x-inc.btns.profile-chat model="no-model" color="black" image="{{ asset('build/website/images/icons/chat.svg') }}"
                                  title="{{ language('Chat now') }}" link="{{ route('frontend.dashboard.create-chat', $id) }}"/>
     @elseif (auth()->id() != $id && !$role)

@@ -1,3 +1,4 @@
+@if(!Auth::user())
 <div class="modal" id="proposal">
     <div class="modal-dialog modal-dialog-centered modal-lg container">
         <div class="modal-content">
@@ -77,3 +78,4 @@
         </div>
     </div>
 </div>
+@endif
