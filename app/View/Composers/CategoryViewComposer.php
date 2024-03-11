@@ -8,12 +8,11 @@ use Illuminate\View\View;
 class CategoryViewComposer
 {
 
-    public static $approvedProjectsWithCategories;
     public static $categoryes;
     public function __construct()
     {
         if(!self::$categoryes) {
-            self::$categoryes = UserCategoryTranslation::active()->limit(7)->get();
+            self::$categoryes = UserCategoryTranslation::active()->limit(6)->get();
         }
     }
 

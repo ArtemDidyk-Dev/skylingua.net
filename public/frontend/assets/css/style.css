@@ -23918,3 +23918,6 @@ span.select2.select2-container.select2-container--default.select2-container--bel
     }
 }
 
+.msg-box div p a {
+    color: #F5B841 !important;
+}

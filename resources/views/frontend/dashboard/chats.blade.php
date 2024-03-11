@@ -66,7 +66,7 @@
                                                                     <i class="fa fa-paperclip"></i>
                                                                 @endif
                                                                 @if ($chat['last_messages'])
-                                                                    {{ $chat['last_messages'] }}
+                                                                    {!! $chat['last_messages']  !!}
                                                                 @endif
                                                             </div>
                                                         @endif

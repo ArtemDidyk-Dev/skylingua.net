@@ -79,10 +79,12 @@
                                                                             &nbsp;
                                                                         @endif
                                                                     </div>
+
                                                                     <div class="rating">
-                                                                        <span class="rating-stars rating-stars{{ $favourite->id }}" data-rating="{{ $favourite->average_rating }}"></span>
-                                                                        <span class="average-rating">{{ $favourite->average_rating }} ({{ $favourite->reviews_count }})</span>
+                                                                        <span class="rating-stars rating-stars{{ $favourite->id }}" data-rating="{{ $favourite->review_rating }}"></span>
+                                                                        <span class="average-rating">{{ $favourite->review_rating }} ({{ $favourite->review_count }})</span>
                                                                     </div>
+
                                                                     <div class="freelance-tags">
                                                                         @if($favourite->time_rate)
                                                                             <span class="badge badge-pill badge-design">{{$favourite->time_rate }}</span>
