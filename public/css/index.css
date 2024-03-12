@@ -2080,6 +2080,17 @@ input:focus-visible {
 .project__item-slider .project__item-categor {
   margin-left: 0px;
 }
+.project__item-currency {
+  width: 16px;
+  height: 16px;
+  color: #fff;
+  border-radius: 50%;
+  background: #0F0F34;
+  text-align: center;
+  line-height: 16px;
+  margin-right: 8px;
+  font-weight: 600;
+}
 .project__item-top {
   display: flex;
   justify-content: space-between;

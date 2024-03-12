@@ -3,8 +3,7 @@
 @endif
 <div class="project__item-descrip">
     <span class="project__item-price">
-        <img loading="lazy" width="16" height="16" src="{{ asset('build/website/images/icons/cash.svg') }}"
-             alt="price">
+       <span class="project__item-currency">€</span>
         Starts at {{ $price}}
 
     </span>

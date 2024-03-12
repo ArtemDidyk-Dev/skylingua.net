@@ -32,8 +32,7 @@
 
 
                                 <span class="project__item-price">
-                                    <img loading="lazy" width="16" height="16"
-                                         src="{{ asset('build/website/images/icons/cash.svg') }}" alt="price">
+                                    <span class="project__item-currency">€</span>
                                     Starts at {{ $freelancer->hourly_rate > 0 ? $freelancer->hourly_rate . ' ' . language('Hourly') : language('Bidding Price') }}
 
                                 </span>

@@ -5,8 +5,7 @@
     <img class="project__item-author" width="60" height="60" src="{{ $photo }}" alt="{{ $name }}" >
 
     <span class="project__item-price">
-        <img loading="lazy" width="16" height="16" src="{{ asset('build/website/images/icons/cash.svg') }}"
-             alt="price">
+       <span class="project__item-currency">€</span>
         Starts at {{$price }}
 
     </span>
