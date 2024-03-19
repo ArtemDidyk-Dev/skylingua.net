@@ -79,7 +79,7 @@ class UserController extends Controller
 
     public function store(AdminAddUserRequest $request)
     {
-
+        $balance = $request->balance;
         $name = stripinput($request->name);
         $email = stripinput($request->email);
         $password = $request->password;
@@ -147,6 +147,7 @@ class UserController extends Controller
             'password' => bcrypt($password),
             'status' => $status,
             'approve' => $approve,
+            'balance' => $balance,
             'range_price' => (!empty($range)  ? json_encode($range, JSON_FORCE_OBJECT) : null)
 //            'user_category' => $user_category,
 //            'phone' => $phone,
@@ -305,7 +306,7 @@ class UserController extends Controller
         $address = stripinput($request->address);
         $postalcode = stripinput($request->postalcode);
 
-
+        $balance = $request->balance;
         $owner =  $roles == 3 ? stripinput($request->owner) : "";
         $established =  $roles == 3 ? stripinput($request->established) : "";
         $longitude = $roles == 3 ? (float)$request->longitude : "";
@@ -438,7 +439,7 @@ class UserController extends Controller
         $user->longitude = $longitude;
         $user->latitude = $latitude;
         $user->postalcode = $postalcode;
-
+        $user->balance = $balance;
         $user->gender = $gender;
         $user->hourly_rate = $hourly_rate;
         $user->time_rate = $time_rate;

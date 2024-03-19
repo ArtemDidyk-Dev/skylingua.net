@@ -5,7 +5,6 @@
 
 @section('content')
 
-
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -58,8 +57,6 @@
                         </div>
 
 
-
-
                     </div>
                 </div>
 
@@ -80,7 +77,8 @@
                         </thead>
                         <tbody id="sortable1">
                         @foreach($pays as $pay)
-                            <tr class="table-id-{{ $pay->id }} sortableHandle1" data-index="{{ $pay->id }}" data-position="{{ $pay->sort }}">
+                            <tr class="table-id-{{ $pay->id }} sortableHandle1" data-index="{{ $pay->id }}"
+                                data-position="{{ $pay->sort }}">
                                 <!-- ID -->
                                 <td>{{$pay->id}}</td>
                                 <td class="sortableHandle1">
@@ -137,6 +135,17 @@
 																		<span class="navi-text">
 																			<span
                                                                                 class="label  label-xl label-inline label-light-danger">Delete</span>
+																		</span>
+                                                    </a>
+                                                </li>
+                                                <li
+                                                    class="navi-item edit"
+                                                >
+                                                    <a href="{{route('admin.pay.edit', $pay)}}"
+                                                       class="navi-link text-center">
+																		<span class="navi-text">
+																			<span
+                                                                                class="label label-xl label-inline label-light-primary">Edit</span>
 																		</span>
                                                     </a>
                                                 </li>
@@ -314,15 +323,15 @@
                                 $.ajax({
                                     url: "{{ route('admin.pay.delete') }}",
                                     type: 'POST',
-                                    data: {id:dataID},
+                                    data: {id: dataID},
                                     dataType: 'JSON',
                                     success: function (response) {
 
                                         if (response.success) {
-                                            $('.table-id-'+dataID).fadeOut(1000);
+                                            $('.table-id-' + dataID).fadeOut(1000);
                                             // $('.table-id-'+languageID).remove();
                                             var totalCount = $('.totalCount').text();
-                                            $('.totalCount').text(parseInt(totalCount)-1);
+                                            $('.totalCount').text(parseInt(totalCount) - 1);
 
                                         }
                                     }

@@ -228,6 +228,8 @@ Route::namespace('Admin')->group(function () {
         Route::namespace('Pay')->group(function () {
             Route::prefix('pay')->group(function () {
                 Route::get('/', 'PayController@index')->name('admin.pay.index');
+                Route::get('/edit/{pay}', 'PayController@edit')->name('admin.pay.edit');
+                Route::post('/update/{pay}', 'PayController@update')->name('admin.pay.update');
                 Route::post('/status-ajax', 'PayController@statusAjax')->name('admin.pay.statusAjax');
                 Route::post('/delete', 'PayController@delete')->name('admin.pay.delete');
                 Route::post('/delete-ajax', 'PayController@deleteAjax')->name('admin.pay.deleteAjax');

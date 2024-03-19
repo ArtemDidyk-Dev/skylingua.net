@@ -29,6 +29,7 @@ class User extends Authenticatable
         'status',
         'profile_photo',
         'range_price',
+        'balance'
     ];
 
     /**
