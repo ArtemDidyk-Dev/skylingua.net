@@ -38,12 +38,12 @@
             </div>
             <div class="filters-input-prices">
                 <div class="filters-input-price">
-                    <x-inc.inputs.input label="Min price, $">
+                    <x-inc.inputs.input label="Min price, €">
                         <x-inc.inputs.text value="{{ $minPrice }}" attribute="data-minPrice" name="minPrice"/>
                     </x-inc.inputs.input>
                 </div>
                 <div class="filters-input-price">
-                    <x-inc.inputs.input label="Max price, $">
+                    <x-inc.inputs.input label="Max price, €">
                         <x-inc.inputs.text value="{{ $maxPrice }}" attribute="data-maxPrice" name="maxPrice"/>
                     </x-inc.inputs.input>
                 </div>
