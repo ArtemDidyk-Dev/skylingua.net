@@ -27,15 +27,15 @@ class PayController extends Controller
 
     public function go(PayGoRequest $request)
     {
-       
+
         $freelancer_id = (int)$request->freelancer_id;
         $employer_id = (int)$request->employer_id;
-    
+
         $price = (isset($request->price) && !empty($request->price) && (float)$request->price > 0 ? (float)$request->price : "");
         $hours = (isset($request->hours) && !empty($request->hours) && (int)$request->hours > 0 ? (int)$request->hours : "");
         $letter = (isset($request->letter) && !empty($request->letter) ? stripinput(strip_tags($request->letter)) : "");
         $proposal = ProjectProposals::getProposalsById($request->proposal_id);
-        
+
         if (CommonService::userRoleId($employer_id) != 3 && $request->method() == "POST") {
             return redirect()->back();
         }
@@ -44,19 +44,19 @@ class PayController extends Controller
             'language_id' => $request->languageID
         ];
         $freelancer = User::getUserInfo($freelancer_id, $freelancer_filter);
-      
+
         if ($freelancer == null || $freelancer->role_id != 4) {
             return redirect()->back();
         }
 
-        
+
         $project_filter = [
             'language_id' => $request->languageID,
             'status' => 1,
             'employer_id' => $employer_id
         ];
-      
-        
+
+
         if ($proposal == null) {
             return redirect()->back();
         }
@@ -82,15 +82,16 @@ class PayController extends Controller
             'amount' => $amount,
             'currency' => config('pay.currency'),
         ];
-       
+
         $pay = Pay::addPay($data);
         if (!$pay) {
             return redirect()->back()->with('message', language('frontend.pay.error_not_created_pay'));
         } else {
-            $amount = (int)$amount * 100;
+            $amount = (float)$amount * 100;
             $orderNumber = rand($pay->id * 200, $pay->id * 5000);
-            
-            $curl_url = config('pay.base_url') . '/epg/rest/register.do?userName=' . config('pay.username') . '&password=' . config('pay.password') . '&orderNumber=' . $orderNumber . '&amount=' . $amount . '&currency=' . config('pay.currency') . '&returnUrl=' . route('frontend.pay.status') . '&language=' . config('pay.language') . '&sid=' . config('pay.sid');
+
+            $curl_url = config('pay.base_url') . '/epg/rest/register.do?userName=' . config('pay.username') . '&password=' . config('pay.password') . '&currency=' . config('pay.currency') . '&orderNumber=' . $orderNumber . '&amount=' . $amount . '&language=' . config('pay.language') . '&returnUrl=' . route('frontend.pay.status') . '&sessionTimeoutSecs=86400&jsonParams={"request":"PAY","bank":"' . config('pay.bankCode') .'","description":"' . config('pay.description') .'","sid":"' . config('pay.sid') .'"}';
+
             $curl = curl_init();
             curl_setopt_array($curl, array(
                 CURLOPT_URL => $curl_url,
@@ -116,7 +117,7 @@ class PayController extends Controller
             } else {
 
                 if ($response_arr->orderId) {
-                   
+
                     $request->session()->put('guavapay_orderId', $response_arr->orderId);
 
                     $data = [
@@ -136,13 +137,13 @@ class PayController extends Controller
             }
 
         } // if pay
-    }   
+    }
 
 
     public function status(Request $request)
     {
 
-       
+
 
         $session_guavapay_orderId = "";
         if ($request->session()->exists('guavapay_orderId')) {
@@ -154,7 +155,7 @@ class PayController extends Controller
             $pay_info = Pay::getByOrderId($orderId);
 
             if ($pay_info) {
-               
+
                 // if (CommonService::userRoleId($pay_info->employer_id) != 3) {
                 //     return redirect()->route('frontend.pay.error')->with('message', language('User Role Error.'));
                 // }
@@ -163,20 +164,9 @@ class PayController extends Controller
                     'language_id' => $request->languageID
                 ];
                 $freelancer = User::getUserInfo($pay_info->freelancer_id, $freelancer_filter);
-           
+
                 if ($freelancer == null) {
                     return redirect()->route('frontend.pay.error')->with('message', language('Freelancer Error.'));
-                }
-
-                $project_filter = [
-                    'language_id' => $request->languageID,
-                    'status' => 1,
-                    'employer_id' => $pay_info->employer_id
-                ];
-                $project = Projects::getProject($pay_info->project_id, $project_filter);
-               
-                if ($project == null) {
-                    return redirect()->route('frontend.pay.error')->with('message', "Project Error.");
                 }
 
                 $proposal = ProjectProposals::getProposal($pay_info->freelancer_id, $pay_info->employer_id);
@@ -293,6 +283,7 @@ class PayController extends Controller
     {
         $proposal_id = (int)$request->id;
         $proposal = ProjectProposals::getProposalsById($proposal_id);
+
         if ($proposal == null) {
             return redirect()->back();
         }
@@ -308,7 +299,7 @@ class PayController extends Controller
         $request->session()->put('proposal.price', $proposal->price);
         $request->session()->put('proposal.hours', $proposal->hours);
         $request->session()->put('proposal.letter', $proposal->letter);
-    
+
         return redirect()->route('frontend.pay.go_get', [
             'proposal_id'   => $proposal->id,
             'employer_id'   => $proposal->employer_id,
@@ -332,12 +323,12 @@ class PayController extends Controller
 
 
 
-public
-function validateCheck($inputName, $text)
-{
-    $this->validatorCheck->after(function ($validator) use ($inputName, $text) {
-        $validator->errors()->add($inputName, $text);
-    });
-}
+    public
+    function validateCheck($inputName, $text)
+    {
+        $this->validatorCheck->after(function ($validator) use ($inputName, $text) {
+            $validator->errors()->add($inputName, $text);
+        });
+    }
 
 }

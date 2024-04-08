@@ -12180,8 +12180,15 @@ label.file-upload input[type="file"] {
     flex-wrap: wrap;
     position: relative;
     margin-top: 25px;
+    z-index: 0;
 
 }
+@media(max-width: 991px) {
+    .chat-window {
+        margin-top: 0px;
+    }
+}
+
 
 .chat-cont-left {
     border-right: 1px solid #f0f0f0;
@@ -12264,10 +12271,11 @@ label.file-upload input[type="file"] {
 }
 
 .chat-window .chat-scroll {
-    min-height: calc(100vh - 328px);
-    max-height: calc(100vh - 328px);
+    max-height: calc(100vh - 158px);
     overflow-y: auto;
+    min-height: calc(100vh - 317px);
 }
+
 
 .chat-cont-left .chat-users-list {
     background-color: #fff;
@@ -15891,6 +15899,7 @@ h2.footer-title:after {
 
 .dashboard-page .content {
     padding: 0px;
+    margin-top: 25px;
 }
 
 .dashboard-page .content-page {

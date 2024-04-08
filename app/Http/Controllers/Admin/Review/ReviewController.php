@@ -6,6 +6,7 @@ use App\DTO\ReviewDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Review\ReviewAddRequest;
 use App\Http\Requests\Review\ReviewEditRequest;
+use App\Http\Requests\ReviewStoreRequest;
 use App\Models\Language\Languages;
 use App\Models\Reviews\Reviews;
 use App\Models\Project\Projects;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class ReviewController extends Controller
 {
@@ -66,25 +68,40 @@ class ReviewController extends Controller
     public function add(Request $request)
     {
 
-        $projects = Projects::get();
+
+        $users = User::get();
+
         return view('admin.review.add', compact(
-            'projects'
+            'users'
         ));
     }
+    public function storeComment(ReviewStoreRequest $request, int $user): \Illuminate\Http\JsonResponse
+    {
 
+        $reviewDTO = new ReviewDTO($request->input('name'), $user, $request->input('rating'), $request->input('message'));
+        try {
+            Reviews::addReview($reviewDTO);
+            return response()->json(['success' => true], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false], Response::HTTP_BAD_REQUEST);
+        }
+
+    }
+
+    /**
+     * @throws \ErrorException
+     */
     public function store(ReviewAddRequest $request)
     {
-        $user = Projects::findOrFail($request->input('project_id'))->employer_id;
-        $reviewDTO = new ReviewDTO(
-            $request->input('name'),
-            $user,
-            $request->input('project_id'),
-            $request->input('rating'),
-            $request->input('review'),
-            $request->input('status'),
-        );
-        Reviews::addReview($reviewDTO);
-        return redirect()->route('admin.review.index');
+        $user  = User::findOrFail($request->input('from'));
+        $reviewDTO = new ReviewDTO($user->name, $request->input('to'), $request->input('rating'), $request->input('review'), $request->input('status'));
+        try {
+            Reviews::addReview($reviewDTO);
+            return redirect()->route('admin.review.index');
+        } catch (\Exception $e) {
+            throw new \ErrorException('Error found');
+        }
+
 
 
     }

@@ -37,7 +37,7 @@
                                     <tr class="thead-pink">
                                         <th>{{ language('Date') }}</th>
                                         <th>{{ language('Recipient') }}</th>
-                                        <th>{{ language('Course') }}</th>
+                                        <th>{{ language('Category') }}</th>
                                         <th>{{ language('Transaction Id') }}</th>
                                         <th>{{ language('Status') }}</th>
                                         <th>{{ language('Amount') }}</th>
@@ -52,7 +52,7 @@
                                                     <a href="{{ route('frontend.profile.index', $pay->freelancer_id) }}"
                                                        target="_blank">{{ $pay->user_name }}</a>
                                                 </td>
-
+                                                <td>{{ $pay->user_category_name}}</td>
                                                 <td>{{ $pay->orderId }}</td>
                                                 <td>
                                                     @if($pay->status == 2)
@@ -110,4 +110,3 @@
 
 @section('JS')
 @endsection
-

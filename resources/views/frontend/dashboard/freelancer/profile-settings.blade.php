@@ -81,7 +81,7 @@
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="hourly_rate">{{ language('Hourly Rate') }}</label>
-                                                $<input autocomplete="OFF" id="hourly_rate" type="number" min="0"
+                                                €<input autocomplete="OFF" id="hourly_rate" type="number" min="0"
                                                         step="0.01" name="hourly_rate"
                                                         value="{{ old('hourly_rate',$user->hourly_rate) }}"
                                                         class="form-control">

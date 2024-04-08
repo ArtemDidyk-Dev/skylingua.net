@@ -22,12 +22,12 @@
                             <div class="col-md-6 col-lg-4">
                                 <div class="dash-widget">
                                     <div class="dash-info">
-                                        <div class="dash-widget-info">{{ language('Cancelled Courses') }}</div>
+                                        <div class="dash-widget-info">{{ language('My Proposals') }}</div>
                                         <div class="dash-widget-count">{{ $projects_count['myProposals'] }}</div>
                                     </div>
                                     <div class="dash-widget-more">
                                         <a href="{{ route('frontend.dashboard.freelancer.project-proposals') }}"
-                                            class="d-flex">{{ language('View Details') }} <i
+                                           class="d-flex">{{ language('View Details') }} <i
                                                 class="fas fa-arrow-right ms-auto"></i></a>
                                     </div>
                                 </div>
@@ -35,12 +35,12 @@
                             <div class="col-md-6 col-lg-4">
                                 <div class="dash-widget">
                                     <div class="dash-info">
-                                        <div class="dash-widget-info">{{ language('Ongoing Courses') }}</div>
+                                        <div class="dash-widget-info">{{ language('Ongoing Projects') }}</div>
                                         <div class="dash-widget-count">{{ $projects_count['ongoingProjects'] }}</div>
                                     </div>
                                     <div class="dash-widget-more">
                                         <a href="{{ route('frontend.dashboard.freelancer.project-ongoing') }}"
-                                            class="d-flex">{{ language('View Details') }} <i
+                                           class="d-flex">{{ language('View Details') }} <i
                                                 class="fas fa-arrow-right ms-auto"></i></a>
                                     </div>
                                 </div>
@@ -48,12 +48,12 @@
                             <div class="col-md-6 col-lg-4">
                                 <div class="dash-widget">
                                     <div class="dash-info">
-                                        <div class="dash-widget-info">{{ language('Completed Courses') }}</div>
+                                        <div class="dash-widget-info">{{ language('Completed Projects') }}</div>
                                         <div class="dash-widget-count">{{ $projects_count['completedProjects'] }}</div>
                                     </div>
                                     <div class="dash-widget-more">
                                         <a href="{{ route('frontend.dashboard.freelancer.project-completed') }}"
-                                            class="d-flex">{{ language('View Details') }} <i
+                                           class="d-flex">{{ language('View Details') }} <i
                                                 class="fas fa-arrow-right ms-auto"></i></a>
                                     </div>
                                 </div>
@@ -91,16 +91,16 @@
                                                 <span class="sta-count">{{ $projects_count['myProposals'] }}</span>
                                             </li>
                                             <li><span><i class="fas fa-circle text-primary me-1"
-                                                        style="color: #0dcaf0 !important;"></i>
-                                                    {{ language('Ongoing Courses') }}</span>
+                                                         style="color: #0dcaf0 !important;"></i>
+                                                    {{ language('Ongoing Projects') }}</span>
                                                 <span class="sta-count">{{ $projects_count['ongoingProjects'] }}</span>
                                             </li>
                                             <li><span><i class="fas fa-circle text-success me-1"></i>
-                                                    {{ language('Completed Courses') }}</span>
+                                                    {{ language('Completed Projects') }}</span>
                                                 <span class="sta-count">{{ $projects_count['completedProjects'] }}</span>
                                             </li>
                                             <li><span><i
-                                                        class="fas fa-circle text-danger me-1"></i>{{ language('Cancelled Courses') }}</span>
+                                                        class="fas fa-circle text-danger me-1"></i>{{ language('Cancelled Projects') }}</span>
                                                 <span class="sta-count">{{ $projects_count['cancelledProjects'] }}</span>
                                             </li>
                                         </ul>
@@ -117,9 +117,9 @@
                             <div class="col-xl-6 d-flex">
                                 <div class="card flex-fill">
                                     <div class="pro-head">
-                                        <h2>{{ language('Hired Courses') }}</h2>
+                                        <h2>{{ language('Hired Projects') }}</h2>
                                         <a href="{{ route('frontend.dashboard.freelancer.project-hireds') }}"
-                                            class="btn fund-btn">{{ language('View All') }}</a>
+                                           class="btn fund-btn">{{ language('View All') }}</a>
                                     </div>
                                     <div class="pro-body p-0">
                                         @if ($hired_projects)
@@ -127,7 +127,7 @@
                                                 <div class="on-project">
                                                     <h5>
                                                         <a href="{{ route('frontend.project.detail', $hired_project->id) }}"
-                                                            class="h5">{{ $hired_project->name }}</a>
+                                                           class="h5">{{ $hired_project->name }}</a>
                                                     </h5>
                                                     <div class="pro-info">
                                                         <ul class="list-details">
@@ -175,7 +175,7 @@
                                                 </div>
                                             @endforeach
                                         @else
-                                            <p class="m-4">{{ language('No Courses') }}</p>
+                                            <p class="m-4">{{ language('No Projects') }}</p>
                                         @endif
                                     </div>
                                 </div>
@@ -186,9 +186,9 @@
                             <div class="col-xl-6 d-flex">
                                 <div class="card flex-fill">
                                     <div class="pro-head">
-                                        <h2>{{ language('Ongoing Courses') }}</h2>
-                                        <a href="{{ route('frontend.dashboard.freelancer.project-ongoing') }}"
-                                            class="btn fund-btn">{{ language('View All') }}</a>
+                                        <h2>{{ language('Ongoing Projects') }}</h2>
+                                        <a href="{{ route('frontend.dashboard.freelancer.project-cancelled') }}"
+                                           class="btn fund-btn">{{ language('View All') }}</a>
                                     </div>
                                     <div class="pro-body p-0">
                                         @if ($projects)
@@ -196,7 +196,7 @@
                                                 <div class="on-project">
                                                     <h5>
                                                         <a href="{{ route('frontend.project.detail', $project->id) }}"
-                                                            class="h5">{{ $project->name }}</a>
+                                                           class="h5">{{ $project->name }}</a>
                                                     </h5>
                                                     <div class="pro-info">
                                                         <ul class="list-details">
@@ -244,7 +244,7 @@
                                                 </div>
                                             @endforeach
                                         @else
-                                            <p class="m-4">{{ language('No Courses') }}</p>
+                                            <p class="m-4">{{ language('No Projects') }}</p>
                                         @endif
                                     </div>
                                 </div>
@@ -259,42 +259,42 @@
                                     <div class="pro-head">
                                         <h2>{{ language('Transaction History') }}</h2>
                                         <a href="{{ route('frontend.dashboard.freelancer.transaction-history') }}"
-                                            class="btn fund-btn">{{ language('View All') }}</a>
+                                           class="btn fund-btn">{{ language('View All') }}</a>
                                     </div>
                                     <div class="pro-body p-0 history-wrapper">
                                         <table class="table">
                                             <thead>
-                                                <tr class="thead-pink">
-                                                    <th style="width: 100px;">{{ language('Detail') }}</th>
-                                                    <th>{{ language('Transaction ID') }}</th>
-                                                    <th>{{ language('Amount') }}</th>
-                                                    <th>{{ language('Status') }}</th>
-                                                    <th>{{ language('Paid On') }}</th>
-                                                </tr>
+                                            <tr class="thead-pink">
+                                                <th style="width: 100px;">{{ language('Detail') }}</th>
+                                                <th>{{ language('Transaction ID') }}</th>
+                                                <th>{{ language('Amount') }}</th>
+                                                <th>{{ language('Status') }}</th>
+                                                <th>{{ language('Paid On') }}</th>
+                                            </tr>
                                             </thead>
                                             <tbody class="table table-hover table-center">
 
-                                                @if ($pays)
-                                                    @foreach ($pays as $pay)
-                                                        <tr>
-                                                            <td>
-                                                                <a href="{{ route('frontend.dashboard.freelancer.view-invoice', $pay->id) }}"
-                                                                    class="invoice-id">
-                                                                    <i class="fas fa-eye"></i>
-                                                                </a>
-                                                            </td>
-                                                            <td>{{ $pay->transactionId ? $pay->transactionId : '---' }}
-                                                            </td>
-                                                            <td>{{ price_format($pay->amount) }}</td>
-                                                            <td>{!! $pay->status_text !!}</td>
-                                                            <td>{{ $pay->date }}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                @else
+                                            @if ($pays)
+                                                @foreach ($pays as $pay)
                                                     <tr>
-                                                        <td colspan="7">{{ language('No Transactions') }}</td>
+                                                        <td>
+                                                            <a href="{{ route('frontend.dashboard.freelancer.view-invoice', $pay->id) }}"
+                                                               class="invoice-id">
+                                                                <i class="fas fa-eye"></i>
+                                                            </a>
+                                                        </td>
+                                                        <td>{{ $pay->transactionId ? $pay->transactionId : '---' }}
+                                                        </td>
+                                                        <td>{{ price_format($pay->amount) }}</td>
+                                                        <td>{!! $pay->status_text !!}</td>
+                                                        <td>{{ $pay->date }}</td>
                                                     </tr>
-                                                @endif
+                                                @endforeach
+                                            @else
+                                                <tr>
+                                                    <td colspan="7">{{ language('No Transactions') }}</td>
+                                                </tr>
+                                            @endif
                                             </tbody>
                                         </table>
                                     </div>

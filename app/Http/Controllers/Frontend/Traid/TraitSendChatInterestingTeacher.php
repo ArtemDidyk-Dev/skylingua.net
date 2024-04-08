@@ -14,7 +14,7 @@ trait TraitSendChatInterestingTeacher
     public function sendChatInterestingTeacher(Request $request, int $user_from, int $user_to, string $subject)
     {
 
-        $message = language('Hello! I am interested in your language course');
+        $message = language('Hello! I am interested in your course');
         $chat = Chats::getChat($user_from, $user_to);
         if($chat) {
             ChatMessages::addMessages($user_from, $user_to, $subject);

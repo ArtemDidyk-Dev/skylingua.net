@@ -17,9 +17,7 @@ class ReviewAddRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:200',
             'rating' => 'required|numeric|between:0,5',
-            'project_id' => 'required|integer',
             'message' => "string|max:1000",
             'status' => 'required|integer',
         ];

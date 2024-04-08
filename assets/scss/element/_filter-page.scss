@@ -40,9 +40,6 @@
             @media ($mq-mobile) {
                 flex-basis: 100%;
             }
-            &:first-child {
-                margin-top: 0px;
-            }
         }
 
         .developers__item {
@@ -57,6 +54,7 @@
 
     &-btn {
         display: flex;
+        margin-top: 25px;
         justify-content: center;
     }
 
