@@ -23,8 +23,7 @@
 
                 <div class="col-xl-9 col-md-8">
                     <div class="page-title">
-                        <h3>{{ language('Ongoing Courses
-') }}</h3>
+                        <h3>{{ language('Ongoing Services') }}</h3>
                     </div>
 
                     @if ($errors->any())
@@ -84,7 +83,7 @@
                                                                     <div class="slot">
                                                                         <p>{{ language('Expiry') }}</p>
                                                                         <h5>
-                                                                            {{ \Carbon\Carbon::parse($project->deadline)->format('M d, Y') }}
+                                                                            {{ \Carbon\Carbon::parse($project->hource)->format('M d, Y') }}
                                                                         </h5>
                                                                     </div>
                                                                 </li>
@@ -94,17 +93,15 @@
                                                     <div class="project-hire-info">
                                                         <div class="content-divider"></div>
                                                         <div class="projects-amount">
-                                                            @if($project->hired)
-                                                                <h3>{{ $project->hired->price }}{{ language('frontend.currency') }}</h3>
+                                                            @if($project->price)
+                                                                <h3>{{ $project->price }}{{ language('frontend.currency') }}</h3>
                                                                 <h5>{{ language('Taken Price') }}</h5>
                                                             @endif
                                                         </div>
                                                         <div class="content-divider"></div>
                                                         <div class="projects-action text-center">
-                                                            <a href="{{ route('frontend.project.detail', $project->id) }}"
-                                                               class="projects-btn">{{ language('View Project') }}</a>
-                                                            @if($project->hired)
-                                                                <p class="hired-detail">{{ language('Taken on') }} {{ \Carbon\Carbon::parse($project->hired->updated_at)->format('M d, Y') }}</p>
+                                                            @if($project->status)
+                                                                <p class="hired-detail">{{ language('Taken on') }} {{ $project->hired_updated_at_view }}</p>
                                                             @endif
 
                                                         </div>
@@ -117,11 +114,14 @@
                                         <div class="projects-card flex-fill">
                                             <div class="card-body p-2">
 
-                                                @if($project->hired)
-                                                    <a href="{{ route('frontend.profile.index', $project->hired->freelancer_id) }}" class="prj-proposal-count text-center hired">
+                                                @if($project->status)
+                                                    <a href="{{ route('frontend.profile.index', $project->freelancer->id) }}"
+                                                       class="prj-proposal-count text-center hired">
                                                         <h3>{{ language('Ongoing') }}</h3>
-                                                        <img src="{{ !empty($project->hired->user_profile_photo) ? asset('storage/profile/'. $project->hired->user_profile_photo) : asset('storage/no-photo.jpg') }}" alt="" class="img-fluid">
-                                                        <p class="mb-0">{{ $project->hired->user_name }}</p>
+                                                        <img
+                                                            src="{{ !empty($project->freelancer->profile_photo) ? asset('storage/profile/'. $project->freelancer->profile_photo) : asset('storage/no-photo.jpg') }}"
+                                                            alt="" class="img-fluid">
+                                                        <p class="mb-0">{{ $project->freelancer->user_name }}</p>
                                                     </a>
                                                 @endif
                                             </div>
@@ -135,14 +135,7 @@
                         {{ language('Not Result') }}
                     @endif
 
-                    <!-- pagination -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            {{ $getProjects->appends(['search' => isset($searchText) ? $searchText : null])
-        ->render('vendor.pagination.frontend.dashboard-pagination') }}
-                        </div>
-                    </div>
-                    <!-- /pagination -->
+
         </div>
     </div>
         </div>

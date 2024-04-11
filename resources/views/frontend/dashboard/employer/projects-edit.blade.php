@@ -167,7 +167,7 @@
                                         <!-- Project Period Content -->
                                         <div class="title-content">
                                             <div class="title-detail">
-                                                <h3>{{ language('Period of Project') }}</h3>
+                                                <h3>{{ language('Period of Service') }}</h3>
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="filter-widget mb-0" id="period_date">
@@ -279,7 +279,7 @@
                                         <!-- Project Description -->
                                         <div class="title-content pb-0">
                                             <div class="title-detail">
-                                                <h3>{{ language('Write Description of Courses') }}</h3>
+                                                <h3>{{ language('Write Description of Services') }}</h3>
                                                 <div class="form-group mb-0">
                                                     <textarea class="form-control summernote" name="description"  rows="5">{!! old('description', $project->description) !!} </textarea>
                                                     @error('description')
@@ -299,7 +299,7 @@
                                                 @endif
 
                                                 @if($project->status == 0)
-                                                <button class="btn btn-primary click-btn b-0" type="submit">{{ language('Edit Project') }}</button>
+                                                <button class="btn btn-primary click-btn b-0" type="submit">{{ language('Edit Service') }}</button>
                                                 <button name="publish" value="1" class="btn btn-success click-btn b-0" type="submit">{{ language('Edit & Publish') }}</button>
                                                 @endif
                                             </div>

@@ -61,17 +61,17 @@
                                                 </h3>
                                                 <div class="proposals-content">
                                                     @if($proposal->employer_id > 0)
-                                                    <div class="proposal-img">
-                                                        <div class="text-md-center">
-                                                            <a href="{{ route('frontend.profile.index', $proposal->employer_id) }}"
-                                                                target="_blank">
-                                                                
-                                                                 <img src="{{ $proposal->employer->profile_photo ? asset('storage/profile/'.  $proposal->employer->profile_photo) : asset('storage/no-image.jpg') }}"
-                                                                      alt="{{ $proposal->employer->name }}" class="img-fluid">
-                                                                 <h4>{{ $proposal->employer->name}}</h4>
-                                                             </a>
+                                                        <div class="proposal-img">
+                                                            <div class="text-md-center">
+                                                                <a href="{{ route('frontend.profile.index', $proposal->employer_id) }}"
+                                                                   target="_blank">
+
+                                                                    <img src="{{ $proposal->employer->profile_photo ? asset('storage/profile/'.  $proposal->employer->profile_photo) : asset('storage/no-image.jpg') }}"
+                                                                         alt="{{ $proposal->employer->name }}" class="img-fluid">
+                                                                    <h4>{{ $proposal->employer->name}}</h4>
+                                                                </a>
+                                                            </div>
                                                         </div>
-                                                    </div>
                                                     @endif
                                                     <div class="proposal-client">
                                                         <h4 class="title-info">Price</h4>

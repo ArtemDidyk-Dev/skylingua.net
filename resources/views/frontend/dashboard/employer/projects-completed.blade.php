@@ -23,7 +23,7 @@
 
                 <div class="col-xl-9 col-md-8">
                     <div class="page-title">
-                        <h3>{{ language('Completed Courses') }}</h3>
+                        <h3>{{ language('Completed Services') }}</h3>
                     </div>
 
                     @if ($errors->any())
@@ -103,15 +103,13 @@
                                                         </div>
                                                         <div class="content-divider"></div>
                                                         <div class="projects-action text-center">
-                                                            <a href="{{ route('frontend.project.detail', $project->id) }}"
-                                                               class="projects-btn">{{ language('View Project') }}</a>
 
-                                                            @if($project->hired_status == 2)
+                                                            @if(!$project->accept)
                                                                 <a
                                                                     data-bs-toggle="modal"
                                                                     href="#accept-project"
                                                                     class="btn btn-success projects-btn d-inline-block acceptPrpject"
-                                                                    data-project_id="{{ $project->id }}">
+                                                                    data-freelancer_id="{{ $project->freelancer->id }}">
                                                                     <i class="fas fa-check"></i>
                                                                     {{ language('Accept Job') }}
                                                                 </a>
@@ -120,7 +118,7 @@
                                                                     data-bs-toggle="modal"
                                                                     href="#correct-project"
                                                                     class="projects-btn d-inline-block correctPrpject"
-                                                                    data-project_id="{{ $project->id }}">
+                                                                    data-freelancer_id="{{ $project->freelancer->id}}">
                                                                     <i class="fas fa-check"></i>
                                                                     {{ language('Correction Job') }}
                                                                 </a>
@@ -143,15 +141,14 @@
                                     <div class="col-lg-2 d-flex flex-wrap">
                                         <div class="projects-card flex-fill">
                                             <div class="card-body p-2">
-
-                                                @if($project->hired)
-                                                    <a href="{{ route('frontend.profile.index', $project->hired->freelancer_id) }}"
+                                                @if($project->status)
+                                                    <a href="{{ route('frontend.profile.index', $project->freelancer->id) }}"
                                                        class="prj-proposal-count text-center hired">
                                                         <h3>{{ language('Completed') }}</h3>
                                                         <img
-                                                            src="{{ !empty($project->hired->user_profile_photo) ? asset('storage/profile/'. $project->hired->user_profile_photo) : asset('storage/no-photo.jpg') }}"
+                                                            src="{{ !empty($project->freelancer->profile_photo) ? asset('storage/profile/'. $project->freelancer->profile_photo) : asset('storage/no-photo.jpg') }}"
                                                             alt="" class="img-fluid">
-                                                        <p class="mb-0">{{ $project->hired->user_name }}</p>
+                                                        <p class="mb-0">{{ $project->freelancer->user_name }}</p>
                                                     </a>
                                                 @endif
                                             </div>
@@ -165,14 +162,7 @@
                         {{ language('Not Result') }}
                     @endif
 
-                    <!-- pagination -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            {{ $getProjects->appends(['search' => isset($searchText) ? $searchText : null])
-        ->render('vendor.pagination.frontend.dashboard-pagination') }}
-                        </div>
-                    </div>
-                    <!-- /pagination -->
+
                 </div>
             </div>
         </div>
@@ -211,7 +201,7 @@
                           method="POST">
                         @csrf
 
-                        <input class="project_id" type="hidden" name="project_id" value="">
+                        <input class="freelancer_id" type="hidden" name="freelancer_id" value="">
 
                         <div class="modal-info">
                             <div class="row">
@@ -276,7 +266,7 @@
                           method="POST">
                         @csrf
 
-                        <input class="project_id" type="hidden" name="project_id" value="">
+                        <input class="freelancer_id" type="hidden" name="freelancer_id" value="">
 
                         <div class="modal-info">
                             <div class="row">
@@ -360,13 +350,13 @@
 
     <script>
         $('.acceptPrpject').on('click', function (event) {
-            let project_id = $(this).data('project_id');
-            $('#accept-project .project_id').val(project_id);
+            let freelancer_id = $(this).data('freelancer_id');
+            $('#accept-project .freelancer_id').val(freelancer_id);
         });
 
         $('.correctPrpject').on('click', function (event) {
-            let project_id = $(this).data('project_id');
-            $('#correct-project .project_id').val(project_id);
+            let freelancer_id = $(this).data('freelancer_id');
+            $('#correct-project .freelancer_id').val(freelancer_id);
         });
     </script>
 

@@ -25,9 +25,12 @@
                     <div class="page-title">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3>{{ language('Manage Courses') }}</h3>
+                                <h3>{{ language('Manage Servicess') }}</h3>
                             </div>
-
+                            <div class="col-md-6 text-end">
+                                {{-- <a href="{{ route('frontend.dashboard.employer.employerProjectAdd') }}"
+                                   class="btn btn-primary back-btn mb-4">{{ language('Post a Services') }}</a> --}}
+                            </div>
                         </div>
                     </div>
 
@@ -55,7 +58,7 @@
 
                     @if($projects)
                         @foreach($projects as $project)
-                            <!-- project list -->
+                            <!-- Services list -->
                             <div class="my-projects-list">
                                 <div class="row">
                                     <div class="col-lg-10 flex-wrap">
@@ -64,7 +67,7 @@
                                                 <div class="projects-details align-items-center">
                                                     <div class="project-info">
                                                         <span>{{ $project->user_categories_name }}</span>
-                                                        <h2>{!! $project->name !!}</h2>
+                                                        <h2>{{ $project->name }}</h2>
                                                         <div class="customer-info">
                                                             <ul class="list-details">
                                                                 <li>
@@ -149,10 +152,10 @@
                                                         <div class="content-divider"></div>
                                                         <div class="projects-action text-center">
                                                             <a href="{{ route('frontend.project.detail', $project->id) }}"
-                                                               class="projects-btn">{{ language('View Project') }}</a>
+                                                               class="projects-btn">{{ language('View Services') }}</a>
                                                             @if($project->status <=1)
                                                             <a href="{{ route('frontend.dashboard.employer.employerProjectEdit',
-                                                    $project->id) }}" class="projects-btn mb-2">{{ language('Edit Project') }}</a>
+                                                    $project->id) }}" class="projects-btn mb-2">{{ language('Edit Services') }}</a>
                                                             @elseif($project->status == 5)
                                                             <a href="#" class="projects-btn">{{ language('Repost') }} </a>
                                                             @endif
@@ -163,9 +166,9 @@
                                                                 @csrf
                                                                 <input type="hidden" name="id" value="{{ $project->id }}">
                                                                 @if($project->status == 0)
-                                                                <button name="publish" value="1" class="projects-btn btn-success click-btn b-0" type="submit">{{ language('Publish Project') }}</button>
+                                                                <button name="publish" value="1" class="projects-btn btn-success click-btn b-0" type="submit">{{ language('Publish Services') }}</button>
                                                                 @elseif($project->status == 1)
-                                                                <button name="publish" value="0" class="projects-btn btn-unpublish click-btn b-0" type="submit">{{ language('Unpublish Project') }}</button>
+                                                                <button name="publish" value="0" class="projects-btn btn-unpublish click-btn b-0" type="submit">{{ language('Unpublish Services') }}</button>
                                                                 @endif
                                                             </form>
                                                             @endif

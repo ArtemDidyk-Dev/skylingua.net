@@ -23,7 +23,7 @@
 
                 <div class="col-xl-9 col-md-8">
                     <div class="page-title">
-                        <h3>{{ language('Cancelled Courses') }}</h3>
+                        <h3>{{ language('Cancelled Services') }}</h3>
                     </div>
                     @include('frontend.dashboard.employer._projectNav', ['user' => $user])
 
@@ -83,7 +83,7 @@
                                                         <div class="content-divider"></div>
                                                         <div class="projects-action text-center">
                                                             <a href="{{ route('frontend.project.detail', $project->id) }}"
-                                                               class="projects-btn">{{ language('View Project') }}</a>
+                                                               class="projects-btn">{{ language('View Services') }}</a>
                                                             <a
                                                                 data-bs-toggle="modal"
                                                                 href="#repost-project"
@@ -146,7 +146,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>{{ language('Repost Project') }}</h4>
+                    <h4>{{ language('Repost Services') }}</h4>
                     <span class="modal-close"><a href="#" data-bs-dismiss="modal" aria-label="Close"><i
                                 class="far fa-times-circle orange-text"></i></a></span>
                 </div>

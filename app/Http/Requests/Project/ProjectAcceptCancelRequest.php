@@ -17,7 +17,7 @@ class ProjectAcceptCancelRequest extends FormRequest
     public function rules()
     {
         return [
-            'project_id' => 'required|integer'
+            'employer_id' => 'required|integer'
         ];
     }
 

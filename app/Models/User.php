@@ -194,6 +194,51 @@ class User extends Authenticatable
         return $user;
     }
 
+    public static function getFreelancerById($id, $filter)
+    {
+        return User::select(
+            'users.*',
+            'model_has_roles.role_id',
+            'user_categories_translations.name as user_category_name',
+            'countries_translations.name as user_country_name',
+            'countries.image as user_country_image',
+            DB::raw("(
+                SELECT
+                    COUNT(project_hireds.id)
+                FROM project_hireds
+                WHERE project_hireds.freelancer_id = users.id
+            ) as projects_count"),
+            DB::raw("(
+                SELECT
+                    COUNT(reviews.id)
+                FROM reviews
+                WHERE reviews.to = users.id
+            ) as reviews_count"),
+            DB::raw("(
+                SELECT
+                    avg(reviews.rating)
+                FROM reviews
+                WHERE reviews.to = users.id
+            ) as average_rating")
+        )
+            ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+//            ->leftJoin('user_categories_translations', 'users.user_category', '=', 'user_categories_translations.user_category_id')
+            ->leftJoin('user_categories_translations', function ($join) use ($filter) {
+                $join->on('users.user_category', '=', 'user_categories_translations.user_category_id')
+                    ->where('user_categories_translations.language_id', '=', $filter['language_id']);
+            })
+            ->leftJoin('countries', 'users.country', '=', 'countries.id')
+            ->leftJoin('countries_translations', function ($join) use ($filter) {
+                $join->on('users.country', '=', 'countries_translations.country_id')
+                    ->where('countries_translations.language_id', '=', $filter['language_id']);
+            })
+            ->where('users.status', 1)
+            ->where('users.approve', 1)
+            ->where('model_has_roles.role_id', 4)
+            ->where('users.id', $id)
+            ->first();
+    }
+
     public static function getFreelancerMinMaxPrice()
     {
 

@@ -112,10 +112,10 @@ class Pay extends Model
 
     }
 
-    public static function getByFreelancerIdAndProjectId($user_id, $project_id) {
+    public static function getByFreelancerIdAndProjectId($user_id, $employer_id) {
 
         $pay = Pay::where('freelancer_id', (int)$user_id)
-            ->where('project_id', $project_id)
+            ->where('employer_id', $employer_id)
             ->first();
 
         return $pay;
@@ -125,11 +125,14 @@ class Pay extends Model
     public static function getByEmployerId($user_id, $limit = 10) {
 
         $pays = Pay::select(
-                'pays.*',
-                'users.name as user_name',
-                'users.profile_photo as user_profile_photo',
-            )
+            'pays.*',
+            'users.name as user_name',
+            'users.user_category as user_category',
+            'user_categories_translations.name as user_category_name',
+            'users.profile_photo as user_profile_photo',
+        )
             ->leftJoin('users', 'pays.freelancer_id', '=', 'users.id')
+            ->leftJoin('user_categories_translations', 'user_category', '=', 'user_categories_translations.user_category_id')
             ->where('pays.employer_id', (int)$user_id)
             ->orderBy('pays.id', 'DESC')
             ->paginate($limit);
@@ -137,7 +140,6 @@ class Pay extends Model
         return $pays;
 
     }
-
 
     public static function getAll($limit = 10) {
 

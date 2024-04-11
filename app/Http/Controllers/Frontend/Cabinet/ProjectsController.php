@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend\Cabinet;
 
+use App\DTO\ReviewDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Project\ProjectAddRequest;
 use App\Http\Requests\Project\ProjectEditRequest;
@@ -44,8 +45,8 @@ class ProjectsController extends Controller
         $getProposals = ProjectProposals::getProposals($user_id);
 
         $getProposals->each(function($proposal) {
-           $user = User::getUser($proposal->employer_id);
-           $proposal->setRelation('employer', $user);
+            $user = User::getUser($proposal->employer_id);
+            $proposal->setRelation('employer', $user);
         });
         return view('frontend.dashboard.freelancer.project-proposals', compact(
             'auth_user',
@@ -61,7 +62,7 @@ class ProjectsController extends Controller
         $price = (float)$request->price;
         $hours = (int)$request->hours;
         $letter = stripinput(strip_tags($request->letter));
-       
+
         $user_filter = [
             'language_id' => $request->languageID
         ];
@@ -111,7 +112,7 @@ class ProjectsController extends Controller
         $hours = (int)$request->hours;
         $letter = stripinput(strip_tags($request->letter));
 
-       
+
         $user_filter = [
             'language_id' => $request->languageID
         ];
@@ -131,7 +132,7 @@ class ProjectsController extends Controller
             'language_id' => $request->languageID,
             'status' => 1
         ];
-    
+
         $data = [
             'freelancer_id' => $user_id,
             'employer_id' => $employer_id,
@@ -146,7 +147,7 @@ class ProjectsController extends Controller
         $data['freelancer_id'] = $user_id;
         $data['project_url'] = route('frontend.pay.link', $proposal->id);
 
-       
+
         return response()->json([
             'success' => $success,
             'message' => $message,
@@ -158,7 +159,7 @@ class ProjectsController extends Controller
 
     public function freelancerProposalEdit(ProjectProposalRequest $request)
     {
-   
+
         $user_id = Auth::id();
         $proposal_id = (int)$request->project_id;
         $price = (float)$request->price;
@@ -196,11 +197,11 @@ class ProjectsController extends Controller
 
     public function freelancerProposalDelete(Request $request)
     {
-     
+
         $user_id = Auth::id();
         $proposal_id = (int)$request->id;
         $getProposal = ProjectProposals::getProposalsById($proposal_id);
-      
+
         if ($getProposal == null) {
             return redirect()->back();
         }
@@ -212,58 +213,41 @@ class ProjectsController extends Controller
 
     public function freelancerHireds(Request $request)
     {
+
         $user_id = Auth::id();
 
         $user_filter = [
-            'language_id' => $request->languageID
+            'language_id' => $request->languageID,
         ];
+
+
         $user = User::getUserInfo($user_id, $user_filter);
         $auth_user = $user;
 
 
-
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'freelancer_id' => $user_id,
-            'project_hired' => true,
-            'status' => 2,
+        $filter = [
+            'status' => 1,
         ];
-        $getProjects = Projects::getProjects($project_filter);
 
-        $projects = [];
-        if ($getProjects) {
-            foreach ($getProjects as $getProject) {
-                $review_count = Reviews::getReviewsCountByUserId($getProject->employer_id);
+        $getProjects = ProjectHireds::getHireds($user_id,  $filter);
 
-                $getProject->user_profile_photo = !empty($getProject->user_profile_photo) ? asset('storage/profile/'. $getProject->user_profile_photo) : asset('storage/no-photo.jpg');
-                $getProject->user_country_image = $getProject->user_country_image ? asset($getProject->user_country_image) : "";
-                $getProject->links = $getProject->links ? json_decode($getProject->links) : [];
-                $getProject->description = $getProject->description ? htmlspecialchars($getProject->description) : "";
-                $getProject->price = $getProject->price ? number_format($getProject->price, 2, ".", " ") : 0;
-                $getProject->user_created_at_view = Carbon::parse($getProject->user_created_at)->format('M d, Y');
-                $getProject->hired_created_at_view = Carbon::parse($getProject->hired_created_at)->format('M d, Y');
-                $getProject->hired_updated_at_view = Carbon::parse($getProject->hired_updated_at)->format('M d, Y');
-                $getProject->review_count = ($review_count ? $review_count : 0);
-
-                $projects[] = $getProject;
-            }
-        }
-
-//        @dd($projects);
-
+        $projects = $getProjects->each(function($proposal) {
+            $proposal->employer = User::getUser($proposal->employer_id);
+            $proposal->hired_created_at_view = Carbon::parse($proposal->created_at)->format('M d, Y');
+            $proposal->hired_updated_at_view = Carbon::parse($proposal->updated_at)->format('M d, Y');
+        });
 
         return view('frontend.dashboard.freelancer.project-hireds', compact(
             'auth_user',
             'user',
-            'projects',
-            'getProjects'
+            'projects'
         ));
     }
 
     public function freelancerHiredsAccept(ProjectAcceptCancelRequest $request)
     {
         $user_id = Auth::id();
-        $project_id = (int)$request->project_id;
+        $employer_id= (int)$request->employer_id;
 
 
         if(CommonService::userRoleId($user_id) != 4) {
@@ -271,35 +255,24 @@ class ProjectsController extends Controller
         }
 
 
-        $hired = ProjectHireds::getHired($user_id, $project_id);
+        $hired = ProjectHireds::getHired($user_id,  $employer_id);
+
         if($hired == null) {
             return redirect()->back();
         }
 
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'status' => 2
-        ];
-        $project = Projects::getProject($project_id, $project_filter);
-        if ($project == null) {
-            return redirect()->back();
-        }
-
-        Projects::editStatus($project_id, 3);
-
-//        Projects::setFreelancer($project_id, $user_id);
 
         $data = [
             'freelancer_id' => $user_id,
-            'project_id' => $project_id,
-            'status' => 1,
+            'employer_id' => $employer_id,
+            'status' => 2,
             'updated_at' => Carbon::today()
         ];
         ProjectHireds::editHireds($data);
 
-        ProjectProposals::removeProposalsByProjectId($project_id);
+        ProjectProposals::removeProposalsByProjectId($employer_id);
 
-        $pay_info = Pay::getByFreelancerIdAndProjectId($user_id, $project_id);
+        $pay_info = Pay::getByFreelancerIdAndProjectId($user_id, $employer_id);
         if($pay_info) {
             $data = [
                 'status' => 5
@@ -313,8 +286,9 @@ class ProjectsController extends Controller
 
     public function freelancerHiredsComplete(ProjectAcceptCancelRequest $request)
     {
+
         $user_id = Auth::id();
-        $project_id = (int)$request->project_id;
+        $employer_id = (int)$request->employer_id;
 
 
         if(CommonService::userRoleId($user_id) != 4) {
@@ -322,28 +296,15 @@ class ProjectsController extends Controller
         }
 
 
-        $hired = ProjectHireds::getHired($user_id, $project_id);
+        $hired = ProjectHireds::getHired($user_id, $employer_id);
+
         if($hired == null) {
             return redirect()->back();
         }
-
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'status' => 3
-        ];
-        $project = Projects::getProject($project_id, $project_filter);
-        if ($project == null) {
-            return redirect()->back();
-        }
-
-        Projects::editStatus($project_id, 4);
-
-//        Projects::setFreelancer($project_id, $user_id);
-
         $data = [
             'freelancer_id' => $user_id,
-            'project_id' => $project_id,
-            'status' => 2,
+            'employer_id' => $employer_id,
+            'status' => 3,
             'updated_at' => Carbon::today()
         ];
         ProjectHireds::editHireds($data);
@@ -383,7 +344,7 @@ class ProjectsController extends Controller
         }
 
 
-        $amount = (int)$pay->amount * 100;
+        $amount = (float)$amount * 100;
         $curl_url = config('pay.base_url') . '/epg/rest/refund.do?userName=' . config('pay.username') . '&password=' . config('pay.password') . '&orderId=' . $pay->orderId . '&amount=' . $amount;
 
         $curl = curl_init();
@@ -445,37 +406,17 @@ class ProjectsController extends Controller
         $user = User::getUserInfo($user_id, $user_filter);
         $auth_user = $user;
 
-
-
-
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'freelancer_id' => $user_id,
-            'project_hired' => true,
-            'status' => 3,
+        $filter = [
+            'status' => 2,
         ];
-        $getProjects = Projects::getProjects($project_filter);
+        $getProjects = ProjectHireds::getHireds($user_id, $filter);
 
-        $projects = [];
-        if ($getProjects) {
-            foreach ($getProjects as $getProject) {
-                $review_count = Reviews::getReviewsCountByUserId($getProject->employer_id);
+        $projects = $getProjects->each(function($proposal) {
+            $proposal->employer = User::getUser($proposal->employer_id);
+            $proposal->hired_created_at_view = Carbon::parse($proposal->created_at)->format('M d, Y');
+            $proposal->hired_updated_at_view = Carbon::parse($proposal->updated_at)->format('M d, Y');
+        });
 
-                $getProject->user_profile_photo = !empty($getProject->user_profile_photo) ? asset('storage/profile/'. $getProject->user_profile_photo) : asset('storage/no-photo.jpg');
-                $getProject->user_country_image = $getProject->user_country_image ? asset($getProject->user_country_image) : "";
-                $getProject->links = $getProject->links ? json_decode($getProject->links) : [];
-                $getProject->description = $getProject->description ? htmlspecialchars($getProject->description) : "";
-                $getProject->price = $getProject->price ? number_format($getProject->price, 2, ".", " ") : 0;
-                $getProject->user_created_at_view = Carbon::parse($getProject->user_created_at)->format('M d, Y');
-                $getProject->hired_created_at_view = Carbon::parse($getProject->hired_created_at)->format('M d, Y');
-                $getProject->hired_updated_at_view = Carbon::parse($getProject->hired_updated_at)->format('M d, Y');
-                $getProject->review_count = ($review_count ? $review_count : 0);
-
-                $projects[] = $getProject;
-            }
-        }
-
-//        @dd($projects);
 
 
         return view('frontend.dashboard.freelancer.project-ongoing', compact(
@@ -496,36 +437,17 @@ class ProjectsController extends Controller
         $user = User::getUserInfo($user_id, $user_filter);
         $auth_user = $user;
 
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'freelancer_id' => $user_id,
-            'project_hired' => true,
-            'status' => 4,
+        $filter = [
+            'status' =>3    ,
         ];
-        $getProjects = Projects::getProjects($project_filter);
+        $getProjects = ProjectHireds::getHireds($user_id, $filter);
 
-        $projects = [];
-        if ($getProjects) {
-            foreach ($getProjects as $getProject) {
-                $review_count = Reviews::getReviewsCountByUserId($getProject->employer_id);
-                $review_true = Reviews::getReviewsCountByFromTo($user_id, $getProject->employer_id, $getProject->id);
+        $projects = $getProjects->each(function($proposal) {
+            $proposal->employer = User::getUser($proposal->employer_id);
+            $proposal->hired_created_at_view = Carbon::parse($proposal->created_at)->format('M d, Y');
+            $proposal->hired_updated_at_view = Carbon::parse($proposal->updated_at)->format('M d, Y');
+        });
 
-                $getProject->user_profile_photo = !empty($getProject->user_profile_photo) ? asset('storage/profile/'. $getProject->user_profile_photo) : asset('storage/no-photo.jpg');
-                $getProject->user_country_image = $getProject->user_country_image ? asset($getProject->user_country_image) : "";
-                $getProject->links = $getProject->links ? json_decode($getProject->links) : [];
-                $getProject->description = $getProject->description ? htmlspecialchars($getProject->description) : "";
-                $getProject->price = $getProject->price ? number_format($getProject->price, 2, ".", " ") : 0;
-                $getProject->user_created_at_view = Carbon::parse($getProject->user_created_at)->format('M d, Y');
-                $getProject->hired_created_at_view = Carbon::parse($getProject->hired_created_at)->format('M d, Y');
-                $getProject->hired_updated_at_view = Carbon::parse($getProject->hired_updated_at)->format('M d, Y');
-                $getProject->review_count = ($review_count ? $review_count : 0);
-                $getProject->review_true = ($review_true ? true : false);
-
-                $projects[] = $getProject;
-            }
-        }
-
-//        @dd($projects);
 
         return view('frontend.dashboard.freelancer.project-completed', compact(
             'auth_user',
@@ -693,46 +615,33 @@ class ProjectsController extends Controller
 
     public function employerPending(Request $request)
     {
+
         $user_id = Auth::id();
 
         $user_filter = [
-            'language_id' => $request->languageID
+            'language_id' => $request->languageID,
         ];
+
+
         $user = User::getUserInfo($user_id, $user_filter);
         $auth_user = $user;
 
 
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'employer_id' => $user_id,
-            'project_hired' => true,
-            'status' => 2
+        $filter = [
+            'status' => 1,
         ];
-        $getProjects = Projects::getProjects($project_filter);
-        $projects = [];
-        if ($getProjects) {
-            foreach ($getProjects as $getProject) {
-                $getProject->user_country_image = $getProject->user_country_image ? asset($getProject->user_country_image) : "";
-                $getProject->links = $getProject->links ? json_decode($getProject->links) : [];
-                $getProject->description = $getProject->description ? htmlspecialchars($getProject->description) : "";
-                $getProject->price = $getProject->price ? number_format($getProject->price, 2, ".", " ") : 0;
 
-                $getProject->hired = [];
-                if ( $getProject->status >= 2 ) {
-                    $getHired = ProjectHireds::getHiredByProjectId($getProject->id);
-                    if ($getHired) {
-                        $getProject->hired = $getHired;
-                    }
-                }
+        $getProjects = ProjectHireds::getHiredsByEmployer($user_id,  $filter);
 
-
-                $projects[] = $getProject;
-            }
-        }
-
-
-//        @dd($projects);
-
+        $projects = $getProjects->each(function($proposal) use ($user_filter) {
+            $proposal->freelancer = User::getFreelancerById($proposal->freelancer_id, $user_filter);
+            $proposal->user_categories_name = $proposal->freelancer->user_category_name;
+            $proposal->name =  $proposal->freelancer->name;
+            $proposal->user_country_image = $proposal->freelancer->user_country_image;
+            $proposal->user_country_name  =  $proposal->freelancer->user_country_name;
+            $proposal->hired_created_at_view = Carbon::parse($proposal->created_at)->format('M d, Y');
+            $proposal->hired_updated_at_view = Carbon::parse($proposal->updated_at)->format('M d, Y');
+        });
 
         return view('frontend.dashboard.employer.projects-pending', compact(
             'auth_user',
@@ -747,38 +656,29 @@ class ProjectsController extends Controller
         $user_id = Auth::id();
 
         $user_filter = [
-            'language_id' => $request->languageID
+            'language_id' => $request->languageID,
         ];
+
+
         $user = User::getUserInfo($user_id, $user_filter);
         $auth_user = $user;
 
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'employer_id' => $user_id,
-            'project_hired' => true,
-            'status' => 3
+
+        $filter = [
+            'status' => 2,
         ];
-        $getProjects = Projects::getProjects($project_filter);
-        $projects = [];
-        if ($getProjects) {
-            foreach ($getProjects as $getProject) {
-                $getProject->user_country_image = $getProject->user_country_image ? asset($getProject->user_country_image) : "";
-                $getProject->links = $getProject->links ? json_decode($getProject->links) : [];
-                $getProject->description = $getProject->description ? htmlspecialchars($getProject->description) : "";
-                $getProject->price = $getProject->price ? number_format($getProject->price, 2, ".", " ") : 0;
 
-                $getProject->hired = [];
-                if ( $getProject->status >= 2 ) {
-                    $getHired = ProjectHireds::getHiredByProjectId($getProject->id);
-                    if ($getHired) {
-                        $getProject->hired = $getHired;
-                    }
-                }
+        $getProjects = ProjectHireds::getHiredsByEmployer($user_id,  $filter);
 
-
-                $projects[] = $getProject;
-            }
-        }
+        $projects = $getProjects->each(function($proposal) use ($user_filter) {
+            $proposal->freelancer = User::getFreelancerById($proposal->freelancer_id, $user_filter);
+            $proposal->user_categories_name = $proposal->freelancer->user_category_name;
+            $proposal->name =  $proposal->freelancer->name;
+            $proposal->user_country_image = $proposal->freelancer->user_country_image;
+            $proposal->user_country_name  =  $proposal->freelancer->user_country_name;
+            $proposal->hired_created_at_view = Carbon::parse($proposal->created_at)->format('M d, Y');
+            $proposal->hired_updated_at_view = Carbon::parse($proposal->updated_at)->format('M d, Y');
+        });
 
 
         return view('frontend.dashboard.employer.projects-ongoing', compact(
@@ -794,39 +694,29 @@ class ProjectsController extends Controller
         $user_id = Auth::id();
 
         $user_filter = [
-            'language_id' => $request->languageID
+            'language_id' => $request->languageID,
         ];
+
+
         $user = User::getUserInfo($user_id, $user_filter);
         $auth_user = $user;
 
 
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'employer_id' => $user_id,
-            'project_hired' => true,
-            'status' => 4
+        $filter = [
+            'status' => 3,
         ];
-        $getProjects = Projects::getProjects($project_filter);
-        $projects = [];
-        if ($getProjects) {
-            foreach ($getProjects as $getProject) {
-                $getProject->user_country_image = $getProject->user_country_image ? asset($getProject->user_country_image) : "";
-                $getProject->links = $getProject->links ? json_decode($getProject->links) : [];
-                $getProject->description = $getProject->description ? htmlspecialchars($getProject->description) : "";
-                $getProject->price = $getProject->price ? number_format($getProject->price, 2, ".", " ") : 0;
 
-                $getProject->hired = [];
-                if ( $getProject->status >= 2 ) {
-                    $getHired = ProjectHireds::getHiredByProjectId($getProject->id);
-                    if ($getHired) {
-                        $getProject->hired = $getHired;
-                    }
-                }
+        $getProjects = ProjectHireds::getHiredsByEmployer($user_id,  $filter);
 
-
-                $projects[] = $getProject;
-            }
-        }
+        $projects = $getProjects->each(function($proposal) use ($user_filter) {
+            $proposal->freelancer = User::getFreelancerById($proposal->freelancer_id, $user_filter);
+            $proposal->user_categories_name = $proposal->freelancer->user_category_name;
+            $proposal->name =  $proposal->freelancer->name;
+            $proposal->user_country_image = $proposal->freelancer->user_country_image;
+            $proposal->user_country_name  =  $proposal->freelancer->user_country_name;
+            $proposal->hired_created_at_view = Carbon::parse($proposal->created_at)->format('M d, Y');
+            $proposal->hired_updated_at_view = Carbon::parse($proposal->updated_at)->format('M d, Y');
+        });
 
         return view('frontend.dashboard.employer.projects-completed', compact(
             'auth_user',
@@ -1232,7 +1122,7 @@ class ProjectsController extends Controller
     public function employerProjectAccept(Request $request)
     {
         $user_id = Auth::id();
-        $project_id = (int)$request->project_id;
+        $freelancer_id = (int)$request->freelancer_id;
         $rating = (float)$request->rating;
         $review = stripinput(strip_tags($request->review));
 
@@ -1241,29 +1131,11 @@ class ProjectsController extends Controller
             return redirect()->back();
         }
 
-
-        $hired = ProjectHireds::getHiredByProjectId($project_id);
-        if($hired == null || $hired->status != 2) {
-            return redirect()->back();
-        }
-
-        $freelancer_id = $hired->freelancer_id;
-
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'employer_id' => $user_id,
-            'status' => 4
-        ];
-        $project = Projects::getProject($project_id, $project_filter);
-        if ($project == null) {
-            return redirect()->back();
-        }
-
         $data = [
             'freelancer_id' => $freelancer_id,
-            'project_id' => $project_id,
-            'status' => 3,
-            'letter' => language('I accepted this work and left a comment.')
+            'employer_id' => $user_id,
+            'letter' => language('I accepted this work and left a comment.'),
+            'accept' => true,
         ];
         $editHireds = ProjectHireds::editHireds($data);
         if($editHireds) {
@@ -1272,19 +1144,21 @@ class ProjectsController extends Controller
                 $data = [
                     'from' => $user_id,
                     'to' => $freelancer_id,
-                    'project_id' => $project_id,
                     'rating' => $rating,
                     'review' => $review,
+                    'status' => 0
                 ];
-                Reviews::addReview($data);
+                $from = User::getUser($freelancer_id);
+                $reviewDTO = new ReviewDTO($from->name, $user_id, $rating, $review, 0);
+                Reviews::addReview($reviewDTO);
             }
 
             $user_freelancer = User::where('id', $freelancer_id)->first();
             if ($user_freelancer) {
-                $user_freelancer->balance = (float)$user_freelancer->balance + (float)$hired->price;
+                $user_freelancer->balance = (float)$user_freelancer->balance + (float)$editHireds->price;
                 $user_freelancer->save();
 
-                $pay_info = Pay::getByFreelancerIdAndProjectId($freelancer_id, $project_id);
+                $pay_info = Pay::getByFreelancerIdAndProjectId($freelancer_id, $user_id);
                 if($pay_info) {
                     $data = [
                         'status' => 6,
@@ -1292,7 +1166,7 @@ class ProjectsController extends Controller
                     ];
                     $editPay = Pay::editPay($pay_info->id, $data);
 
-                    $freelancer_text = language('The employer accepted your job, you have been transferred money in the amount of ') . number_format((float)$hired->price, 2, ".", " ") . language('frontend.currency');
+                    $freelancer_text = language('The employer accepted your job, you have been transferred money in the amount of ') . number_format((float)$editHireds->price, 2, ".", " ") . language('frontend.currency');
 
                     Notification::addNotification($freelancer_id, $freelancer_text, $request->languageID);
                 }
@@ -1306,8 +1180,10 @@ class ProjectsController extends Controller
 
     public function employerProjectCorrect(Request $request)
     {
+
+
         $user_id = Auth::id();
-        $project_id = (int)$request->project_id;
+        $freelancer_id = (int)$request->freelancer_id;
         $letter = stripinput(strip_tags($request->letter));
 
 
@@ -1315,36 +1191,13 @@ class ProjectsController extends Controller
             return redirect()->back();
         }
 
-
-        $hired = ProjectHireds::getHiredByProjectId($project_id);
-        if($hired == null || $hired->status != 2) {
-            return redirect()->back();
-        }
-
-        $freelancer_id = $hired->freelancer_id;
-
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'employer_id' => $user_id,
-            'status' => 4
-        ];
-        $project = Projects::getProject($project_id, $project_filter);
-        if ($project == null) {
-            return redirect()->back();
-        }
-
-
         $data = [
             'freelancer_id' => $freelancer_id,
-            'project_id' => $project_id,
+            'employer_id' => $user_id,
             'status' => 1,
             'letter' => $letter
         ];
         $editHireds = ProjectHireds::editHireds($data);
-
-
-        Projects::editStatus($data['project_id'], 3);
-
 
         return redirect()->route('frontend.dashboard.employer.projects-ongoing')->with('message', language('Project successfully submitted for revision.'));
 

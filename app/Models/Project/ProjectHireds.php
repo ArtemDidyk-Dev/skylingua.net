@@ -16,12 +16,22 @@ class ProjectHireds extends Model
     protected $guarded = [];
 
 
-    public static function getHireds($freelancer_id) {
+    public static function getHireds($freelancer_id, $filter) {
         $hireds = ProjectHireds::where('freelancer_id', $freelancer_id)
+            ->where('status', $filter['status'])
             ->get();
 
         return $hireds;
     }
+
+    public static function getHiredsByEmployer($employer_id, $filter) {
+        $hireds = ProjectHireds::where('employer_id', $employer_id)
+            ->where('status', $filter['status'])
+            ->get();
+
+        return $hireds;
+    }
+
 
     public static function getHiredsCount($freelancer_id) {
         $hiredsCount = ProjectHireds::where('freelancer_id', $freelancer_id)
@@ -30,20 +40,7 @@ class ProjectHireds extends Model
         return $hiredsCount;
     }
 
-    public static function getHiredsByProjectId($project_id) {
-        $hireds = ProjectHireds::select(
-                'project_hireds.*',
-                'users.id as user_id',
-                'users.name as user_name',
-                'users.profile_photo as user_profile_photo'
-            )
-            ->leftJoin('users', 'project_hireds.freelancer_id', '=', 'users.id')
-            ->where('project_hireds.project_id', $project_id)
-            ->groupBy('project_hireds.id')
-            ->get();
 
-        return $hireds;
-    }
 
     public static function getHiredByProjectId($project_id) {
         $hired = ProjectHireds::select(
@@ -66,9 +63,9 @@ class ProjectHireds extends Model
         return $hiredsCount;
     }
 
-    public static function getHired($freelancer_id, $project_id) {
+    public static function getHired($freelancer_id, $employer_id) {
         $hired = ProjectHireds::where('freelancer_id', $freelancer_id)
-            ->where('project_id', $project_id)
+            ->where('employer_id', $employer_id)
             ->first();
 
         return $hired;
@@ -77,12 +74,12 @@ class ProjectHireds extends Model
     public static function addHireds($data = []) {
 
         $freelancer_id = (int)$data['freelancer_id'];
-        $project_id = (int)$data['project_id'];
+        $project_id = $data['project_id'] ?? null;
         $price = (float)$data['price'];
         $hours = (int)$data['hours'];
         $letter = stripinput(strip_tags($data['letter']));
-
-        $hired = ProjectHireds::getHired($freelancer_id, $project_id);
+        $employer_id = (int)$data['employer_id'];
+        $hired = ProjectHireds::getHired($freelancer_id, $employer_id);
         if ($hired) {
             return false;
         }
@@ -90,6 +87,7 @@ class ProjectHireds extends Model
         $hireds = ProjectHireds::create([
             'freelancer_id' => $freelancer_id,
             'project_id' => $project_id,
+            'employer_id' => $employer_id,
             'price' => $price,
             'hours' => $hours,
             'letter' => $letter,
@@ -97,8 +95,7 @@ class ProjectHireds extends Model
         ]);
 
         if ($hireds) {
-            Projects::editStatus($data['project_id'], 2);
-            ProjectProposals::removeProposal($data['freelancer_id'], $data['project_id']);
+            ProjectProposals::removeProposal($data['freelancer_id'], $data['employer_id']);
         }
 
         return $hireds;
@@ -108,9 +105,8 @@ class ProjectHireds extends Model
     public static function editHireds($data = []) {
 
         $freelancer_id = (int)$data['freelancer_id'];
-        $project_id = (int)$data['project_id'];
-
-        $hired = ProjectHireds::getHired($freelancer_id, $project_id);
+        $employer_id = (int)$data['employer_id'];
+        $hired = ProjectHireds::getHired($freelancer_id, $employer_id);
         if ($hired == null) {
             return false;
         } else {
@@ -119,12 +115,12 @@ class ProjectHireds extends Model
             $hours = (isset($data['hours']) && !empty($data['hours']) ? (int)$data['hours'] : $hired->hours);
             $letter = (isset($data['letter']) && !empty($data['letter']) ? stripinput(strip_tags($data['letter'])) : $hired->letter);
             $status = (isset($data['status']) && !empty($data['status']) ? (int)$data['status'] : $hired->status);
-
+            $accept =  (isset($data['accept']) && !empty($data['accept']) ? (bool)$data['accept'] : $hired->accept);
             $hired->price = $price;
             $hired->hours = $hours;
             $hired->letter = $letter;
             $hired->status = $status;
-
+            $hired->accept = $accept;
             if(isset($data['updated_at']) && !empty($data['updated_at_false'])) {
                 $hired->updated_at = stripinput($data['updated_at']);
             }
@@ -136,9 +132,9 @@ class ProjectHireds extends Model
 
     }
 
-    public static function removeHireds($freelancer_id, $project_id) {
+    public static function removeHireds($freelancer_id, $project_id, $employer_id) {
         $hired = ProjectHireds::where('freelancer_id', $freelancer_id)
-            ->where('project_id', $project_id)
+            ->where('$employer_id', $employer_id)
             ->delete();
 
         return $hired;

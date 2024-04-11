@@ -98,9 +98,9 @@
                                                 <div class="projects-action">
                                                     <a href="{{ route('frontend.project.detail',
                                                     $project->id) }}"
-                                                       class="projects-btn">{{ language('View Project') }}</a>
+                                                       class="projects-btn">{{ language('View Service') }}</a>
                                                     <a href="{{ route('frontend.dashboard.employer.employerProjectEdit',
-                                                    $project->id) }}" class="projects-btn">{{ language('Edit Project') }}</a>
+                                                    $project->id) }}" class="projects-btn">{{ language('Edit Service') }}</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -185,7 +185,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>{{ language('Hire Project') }}</h4>
+                        <h4>{{ language('Hire Service') }}</h4>
                         <span class="modal-close">
                         <a href="#" data-bs-dismiss="modal" aria-label="{{ language('Close') }}">
                             <i class="far fa-times-circle orange-text"></i>

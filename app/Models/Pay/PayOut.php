@@ -172,8 +172,8 @@ class PayOut extends Model
             'users.name as user_name',
             'users.email as user_email',
         )
-        ->join('users', 'pay_out.user_id', '=', 'users.id')
-        ->orderBy('id', 'DESC')
+            ->join('users', 'pay_out.user_id', '=', 'users.id')
+            ->orderBy('id', 'DESC')
             ->paginate($limit);
 
 

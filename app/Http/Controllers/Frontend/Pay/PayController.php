@@ -91,7 +91,6 @@ class PayController extends Controller
             $orderNumber = rand($pay->id * 200, $pay->id * 5000);
 
             $curl_url = config('pay.base_url') . '/epg/rest/register.do?userName=' . config('pay.username') . '&password=' . config('pay.password') . '&currency=' . config('pay.currency') . '&orderNumber=' . $orderNumber . '&amount=' . $amount . '&language=' . config('pay.language') . '&returnUrl=' . route('frontend.pay.status') . '&sessionTimeoutSecs=86400&jsonParams={"request":"PAY","bank":"' . config('pay.bankCode') .'","description":"' . config('pay.description') .'","sid":"' . config('pay.sid') .'"}';
-
             $curl = curl_init();
             curl_setopt_array($curl, array(
                 CURLOPT_URL => $curl_url,

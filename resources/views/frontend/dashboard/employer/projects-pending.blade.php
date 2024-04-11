@@ -23,7 +23,7 @@
 
                 <div class="col-xl-9 col-md-8">
                     <div class="page-title">
-                        <h3>{{ language('Pending Courses') }}</h3>
+                        <h3>{{ language('Pending Services') }}</h3>
                     </div>
                     @include('frontend.dashboard.employer._projectNav', ['user' => $user])
 
@@ -72,17 +72,15 @@
                                                     <div class="project-hire-info">
                                                         <div class="content-divider"></div>
                                                         <div class="projects-amount">
-                                                            @if($project->hired)
-                                                                <h3>{{ $project->hired->price }}{{ language('frontend.currency') }}</h3>
+                                                            @if($project->price)
+                                                                <h3>{{ $project->price }}{{ language('frontend.currency') }}</h3>
                                                                 <h5>{{ language('Hired Price') }}</h5>
                                                             @endif
                                                         </div>
                                                         <div class="content-divider"></div>
                                                         <div class="projects-action text-center">
-                                                            <a href="{{ route('frontend.project.detail', $project->id) }}"
-                                                               class="projects-btn">{{ language('View Project') }}</a>
-                                                            @if($project->hired)
-                                                                <p class="hired-detail">{{ language('Hired on') }} {{ \Carbon\Carbon::parse($project->hired->created_at)->format('M d, Y') }}</p>
+                                                            @if($project->hired_created_at_view)
+                                                                <p class="hired-detail">{{ language('Hired on') }} {{ $project->hired_created_at_view}}</p>
                                                             @endif
 
                                                         </div>
@@ -94,14 +92,17 @@
                                     <div class="col-lg-2 d-flex flex-wrap">
                                         <div class="projects-card flex-fill">
                                             <div class="card-body p-2">
-
-                                                @if($project->hired)
-                                                    <a href="{{ route('frontend.profile.index', $project->hired->freelancer_id) }}" class="prj-proposal-count text-center hired">
+                                                @if($project->status)
+                                                    <a href="{{ route('frontend.profile.index', $project->freelancer->id) }}"
+                                                       class="prj-proposal-count text-center hired">
                                                         <h3>{{ language('Hired') }}</h3>
-                                                        <img src="{{ !empty($project->hired->user_profile_photo) ? asset('storage/profile/'. $project->hired->user_profile_photo) : asset('storage/no-photo.jpg') }}" alt="" class="img-fluid">
-                                                        <p class="mb-0">{{ $project->hired->user_name }}</p>
+                                                        <img
+                                                            src="{{ !empty($project->freelancer->profile_photo) ? asset('storage/profile/'. $project->freelancer->profile_photo) : asset('storage/no-photo.jpg') }}"
+                                                            alt="" class="img-fluid">
+                                                        <p class="mb-0">{{ $project->freelancer->user_name }}</p>
                                                     </a>
                                                 @endif
+
                                             </div>
                                         </div>
                                     </div>
@@ -112,15 +113,6 @@
                     @else
                         {{ language('Not Result') }}
                     @endif
-
-                    <!-- pagination -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            {{ $getProjects->appends(['search' => isset($searchText) ? $searchText : null])
-        ->render('vendor.pagination.frontend.dashboard-pagination') }}
-                        </div>
-                    </div>
-                    <!-- /pagination -->
             </div>
         </div>
     </div>
