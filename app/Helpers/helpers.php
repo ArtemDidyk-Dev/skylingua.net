@@ -545,9 +545,9 @@ function custom_input($arr, $title = "", $global = []) {
                                 ' . ($key == "amount" ? ' readonly' : '') . '
                                 ' . ($key == "amount" ? ' style="background-color: #fff"' : '') . '
                             >
-                            ' . ($key == "amount" ? '<span class="input-group-text">&pound;</span>' : '') . '
+                            ' . ($key == "amount" ? '<span class="input-group-text">€</span>' : '') . '
                         </div>
-                        ' . ($key == "amount" ? '<span class="feeProsent text-muted">'. language('Orginal amount:') .' '. price_format($amountOrginal) .' | '. language('Fee:') .' '. price_format($amountFee) .'</span>' : '') . '
+
                     </div>
                     ';
                 }
@@ -639,7 +639,7 @@ function payment_info($arr, $title = "", $global = []) {
                         <label for="paymentField_' . $key . '" class="form-label">' . sentenceText($key) . '</label>
                         <div class="input-group mb-3">
                             '. $val .'
-                            ' . ($key == "amount" ? '&pound;' : '') . '
+                            ' . ($key == "amount" ? '€' : '') . '
                         </div>
                     </div>
                     ';

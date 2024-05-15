@@ -186,7 +186,7 @@
                             <div class="col-xl-6 d-flex">
                                 <div class="card flex-fill">
                                     <div class="pro-head">
-                                        <h2>{{ language('Ongoing Projects') }}</h2>
+                                        <h2>{{ language('Cancelled Projects') }}</h2>
                                         <a href="{{ route('frontend.dashboard.freelancer.project-cancelled') }}"
                                            class="btn fund-btn">{{ language('View All') }}</a>
                                     </div>

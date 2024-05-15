@@ -22,8 +22,8 @@ class WithdrawMoneyController extends Controller
     }
 
     public function freelancer(Request $request)
-    {   
-     
+    {
+
         $user_id = Auth::id();
 
         $user_filter = [
@@ -102,9 +102,7 @@ class WithdrawMoneyController extends Controller
 
         $currency = config('pay.currencyLiteral');
         $senderAccount = config('pay.senderAccount');
-        $amountOrginal = (float)$request->amount;
-        $amountFee = $amountOrginal*config('pay.feeProsent')/100;
-        $amount = $amountOrginal+$amountFee;
+        $amount = (float)$request->amount;
         $receiverCountry = stripinput($request->receiverCountry);
         $paymentProps = stripinput($request->paymentProps);
 
@@ -220,8 +218,6 @@ class WithdrawMoneyController extends Controller
 
                 $paymentDetails->clientOrderId = $pay->id;
 //                if(isset($paymentDetails->senderIban)) $paymentDetails->senderIban = $senderAccount;
-                if(isset($paymentDetails->amount)) $paymentDetails->amountFee = $amountFee;
-                if(isset($paymentDetails->amount)) $paymentDetails->amountOrginal = $amountOrginal;
                 if(isset($paymentDetails->amount)) $paymentDetails->amount = $amount;
                 if(isset($paymentDetails->receiverCountry)) $paymentDetails->receiverCountry = $receiverCountry;
                 if(isset($paymentDetails->paymentDetails)) $paymentDetails->paymentDetails = $paymentProps;
@@ -241,7 +237,6 @@ class WithdrawMoneyController extends Controller
 
 
                 $data = [
-                    'commissionAmount' => (float)$response_arr->commissionAmount,
                     'exchangeRate' => stripinput($response_arr->exchangeRate),
                     'billingAmount' => stripinput($response_arr->billingAmount),
                     'billingFee' => stripinput($response_arr->billingFee),
