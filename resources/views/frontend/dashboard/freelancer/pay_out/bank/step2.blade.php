@@ -15,7 +15,7 @@
 
                 <!-- sidebar -->
                 <div class="col-xl-3 col-md-4 theiaStickySidebar">
-                    @include('frontend.dashboard.freelancer._sidebar', compact($user))
+                    @include('frontend.dashboard.freelancer._sidebar',  $user->toArray())
                 </div>
                 <!-- /sidebar -->
 
