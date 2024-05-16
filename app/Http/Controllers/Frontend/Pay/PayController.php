@@ -230,7 +230,8 @@ class PayController extends Controller
                             'employer_id' => $pay_info->employer_id,
                             'price' => $pay_info->amount,
                             'hours' => $proposal->hours,
-                            'letter' => language('I accepted your proposal and made payment. Please start doing work.')
+                            'letter' => language('I accepted your proposal and made payment. Please start doing work.'),
+                            'status' => 1
                         ];
                         ProjectHireds::addHireds($data);
 
