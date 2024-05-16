@@ -363,4 +363,3 @@
 
     @include('frontend.dashboard.employer._projectNavScript', ['user' => $user])
 @endsection
-

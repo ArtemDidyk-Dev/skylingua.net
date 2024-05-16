@@ -34,9 +34,6 @@
                                             <div class="card-body">
                                                 <div class="projects-details align-items-center">
                                                     <div class="project-info project">
-                                                        <h2>
-                                                            <a href="{{ route('frontend.project.detail', $project->id) }}">{{ $project->name }}</a>
-                                                        </h2>
                                                         <div class="proposal-client">
                                                             <h4 class="title-info">{{ language('Hired Price') }}</h4>
                                                             <div class="d-flex">
@@ -223,4 +220,3 @@
 
     @include('frontend.dashboard.freelancer._projectNavScript', ['user' => $user])
 @endsection
-

@@ -275,4 +275,3 @@
 
     @include('frontend.dashboard.freelancer._projectNavScript', ['user' => $user])
 @endsection
-

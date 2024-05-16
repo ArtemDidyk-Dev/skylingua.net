@@ -113,9 +113,9 @@
                     @else
                         {{ language('Not Result') }}
                     @endif
+                </div>
             </div>
         </div>
-    </div>
     </div>
     <!-- /Page Content -->
 
@@ -129,4 +129,3 @@
 
     @include('frontend.dashboard.employer._projectNavScript', ['user' => $user])
 @endsection
-

@@ -23,12 +23,12 @@
 
                 <div class="col-xl-9 col-md-8">
                     <div class="page-title">
-                        <h3>{{ language('Cancelled Services') }}</h3>
+                        <h3>{{ language('Cancelled Projects') }}</h3>
                     </div>
                     @include('frontend.dashboard.employer._projectNav', ['user' => $user])
 
-                    @if($projects)
-                        @foreach($projects as $project)
+                    @if($getProjects)
+                        @foreach($getProjects as $project)
                             <!-- project list -->
                             <div class="my-projects-list">
                                 <div class="row">
@@ -81,21 +81,6 @@
                                                             @endif
                                                         </div>
                                                         <div class="content-divider"></div>
-                                                        <div class="projects-action text-center">
-                                                            <a href="{{ route('frontend.project.detail', $project->id) }}"
-                                                               class="projects-btn">{{ language('View Services') }}</a>
-                                                            <a
-                                                                data-bs-toggle="modal"
-                                                                href="#repost-project"
-                                                                class="btn btn-danger projects-btn project d-inline-block repostProject"
-                                                                data-project_id="{{ $project->id }}">
-                                                                {{ language('Repost') }}
-                                                            </a>
-                                                            @if($project->hired)
-                                                                <p class="hired-detail">{{ language('Canceled on') }} {{ \Carbon\Carbon::parse($project->hired->updated_at)->format('M d, Y') }}</p>
-                                                            @endif
-
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -126,14 +111,6 @@
                         {{ language('Not Result') }}
                     @endif
 
-                    <!-- pagination -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            {{ $getProjects->appends(['search' => isset($searchText) ? $searchText : null])
-        ->render('vendor.pagination.frontend.dashboard-pagination') }}
-                        </div>
-                    </div>
-                    <!-- /pagination -->
                 </div>
             </div>
         </div>
@@ -146,7 +123,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>{{ language('Repost Services') }}</h4>
+                    <h4>{{ language('Repost Project') }}</h4>
                     <span class="modal-close"><a href="#" data-bs-dismiss="modal" aria-label="Close"><i
                                 class="far fa-times-circle orange-text"></i></a></span>
                 </div>
@@ -199,4 +176,3 @@
 
     @include('frontend.dashboard.employer._projectNavScript', ['user' => $user])
 @endsection
-

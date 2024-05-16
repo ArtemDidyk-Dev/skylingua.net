@@ -213,7 +213,6 @@ class ProjectsController extends Controller
 
     public function freelancerHireds(Request $request)
     {
-
         $user_id = Auth::id();
 
         $user_filter = [
@@ -316,7 +315,7 @@ class ProjectsController extends Controller
     public function freelancerHiredsCancel(ProjectAcceptCancelRequest $request)
     {
         $user_id = Auth::id();
-        $project_id = (int)$request->project_id;
+        $employer_id = (int)$request->input('employer_id');
 
 
         if(CommonService::userRoleId($user_id) != 4) {
@@ -324,27 +323,20 @@ class ProjectsController extends Controller
         }
 
 
-        $hired = ProjectHireds::getHired($user_id, $project_id);
+        $hired = ProjectHireds::getHired($user_id, $employer_id);
+
         if($hired == null) {
             return redirect()->back();
         }
 
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'status' => 2
-        ];
-        $project = Projects::getProject($project_id, $project_filter);
-        if ($project == null) {
-            return redirect()->back();
-        }
+        $pay = Pay::getByFreelancerIdAndProjectId($user_id, $employer_id);
 
-        $pay = Pay::getByFreelancerIdAndProjectId($user_id, $project_id);
         if ($pay == null) {
             return redirect()->back();
         }
 
 
-        $amount = (float)$amount * 100;
+        $amount = $pay->amount;
         $curl_url = config('pay.base_url') . '/epg/rest/refund.do?userName=' . config('pay.username') . '&password=' . config('pay.password') . '&orderId=' . $pay->orderId . '&amount=' . $amount;
 
         $curl = curl_init();
@@ -369,12 +361,11 @@ class ProjectsController extends Controller
 //        @dd($response_arr);
 
         if ($response_arr && $response_arr->errorCode == 0) {
-            Projects::editStatus($project_id, 5);
 
             $data = [
                 'freelancer_id' => $user_id,
-                'project_id' => $project_id,
-                'status' => 3,
+                'employer_id' => $employer_id,
+                'status' => 5,
                 'updated_at' => Carbon::today()
             ];
             ProjectHireds::editHireds($data);
@@ -459,6 +450,7 @@ class ProjectsController extends Controller
 
     public function freelancerCancelled(Request $request)
     {
+
         $user_id = Auth::id();
 
         $user_filter = [
@@ -467,39 +459,14 @@ class ProjectsController extends Controller
         $user = User::getUserInfo($user_id, $user_filter);
         $auth_user = $user;
 
-
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'freelancer_id' => $user_id,
-//            'project_hired' => true,
-//            'status' => 5,
+        $filter = [
+            'status' =>5    ,
         ];
-        $getProjects = Projects::getProjects($project_filter);
-        $projects = [];
-        if ($getProjects) {
-            foreach ($getProjects as $getProject) {
-                $review_count = Reviews::getReviewsCountByUserId($getProject->employer_id);
-
-                $getProject->user_profile_photo = !empty($getProject->user_profile_photo) ? asset('storage/profile/'. $getProject->user_profile_photo) : asset('storage/no-photo.jpg');
-                $getProject->user_country_image = $getProject->user_country_image ? asset($getProject->user_country_image) : "";
-                $getProject->links = $getProject->links ? json_decode($getProject->links) : [];
-                $getProject->description = $getProject->description ? htmlspecialchars($getProject->description) : "";
-                $getProject->price = $getProject->price ? number_format($getProject->price, 2, ".", " ") : 0;
-                $getProject->user_created_at_view = Carbon::parse($getProject->user_created_at)->format('M d, Y');
-                $getProject->hired_created_at_view = Carbon::parse($getProject->hired_created_at)->format('M d, Y');
-                $getProject->hired_updated_at_view = Carbon::parse($getProject->hired_updated_at)->format('M d, Y');
-                $getProject->review_count = ($review_count ? $review_count : 0);
-
-                $projects[] = $getProject;
-            }
-        }
-
-//        @dd($projects);
+        $getProjects = ProjectHireds::getHireds($user_id, $filter);
 
         return view('frontend.dashboard.freelancer.project-cancelled', compact(
             'auth_user',
             'user',
-            'projects',
             'getProjects'
         ));
     }
@@ -728,46 +695,25 @@ class ProjectsController extends Controller
 
     public function employerCancelled(Request $request)
     {
+
         $user_id = Auth::id();
 
         $user_filter = [
             'language_id' => $request->languageID
         ];
         $user = User::getUserInfo($user_id, $user_filter);
+
         $auth_user = $user;
 
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'employer_id' => $user_id,
-            'project_hired' => true,
-            'status' => 5
+        $filter = [
+            'status' =>5    ,
         ];
-        $getProjects = Projects::getProjects($project_filter);
-        $projects = [];
-        if ($getProjects) {
-            foreach ($getProjects as $getProject) {
-                $getProject->user_country_image = $getProject->user_country_image ? asset($getProject->user_country_image) : "";
-                $getProject->links = $getProject->links ? json_decode($getProject->links) : [];
-                $getProject->description = $getProject->description ? htmlspecialchars($getProject->description) : "";
-                $getProject->price = $getProject->price ? number_format($getProject->price, 2, ".", " ") : 0;
+        $getProjects = ProjectHireds::getHiredsByEmployer($user_id, $filter);
 
-                $getProject->hired = [];
-                if ( $getProject->status >= 2 ) {
-                    $getHired = ProjectHireds::getHiredByProjectId($getProject->id);
-                    if ($getHired) {
-                        $getProject->hired = $getHired;
-                    }
-                }
-
-
-                $projects[] = $getProject;
-            }
-        }
 
         return view('frontend.dashboard.employer.projects-cancelled', compact(
             'auth_user',
             'user',
-            'projects',
             'getProjects'
         ));
     }
