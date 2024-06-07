@@ -1063,6 +1063,13 @@
             margin-top: 20px;
         }
     }
+    .footer__payment {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 15px;
+    }
 </style>
 <script>
     document.addEventListener('DOMContentLoaded', () => {

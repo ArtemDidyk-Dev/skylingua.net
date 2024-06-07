@@ -47,6 +47,7 @@
                             @endforeach
                         @endif
                     </div>
+
                 </div>
 
             </div>
@@ -93,6 +94,10 @@
                     @endforeach
                 </ul>
             </div>
+        </div>
+        <div class="footer__payment">
+            <img width="31" height="25" src="{{ asset('build/website/images/icons/master.png') }}" alt="master card">
+            <img width="36" height="23" src="{{ asset('build/website/images/icons/visa.png') }}" alt="visa">
         </div>
     </div>
 

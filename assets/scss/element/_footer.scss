@@ -141,6 +141,14 @@
         }
     }
 
+    &__payment {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 15px;
+    }
+
     &__bootom {
         display: flex;
         justify-content: space-between;

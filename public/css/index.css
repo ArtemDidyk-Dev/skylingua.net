@@ -957,6 +957,13 @@ input:focus-visible {
     margin: 20px 0;
   }
 }
+.footer__payment {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 15px;
+}
 .footer__bootom {
   display: flex;
   justify-content: space-between;
