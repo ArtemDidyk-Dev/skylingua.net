@@ -91,6 +91,7 @@ class PayController extends Controller
             $orderNumber = rand($pay->id * 200, $pay->id * 5000);
 
             $curl_url = config('pay.base_url') . '/epg/rest/register.do?userName=' . config('pay.username') . '&password=' . config('pay.password') . '&currency=' . config('pay.currency') . '&orderNumber=' . $orderNumber . '&amount=' . $amount . '&language=' . config('pay.language') . '&returnUrl=' . route('frontend.pay.status') . '&sessionTimeoutSecs=86400&jsonParams={"request":"PAY","bank":"' . config('pay.bankCode') .'","description":"' . config('pay.description') .'","sid":"' . config('pay.sid') .'"}';
+
             $curl = curl_init();
             curl_setopt_array($curl, array(
                 CURLOPT_URL => $curl_url,
@@ -143,8 +144,8 @@ class PayController extends Controller
     {
 
 
-
         $session_guavapay_orderId = "";
+        $proposalId = $request->session()->get('proposal.id');
         if ($request->session()->exists('guavapay_orderId')) {
             $session_guavapay_orderId = $request->session()->get('guavapay_orderId');
         }
@@ -168,8 +169,7 @@ class PayController extends Controller
                     return redirect()->route('frontend.pay.error')->with('message', language('Freelancer Error.'));
                 }
 
-                $proposal = ProjectProposals::getProposal($pay_info->freelancer_id, $pay_info->employer_id);
-
+                $proposal = ProjectProposals::find($proposalId);
                 if ($proposal == null) {
                     return redirect()->route('frontend.pay.error')->with('message', language('Proposal Error.'));
                 }
@@ -208,12 +208,17 @@ class PayController extends Controller
                     if ($editPay) {
                         Notification::addNotification($pay_info->employer_id, $err . (!empty($err) ? " " : "") . $response_arr->ErrorMessage, $request->languageID);
 
-                        ProjectProposals::removeProposal($pay_info->freelancer_id, $pay_info->employer_id, 1);
+                        $proposal->delete();
                     }
 
 
 //                    @dd($response_arr);
+                    $request->session()->forget('proposal.id');
+                    $request->session()->forget('guavapay_orderId');
 
+
+//                    @dd($response_arr);
+                    $request->session()->forget('proposal.id');
                     $request->session()->forget('guavapay_orderId');
 
                     return redirect()->route('frontend.pay.error')->with('message', language('Payment Error #:') . $err . (!empty($err) ? " " : "") . $response_arr->ErrorMessage);
@@ -233,7 +238,7 @@ class PayController extends Controller
                             'letter' => language('I accepted your proposal and made payment. Please start doing work.'),
                             'status' => 1
                         ];
-                        ProjectHireds::addHireds($data);
+                        ProjectHireds::addHireds($data, $proposal);
 
                         $employer_text = language('The payment was successful and the task was sent to the freelancer.');
                         $freelancer_text = language('The employer accepted your offer and paid. Immediately, get to work.');

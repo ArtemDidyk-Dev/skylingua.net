@@ -108,7 +108,9 @@
                                                             data-bs-toggle="modal"
                                                             href="#complete-project"
                                                             class="btn btn-success projects-btn project d-inline-block hiredComplete"
-                                                            data-employer_id="{{ $project->employer->id }}">
+                                                            data-employer_id="{{ $project->employer->id }}"
+                                                            data-id={{$project->id}}
+                                                        >
                                                             <i class="fas fa-check"></i>
                                                             {{ language('Complete') }}
                                                         </a>
@@ -166,7 +168,7 @@
                         @csrf
 
                         <input class="project_id" type="hidden" name="employer_id" value="">
-
+                        <input type="hidden"  name="id" value="id" class="id"  >
                         <div class="submit-section text-right">
                             <a data-bs-dismiss="modal" class="btn btn-primary black-btn submit-btn">{{ language('Cancel') }}</a>
                             <button type="submit" class="btn btn-primary submit-btn"><i class="fas fa-check"></i> {{ language('Complete') }}</button>
@@ -195,6 +197,16 @@
         $('.hiredCancel').on('click', function (event) {
             let employer_id = $(this).data('employer_id');
             $('#cancel-project .project_id').val(employer_id);
+        });
+
+        $('.hiredComplete').on('click', function (event) {
+            let id = $(this).data('id');
+            $('#complete-project .id').val(id);
+        });
+
+        $('.hiredCancel').on('click', function (event) {
+            let id= $(this).data('id');
+            $('#cancel-project .id').val(id);
         });
     </script>
 

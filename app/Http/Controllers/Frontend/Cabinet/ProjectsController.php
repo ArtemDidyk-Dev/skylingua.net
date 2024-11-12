@@ -254,7 +254,7 @@ class ProjectsController extends Controller
         }
 
 
-        $hired = ProjectHireds::getHired($user_id,  $employer_id);
+        $hired = ProjectHireds::find($request->input('id'));
 
         if($hired == null) {
             return redirect()->back();
@@ -267,7 +267,8 @@ class ProjectsController extends Controller
             'status' => 2,
             'updated_at' => Carbon::today()
         ];
-        ProjectHireds::editHireds($data);
+        $hired->status = 2;
+        $hired->save();
 
         ProjectProposals::removeProposalsByProjectId($employer_id);
 
@@ -295,7 +296,7 @@ class ProjectsController extends Controller
         }
 
 
-        $hired = ProjectHireds::getHired($user_id, $employer_id);
+        $hired = ProjectHireds::find($request->input('id'));
 
         if($hired == null) {
             return redirect()->back();
@@ -306,7 +307,8 @@ class ProjectsController extends Controller
             'status' => 3,
             'updated_at' => Carbon::today()
         ];
-        ProjectHireds::editHireds($data);
+        $hired->status = 3;
+        $hired->save();
 
         return redirect()->route('frontend.dashboard.freelancer.project-completed')->with('message', language('Project successfully completed.'));
 
@@ -537,46 +539,12 @@ class ProjectsController extends Controller
         $user = User::getUserInfo($user_id, $user_filter);
         $auth_user = $user;
 
-
-        $project_filter = [
-            'language_id' => $request->languageID,
-            'employer_id' => $user_id,
-        ];
-        $getProjects = Projects::getProjects($project_filter);
-        $projects = [];
-        if ($getProjects) {
-            foreach ($getProjects as $getProject) {
-                $getProject->user_country_image = $getProject->user_country_image ? asset($getProject->user_country_image) : "";
-                $getProject->links = $getProject->links ? json_decode($getProject->links) : [];
-                $getProject->description = $getProject->description ? htmlspecialchars($getProject->description) : "";
-                $getProject->price = $getProject->price ? number_format($getProject->price, 2, ".", " ") : 0;
-                $getProject->proposals_count = 0;
-                $getProposalsCount = ProjectProposals::getProposalsCountByProjectId($getProject->id);
-                if ($getProposalsCount) {
-                    $getProject->proposals_count = $getProposalsCount;
-                }
-
-                $getProject->hired = [];
-                if ( $getProject->status >= 2 ) {
-                    $getHired = ProjectHireds::getHiredByProjectId($getProject->id);
-                    if ($getHired) {
-                        $getProject->hired = $getHired;
-                    }
-                }
-
-
-                $projects[] = $getProject;
-            }
-        }
-
-//        @dd($projects);
-
+        $getProposals = ProjectProposals::getProposalsByProjectId($user_id);
 
         return view('frontend.dashboard.employer.projects-all', compact(
             'auth_user',
             'user',
-            'projects',
-            'getProjects'
+            'getProposals',
         ));
     }
 
@@ -1083,9 +1051,11 @@ class ProjectsController extends Controller
             'letter' => language('I accepted this work and left a comment.'),
             'accept' => true,
         ];
-        $editHireds = ProjectHireds::editHireds($data);
+        $editHireds = ProjectHireds::find($request->input('id'));
         if($editHireds) {
-
+            $editHireds->accept = true;
+            $editHireds->letter = language('I accepted this work and left a comment.');
+            $editHireds->save();
             if ($rating > 0 || !empty($review)) {
                 $data = [
                     'from' => $user_id,

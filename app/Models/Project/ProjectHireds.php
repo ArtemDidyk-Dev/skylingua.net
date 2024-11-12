@@ -71,7 +71,7 @@ class ProjectHireds extends Model
         return $hired;
     }
 
-    public static function addHireds($data = []) {
+    public static function addHireds($data = [], $proposal = null) {
 
         $freelancer_id = (int)$data['freelancer_id'];
         $project_id = $data['project_id'] ?? null;
@@ -79,10 +79,7 @@ class ProjectHireds extends Model
         $hours = (int)$data['hours'];
         $letter = stripinput(strip_tags($data['letter']));
         $employer_id = (int)$data['employer_id'];
-        $hired = ProjectHireds::getHired($freelancer_id, $employer_id);
-        if ($hired) {
-            return false;
-        }
+        $status = $data['status'];
 
         $hireds = ProjectHireds::create([
             'freelancer_id' => $freelancer_id,
@@ -91,10 +88,13 @@ class ProjectHireds extends Model
             'price' => $price,
             'hours' => $hours,
             'letter' => $letter,
-            'status' => 0
+            'status' => $status,
         ]);
 
-        if ($hireds) {
+        if($proposal) {
+            $proposal->delete();
+        }
+        elseif ($hireds) {
             ProjectProposals::removeProposal($data['freelancer_id'], $data['employer_id']);
         }
 

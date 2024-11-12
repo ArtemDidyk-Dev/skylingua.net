@@ -109,7 +109,10 @@
                                                                     data-bs-toggle="modal"
                                                                     href="#accept-project"
                                                                     class="btn btn-success projects-btn d-inline-block acceptPrpject"
-                                                                    data-freelancer_id="{{ $project->freelancer->id }}">
+                                                                    data-freelancer_id="{{ $project->freelancer->id }}"
+                                                                    data-id={{$project->id}}
+                                                                >
+
                                                                     <i class="fas fa-check"></i>
                                                                     {{ language('Accept Job') }}
                                                                 </a>
@@ -118,7 +121,9 @@
                                                                     data-bs-toggle="modal"
                                                                     href="#correct-project"
                                                                     class="projects-btn d-inline-block correctPrpject"
-                                                                    data-freelancer_id="{{ $project->freelancer->id}}">
+                                                                    data-freelancer_id="{{ $project->freelancer->id}}"
+                                                                    data-id={{$project->id}}
+                                                                >
                                                                     <i class="fas fa-check"></i>
                                                                     {{ language('Correction Job') }}
                                                                 </a>
@@ -202,7 +207,7 @@
                         @csrf
 
                         <input class="freelancer_id" type="hidden" name="freelancer_id" value="">
-
+                        <input class="id" type="hidden" name="id" value="">
                         <div class="modal-info">
                             <div class="row">
                                 <div class="col-12 col-md-12">
@@ -267,6 +272,7 @@
                         @csrf
 
                         <input class="freelancer_id" type="hidden" name="freelancer_id" value="">
+                        <input class="id" type="hidden" name="id" value="">
 
                         <div class="modal-info">
                             <div class="row">
@@ -357,6 +363,16 @@
         $('.correctPrpject').on('click', function (event) {
             let freelancer_id = $(this).data('freelancer_id');
             $('#correct-project .freelancer_id').val(freelancer_id);
+        });
+
+        $('.acceptPrpject').on('click', function (event) {
+            let id = $(this).data('id');
+            $('#accept-project .id').val(id);
+        });
+
+        $('.correctPrpject').on('click', function (event) {
+            let id = $(this).data('id');
+            $('#correct-project .id').val(id);
         });
     </script>
 
