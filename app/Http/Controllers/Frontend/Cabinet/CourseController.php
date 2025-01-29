@@ -58,6 +58,7 @@ class CourseController
 
     public function store(CourseRequest $request)
     {
+
         try {
             $data = $request->validated();
             $data['user'] = Auth::id();
@@ -71,6 +72,9 @@ class CourseController
 
     public function destroy(Course $course): JsonResponse
     {
+        if ($course->user_id !== Auth::id()) {
+            abort(403);
+        }
 
         try {
             $course->delete();
@@ -83,6 +87,9 @@ class CourseController
 
     public function edit(Course $course)
     {
+        if ($course->user_id !== Auth::id()) {
+            abort(403);
+        }
         $course->load(['access', 'files']);
         $files = $course->files->map(function ($file) use ($course) {
             $file->link = route('frontend.dashboard.courses.deleteFile', [$course->id, $file->id]);
