@@ -339,6 +339,99 @@
                 </li>
 
 
+
+                <!--  Subscriber -->
+                <li class="menu-item menu-item-submenu {{ Route::is(['admin.subscriber.index']) ? 'menu-item-open' : '' }}"
+                    aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="javascript:;" class="menu-link menu-toggle">
+                        <span
+                            class="svg-icon menu-icon"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Communication/Address-card.svg--><svg
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <path
+                                        d="M6,2 L18,2 C19.6568542,2 21,3.34314575 21,5 L21,19 C21,20.6568542 19.6568542,22 18,22 L6,22 C4.34314575,22 3,20.6568542 3,19 L3,5 C3,3.34314575 4.34314575,2 6,2 Z M12,11 C13.1045695,11 14,10.1045695 14,9 C14,7.8954305 13.1045695,7 12,7 C10.8954305,7 10,7.8954305 10,9 C10,10.1045695 10.8954305,11 12,11 Z M7.00036205,16.4995035 C6.98863236,16.6619875 7.26484009,17 7.4041679,17 C11.463736,17 14.5228466,17 16.5815,17 C16.9988413,17 17.0053266,16.6221713 16.9988413,16.5 C16.8360465,13.4332455 14.6506758,12 11.9907452,12 C9.36772908,12 7.21569918,13.5165724 7.00036205,16.4995035 Z"
+                                        fill="#000000" />
+                                </g>
+                            </svg><!--end::Svg Icon--></span>
+
+                        <span class="menu-text">Subscriber</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="menu-submenu">
+                        <i class="menu-arrow"></i>
+                        <ul class="menu-subnav">
+                            <!--  Subscriber  -->
+                            <li class="menu-item {{ Route::is(['admin.subscriber.index']) ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ route('admin.subscriber.index') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Subscriber</span>
+                                </a>
+                            </li>
+                            <li class="menu-item {{ Route::is(['admin.subscriber.add']) ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ route('admin.subscriber.create') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Add Subscriber</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+
+
+                <li class="menu-item menu-item-submenu {{ Route::is(['admin.courses.index']) ? 'menu-item-open' : '' }}"
+                    aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="javascript:;" class="menu-link menu-toggle">
+                        <span class="svg-icon menu-icon">
+
+<svg id="Layer_1" fill="#9398a3" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 94.65"><defs><style>.cls-1{fill-rule:evenodd;}</style></defs><title>training</title><path class="cls-1" d="M21.92,0A10.36,10.36,0,1,1,11.57,10.35,10.35,10.35,0,0,1,21.92,0ZM14.61,22.7l3.68,9.65h.39l1.79-6.18-1-1.05c-.72-1.05-.47-2.25.87-2.47a9.91,9.91,0,0,1,1.45,0,8.37,8.37,0,0,1,1.59.06c1.24.28,1.37,1.48.75,2.44l-1,1.05L25,32.35h.38L28.7,22.7a4.52,4.52,0,0,0,.47.37,6.7,6.7,0,0,1,2.71.85,4.73,4.73,0,0,1,3,2l7.9,10.91,5.63,1.08V16.67h-8a1.86,1.86,0,1,1,0-3.72H77.56V7.52a1.87,1.87,0,0,1,3.73,0V13h39.53a1.86,1.86,0,1,1,0,3.72h-7.93V62.73H121a1.86,1.86,0,0,1,0,3.72H81.55V75a2.56,2.56,0,0,0,.26.2l11.62,11a1.85,1.85,0,1,1-2.54,2.68L81.55,80v8a1.87,1.87,0,0,1-3.73,0V79.68l-9.69,9.21a1.84,1.84,0,0,1-2.62-.07,1.82,1.82,0,0,1,.07-2.61l11.62-11h0a1.71,1.71,0,0,1,.62-.39V66.45H40.37a1.86,1.86,0,0,1,0-3.72h8V47.83L39.1,46A4.88,4.88,0,0,1,36,44.1l-3.93-5.45v.14l-.32,15.78,4,25.24,1.51,8.65c.85,5.78-8,9.21-10.19,1.62L21.91,59.66,16.66,90.57c-1,5.59-10.13,5.64-10.19-1.15l5.79-34.65-.44-18.71a7.9,7.9,0,0,0-1.19,2,12.61,12.61,0,0,0-1,4.58L8.83,53.55C8.39,59.25-.1,59.6,0,53.45c.05-2.76.3-5.54.6-8.37.58-5.42.7-8.78,3.79-14.18a18.3,18.3,0,0,1,4.5-5.21,12.14,12.14,0,0,1,4.88-2.32,7.26,7.26,0,0,0,.84-.67ZM52.13,38.26l10.46-11a2.47,2.47,0,1,1,3.58,3.4L56.33,41a4.89,4.89,0,0,1-4.2,7.46V62.73H109.2V16.67H52.13V38.26Z"/></svg>
+
+
+                        </span>
+
+                        <span class="menu-text">Courses</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="menu-submenu">
+                        <i class="menu-arrow"></i>
+                        <ul class="menu-subnav">
+                            <!--  Users  -->
+                            <li class="menu-item {{ Route::is(['admin.courses.index']) ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ route('admin.courses.index') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Courses</span>
+                                </a>
+                            </li>
+                            <li class="menu-item {{ Route::is(['courses']) ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ route('admin.courses.create') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Add Courses Element</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+
+
+
+
+
+
                 <!--  Reviews  -->
                 <li class="menu-item menu-item-submenu {{ Route::is(['admin.review.index', 'admin.review.add', 'admin.review.edit']) ? 'menu-item-open' : '' }}"
                     aria-haspopup="true" data-menu-toggle="hover">

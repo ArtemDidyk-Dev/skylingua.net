@@ -39,7 +39,7 @@
         <!--begin::Container-->
         <div class="container-fluid">
             <div class="row">
-                <div class="col-my-lg-8 ">
+                <div class="col-12 ">
                     <div class="card card-custom gutter-b">
                         <div class="card-header">
                             <div class="card-title">

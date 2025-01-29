@@ -15,6 +15,7 @@ use App\Models\Reviews\Reviews;
 use App\Models\User;
 use App\Models\UserCategory\UserCategory;
 use App\Services\CommonService;
+use App\Services\CourseServices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,11 @@ class ProfileController extends Controller
 {
     public $validatorCheck;
 
+    public function __construct(
+        private CourseServices $courseServices,
+    )
+    {
+    }
 
     public function index(Request $request)
     {
@@ -158,6 +164,7 @@ class ProfileController extends Controller
                     $projects[] = $getProject;
                 }
             }
+
             return view('pages.employer.single', compact(
                 'auth_user',
                 'user',
@@ -189,7 +196,11 @@ class ProfileController extends Controller
                 $user->created_at_view = $showDiff;
             });
             $hasRoleEmployer = (bool) CommonService::userRoleId(auth()->id()) == 3;
+            $user->load(['subscription', 'courses.files', 'courses.access']);
+            $courses = $this->courseServices->getCourses($user, Auth::id());
 
+            $isSubscribed = $this->courseServices->isSubscribed(User::find(Auth::id()), $user) ?? Auth::id() === $user->id;
+            $isAuthor = $user_id == Auth::id();
             return view('pages.freelancers.single', compact(
                 'auth_user',
                 'user',
@@ -199,7 +210,10 @@ class ProfileController extends Controller
                 'projects_list',
                 'reviews_count',
                 'freelancers',
-                'hasRoleEmployer'
+                'hasRoleEmployer',
+                'isSubscribed',
+                'courses',
+                'isAuthor',
             ));
         }
 

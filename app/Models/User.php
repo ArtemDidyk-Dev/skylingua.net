@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +15,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Laravel\Passport\HasApiTokens;
 use App\Models\ProjectProposals;
 use App\Models\Reviews\Reviews;
+
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles, HasApiTokens;
@@ -29,7 +33,7 @@ class User extends Authenticatable
         'status',
         'profile_photo',
         'range_price',
-        'balance'
+        'balance',
     ];
 
     /**
@@ -52,7 +56,6 @@ class User extends Authenticatable
     ];
 
 
-
     public static function add($request)
     {
 
@@ -61,9 +64,9 @@ class User extends Authenticatable
             'email' => $request['email'],
             'password' => bcrypt($request['password']),
             'verify' => $request['verify'],
-            'status' => 0
+            'status' => 0,
         ]);
-        $user->syncRoles( (int)$request['roles'] );
+        $user->syncRoles((int)$request['roles']);
 
         return $user;
     }
@@ -118,24 +121,30 @@ class User extends Authenticatable
             'user_categories_translations.name as user_category_name',
             'countries_translations.name as user_country_name',
             'countries.image as user_country_image',
-            DB::raw("(
+            DB::raw(
+                "(
                 SELECT
                     COUNT(project_hireds.id)
                 FROM project_hireds
                 WHERE project_hireds.freelancer_id = users.id
-            ) as projects_count"),
-            DB::raw("(
+            ) as projects_count"
+            ),
+            DB::raw(
+                "(
                 SELECT
                     COUNT(reviews.id)
                 FROM reviews
                 WHERE reviews.to = users.id
-            ) as reviews_count"),
-            DB::raw("(
+            ) as reviews_count"
+            ),
+            DB::raw(
+                "(
                 SELECT
                     avg(reviews.rating)
                 FROM reviews
                 WHERE reviews.to = users.id
-            ) as average_rating")
+            ) as average_rating"
+            )
         )
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
 //            ->leftJoin('user_categories_translations', 'users.user_category', '=', 'user_categories_translations.user_category_id')
@@ -154,8 +163,8 @@ class User extends Authenticatable
 
 
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
-            $user = $user->where('users.name', 'LIKE', "%". stripinput(strip_tags($filter['keyword'])) ."%")
-                ->orWhere('users.description', 'LIKE', "%". stripinput(strip_tags($filter['keyword'])) ."%")
+            $user = $user->where('users.name', 'LIKE', "%".stripinput(strip_tags($filter['keyword']))."%")
+                ->orWhere('users.description', 'LIKE', "%".stripinput(strip_tags($filter['keyword']))."%")
                 ->where('users.status', 1);
         }
         if (isset($filter['minPrice']) && !empty($filter['minPrice']) && $filter['minPrice'] > 0) {
@@ -168,11 +177,11 @@ class User extends Authenticatable
             $user = $user->where('users.country', (int)$filter['country']);
         }
         if (isset($filter['user_category']) && !empty($filter['user_category']) && $filter['user_category'] > 0) {
-            $user = $user->whereIn('users.user_category',  (array)$filter['user_category']);
+            $user = $user->whereIn('users.user_category', (array)$filter['user_category']);
         }
 
         if (isset($filter['order']) && !empty($filter['order'])) {
-            if (isset($filter['sort']) && !empty($filter['sort']) && $filter['sort']=="DESC") {
+            if (isset($filter['sort']) && !empty($filter['sort']) && $filter['sort'] == "DESC") {
                 $user = $user->orderBy(stripinput($filter['order']), 'DESC');
             } else {
                 $user = $user->orderBy(stripinput($filter['order']), 'ASC');
@@ -202,24 +211,30 @@ class User extends Authenticatable
             'user_categories_translations.name as user_category_name',
             'countries_translations.name as user_country_name',
             'countries.image as user_country_image',
-            DB::raw("(
+            DB::raw(
+                "(
                 SELECT
                     COUNT(project_hireds.id)
                 FROM project_hireds
                 WHERE project_hireds.freelancer_id = users.id
-            ) as projects_count"),
-            DB::raw("(
+            ) as projects_count"
+            ),
+            DB::raw(
+                "(
                 SELECT
                     COUNT(reviews.id)
                 FROM reviews
                 WHERE reviews.to = users.id
-            ) as reviews_count"),
-            DB::raw("(
+            ) as reviews_count"
+            ),
+            DB::raw(
+                "(
                 SELECT
                     avg(reviews.rating)
                 FROM reviews
                 WHERE reviews.to = users.id
-            ) as average_rating")
+            ) as average_rating"
+            )
         )
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
 //            ->leftJoin('user_categories_translations', 'users.user_category', '=', 'user_categories_translations.user_category_id')
@@ -253,13 +268,11 @@ class User extends Authenticatable
         $minPrice = 0;
         $maxPrice = 0;
         foreach ($freelancers as $freelancer) {
-            if($freelancer->hourly_rate > $maxPrice)
-            {
+            if ($freelancer->hourly_rate > $maxPrice) {
                 $maxPrice = $freelancer->hourly_rate;
             }
 
-            if($freelancer->hourly_rate < $minPrice)
-            {
+            if ($freelancer->hourly_rate < $minPrice) {
                 $minPrice = $freelancer->hourly_rate;
             }
         }
@@ -271,12 +284,12 @@ class User extends Authenticatable
     }
 
 
-
-    public static function getUser($user_id) {
+    public static function getUser($user_id)
+    {
         $user = User::select(
-                'users.*',
-                'model_has_roles.role_id'
-            )
+            'users.*',
+            'model_has_roles.role_id'
+        )
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->where('users.id', (int)$user_id)
             ->where('users.status', 1)
@@ -285,31 +298,38 @@ class User extends Authenticatable
         return $user;
     }
 
-    public static function getUserInfo($user_id, $data = []) {
+    public static function getUserInfo($user_id, $data = [])
+    {
         $user = User::select(
             'users.*',
             'model_has_roles.role_id',
             'user_categories_translations.name as user_category_name',
             'countries_translations.name as user_country_name',
             'countries.image as user_country_image',
-            DB::raw("(
+            DB::raw(
+                "(
                 SELECT
                     COUNT(project_hireds.id)
                 FROM project_hireds
                 WHERE project_hireds.freelancer_id = users.id
-            ) as projects_count"),
-            DB::raw("(
+            ) as projects_count"
+            ),
+            DB::raw(
+                "(
                 SELECT
                     COUNT(reviews.id)
                 FROM reviews
                 WHERE reviews.to = users.id
-            ) as reviews_count"),
-            DB::raw("(
+            ) as reviews_count"
+            ),
+            DB::raw(
+                "(
                 SELECT
                     avg(reviews.rating)
                 FROM reviews
                 WHERE reviews.to = users.id
-            ) as average_rating")
+            ) as average_rating"
+            )
         )
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->leftJoin('user_categories_translations', function ($join) use ($data) {
@@ -328,14 +348,15 @@ class User extends Authenticatable
         return $user;
     }
 
-    public static function getParentUser($user_id, $data = []) {
+    public static function getParentUser($user_id, $data = [])
+    {
         $user = User::select(
-                'users.*',
-                'model_has_roles.role_id',
-                'user_categories_translations.name as user_category_name',
-                'countries_translations.name as user_country_name',
-                'countries.image as user_country_image'
-            )
+            'users.*',
+            'model_has_roles.role_id',
+            'user_categories_translations.name as user_category_name',
+            'countries_translations.name as user_country_name',
+            'countries.image as user_country_image'
+        )
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->leftJoin('user_categories_translations', function ($join) use ($data) {
                 $join->on('users.user_category', '=', 'user_categories_translations.user_category_id')
@@ -351,6 +372,7 @@ class User extends Authenticatable
 
         return $user;
     }
+
     public function projectProposals()
     {
         return $this->hasMany(ProjectProposals::class, 'freelancer_id', 'id');
@@ -369,6 +391,26 @@ class User extends Authenticatable
     public function getReviewRatingAttribute()
     {
         return bcdiv($this->reviews()->where('status', 1)->avg('rating'), 1, 1);
+    }
+
+    public function subscription(): HasOne
+    {
+        return  $this->hasOne(Subscription::class, 'user_id', 'id');
+    }
+
+    public function isFreelancer(): bool
+    {
+        return $this->roles()->where('id', 4)->exists();
+    }
+
+    public function courses(): hasMany
+    {
+        return  $this->hasMany(Course::class, 'user_id', 'id');
+    }
+
+    public function subscriptions(): BelongsToMany
+    {
+        return $this->belongsToMany(Subscription::class, 'subscription_user', 'user_id', 'subscription_id');
     }
 
 }

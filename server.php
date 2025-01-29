@@ -19,3 +19,4 @@ if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
 }
 
 require_once __DIR__.'/public/index.php';
+//php artisan make:migration add_name_to_files_table --table=сourse_files

@@ -204,6 +204,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _js_review__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_js_review__WEBPACK_IMPORTED_MODULE_8__);
 /* harmony import */ var _js_filter__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./js/filter */ "./assets/js/filter.js");
 /* harmony import */ var _js_filter__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_js_filter__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _js_tabsProfile__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./js/tabsProfile */ "./assets/js/tabsProfile.js");
+/* harmony import */ var _js_tabsProfile__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_js_tabsProfile__WEBPACK_IMPORTED_MODULE_10__);
+
 
 
 
@@ -618,6 +621,32 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   function activeElement() {}
 });
+
+/***/ }),
+
+/***/ "./assets/js/tabsProfile.js":
+/*!**********************************!*\
+  !*** ./assets/js/tabsProfile.js ***!
+  \**********************************/
+/***/ (() => {
+
+var tabsButton = document.querySelectorAll('.single-freelancer-review__tabs span');
+var tabsItems = document.querySelectorAll('.single-freelancer-review__box');
+if (tabsButton.length > 0) {
+  tabsButton.forEach(function (button) {
+    button.addEventListener("click", function () {
+      tabsButton.forEach(function (item, index) {
+        item.classList.remove("active");
+        tabsItems[index].classList.remove("active");
+      });
+      var active = button.getAttribute("data-tabs");
+      var newTabsElement = document.querySelectorAll("[data-tabs=\"".concat(active, "\"]"));
+      newTabsElement.forEach(function (item) {
+        item.classList.add("active");
+      });
+    });
+  });
+}
 
 /***/ }),
 

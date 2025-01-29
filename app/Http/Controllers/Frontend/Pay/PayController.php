@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend\Pay;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Pay\PayGoRequest;
+use App\Models\Access;
 use App\Models\Chats\ChatMessages;
 use App\Models\Chats\Chats;
 use App\Models\Notification\Notification;
@@ -11,12 +12,15 @@ use App\Models\Pay\Pay;
 use App\Models\Project\ProjectHireds;
 use App\Models\Project\Projects;
 use App\Models\ProjectProposals;
+use App\Models\Subscription;
 use App\Models\User;
 use App\Models\UserCategory\UserCategory;
 use App\Services\CommonService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -41,7 +45,7 @@ class PayController extends Controller
         }
 
         $freelancer_filter = [
-            'language_id' => $request->languageID
+            'language_id' => $request->languageID,
         ];
         $freelancer = User::getUserInfo($freelancer_id, $freelancer_filter);
 
@@ -53,7 +57,7 @@ class PayController extends Controller
         $project_filter = [
             'language_id' => $request->languageID,
             'status' => 1,
-            'employer_id' => $employer_id
+            'employer_id' => $employer_id,
         ];
 
 
@@ -90,7 +94,17 @@ class PayController extends Controller
             $amount = (float)$amount * 100;
             $orderNumber = rand($pay->id * 200, $pay->id * 5000);
 
-            $curl_url = config('pay.base_url') . '/epg/rest/register.do?userName=' . config('pay.username') . '&password=' . config('pay.password') . '&currency=' . config('pay.currency') . '&orderNumber=' . $orderNumber . '&amount=' . $amount . '&language=' . config('pay.language') . '&returnUrl=' . route('frontend.pay.status') . '&sessionTimeoutSecs=86400&jsonParams={"request":"PAY","bank":"' . config('pay.bankCode') .'","description":"' . config('pay.description') .'","sid":"' . config('pay.sid') .'"}';
+            $curl_url = config('pay.base_url').'/epg/rest/register.do?userName='.config(
+                    'pay.username'
+                ).'&password='.config('pay.password').'&currency='.config(
+                    'pay.currency'
+                ).'&orderNumber='.$orderNumber.'&amount='.$amount.'&language='.config(
+                    'pay.language'
+                ).'&returnUrl='.route(
+                    'frontend.pay.status'
+                ).'&sessionTimeoutSecs=86400&jsonParams={"request":"PAY","bank":"'.config(
+                    'pay.bankCode'
+                ).'","description":"'.config('pay.description').'","sid":"'.config('pay.sid').'"}';
 
             $curl = curl_init();
             curl_setopt_array($curl, array(
@@ -113,7 +127,10 @@ class PayController extends Controller
             $response_arr = json_decode($response);
 
             if ($err || (isset($response_arr->errorCode) && $response_arr->errorCode > 0)) {
-                return redirect()->route('frontend.pay.error')->with('message', language('cURL Error #:') . $err . " " . $response_arr->errorMessage);
+                return redirect()->route('frontend.pay.error')->with(
+                    'message',
+                    language('cURL Error #:').$err." ".$response_arr->errorMessage
+                );
             } else {
 
                 if ($response_arr->orderId) {
@@ -128,11 +145,17 @@ class PayController extends Controller
                     if ($editPay == true) {
                         return redirect($response_arr->formUrl);
                     } else {
-                        return redirect()->route('frontend.pay.error')->with('message', language('frontend.pay.error_payment_not_edited'));
+                        return redirect()->route('frontend.pay.error')->with(
+                            'message',
+                            language('frontend.pay.error_payment_not_edited')
+                        );
                     }
 
                 } else {
-                    return redirect()->route('frontend.pay.error')->with('message', language('frontend.pay.error_not_order_id'));
+                    return redirect()->route('frontend.pay.error')->with(
+                        'message',
+                        language('frontend.pay.error_not_order_id')
+                    );
                 }
             }
 
@@ -161,7 +184,7 @@ class PayController extends Controller
                 // }
 
                 $freelancer_filter = [
-                    'language_id' => $request->languageID
+                    'language_id' => $request->languageID,
                 ];
                 $freelancer = User::getUserInfo($pay_info->freelancer_id, $freelancer_filter);
 
@@ -175,7 +198,9 @@ class PayController extends Controller
                 }
 
 
-                $curl_url = config('pay.base_url') . '/epg/rest/getOrderStatus.do?userName=' . config('pay.username') . '&password=' . config('pay.password') . '&orderId=' . $orderId;
+                $curl_url = config('pay.base_url').'/epg/rest/getOrderStatus.do?userName='.config(
+                        'pay.username'
+                    ).'&password='.config('pay.password').'&orderId='.$orderId;
 
                 $curl = curl_init();
                 curl_setopt_array($curl, array(
@@ -206,7 +231,11 @@ class PayController extends Controller
                     $editPay = Pay::editPay($pay_info->id, $data);
 
                     if ($editPay) {
-                        Notification::addNotification($pay_info->employer_id, $err . (!empty($err) ? " " : "") . $response_arr->ErrorMessage, $request->languageID);
+                        Notification::addNotification(
+                            $pay_info->employer_id,
+                            $err.(!empty($err) ? " " : "").$response_arr->ErrorMessage,
+                            $request->languageID
+                        );
 
                         $proposal->delete();
                     }
@@ -221,7 +250,10 @@ class PayController extends Controller
                     $request->session()->forget('proposal.id');
                     $request->session()->forget('guavapay_orderId');
 
-                    return redirect()->route('frontend.pay.error')->with('message', language('Payment Error #:') . $err . (!empty($err) ? " " : "") . $response_arr->ErrorMessage);
+                    return redirect()->route('frontend.pay.error')->with(
+                        'message',
+                        language('Payment Error #:').$err.(!empty($err) ? " " : "").$response_arr->ErrorMessage
+                    );
                 } else {
 
                     $data = [
@@ -236,12 +268,16 @@ class PayController extends Controller
                             'price' => $pay_info->amount,
                             'hours' => $proposal->hours,
                             'letter' => language('I accepted your proposal and made payment. Please start doing work.'),
-                            'status' => 1
+                            'status' => 1,
                         ];
                         ProjectHireds::addHireds($data, $proposal);
 
-                        $employer_text = language('The payment was successful and the task was sent to the freelancer.');
-                        $freelancer_text = language('The employer accepted your offer and paid. Immediately, get to work.');
+                        $employer_text = language(
+                            'The payment was successful and the task was sent to the freelancer.'
+                        );
+                        $freelancer_text = language(
+                            'The employer accepted your offer and paid. Immediately, get to work.'
+                        );
 
                         Notification::addNotification($pay_info->employer_id, $employer_text, $request->languageID);
                         Notification::addNotification($pay_info->freelancer_id, $freelancer_text, $request->languageID);
@@ -263,7 +299,10 @@ class PayController extends Controller
 //                    $request->session()->forget('guavapay_orderId');
 
 
-                    return redirect()->route('frontend.pay.success')->with('message', language('Payment made successfully.'));
+                    return redirect()->route('frontend.pay.success')->with(
+                        'message',
+                        language('Payment made successfully.')
+                    );
 
                 }
 
@@ -295,7 +334,7 @@ class PayController extends Controller
 
         $project_filter = [
             'language_id' => $request->languageID,
-            'status' => 1
+            'status' => 1,
         ];
 
         $request->session()->put('proposal.id', $proposal->id);
@@ -306,11 +345,11 @@ class PayController extends Controller
         $request->session()->put('proposal.letter', $proposal->letter);
 
         return redirect()->route('frontend.pay.go_get', [
-            'proposal_id'   => $proposal->id,
-            'employer_id'   => $proposal->employer_id,
+            'proposal_id' => $proposal->id,
+            'employer_id' => $proposal->employer_id,
             'freelancer_id' => $proposal->freelancer_id,
-            'price'         => $proposal->price,
-            'hours'         => $proposal->hours,
+            'price' => $proposal->price,
+            'hours' => $proposal->hours,
         ])->withInput($request->all());
     }
 
@@ -327,13 +366,118 @@ class PayController extends Controller
     }
 
 
-
     public
-    function validateCheck($inputName, $text)
-    {
+    function validateCheck(
+        $inputName,
+        $text
+    ) {
         $this->validatorCheck->after(function ($validator) use ($inputName, $text) {
             $validator->errors()->add($inputName, $text);
         });
     }
 
+
+    private function createPayment($type, $payerId, $receiverId, $amount, $entityId, $entityType)
+    {
+        return Pay::create([
+            'type' => $type,
+            'employer_id' => $payerId,
+            'freelancer_id' => $receiverId,
+            'amount' => $amount,
+            'currency' => config('pay.currency'),
+            'status' => 0,
+            $entityType => $entityId,
+        ]);
+    }
+
+    private function processPayment(Pay $pay, $returnRoute)
+    {
+        $amount = (float) $pay->amount * 100;
+        $orderNumber = env('PROJECT_NAME') . "_{$pay->id}";
+
+        $response = Http::get(config('pay.base_url') . '/epg/rest/register.do', [
+            'userName' => config('pay.username'),
+            'password' => config('pay.password'),
+            'currency' => config('pay.currency'),
+            'orderNumber' => $orderNumber,
+            'amount' => $amount,
+            'language' => config('pay.language'),
+            'returnUrl' => $returnRoute,
+            'sessionTimeoutSecs' => 86400,
+            'jsonParams' => json_encode([
+                'request' => 'PAY',
+                'bank' => config('pay.bankCode'),
+                'description' => config('pay.description'),
+                'sid' => config('pay.sid'),
+            ], JSON_THROW_ON_ERROR),
+        ]);
+
+        $responseData = $response->json();
+        if (!empty($responseData['errorCode'])) {
+            $pay->delete();
+            return redirect()->route('frontend.pay.error')->with('message', language('Error #:') . $responseData['errorMessage']);
+        }
+
+        $pay->update(['orderId' => $responseData['orderId'], 'status' => 1]);
+        return redirect()->to($responseData['formUrl']);
+    }
+
+    private function checkPaymentStatus(Pay $pay)
+    {
+        $url = config('pay.base_url') . '/epg/rest/getOrderStatus.do';
+        $queryParams = http_build_query([
+            'userName' => config('pay.username'),
+            'password' => config('pay.password'),
+            'orderId' => $pay->orderId,
+        ]);
+
+        $response = Http::withHeaders(['Content-Type' => 'application/json'])->post("{$url}?{$queryParams}");
+        $responseArr = $response->json();
+
+        $pay->update(['code' => $responseArr['ErrorCode'], 'status' => ($responseArr['OrderStatus'] == 2) ? 2 : 3]);
+        return $responseArr;
+    }
+
+    private function finalizePayment(Pay $pay)
+    {
+        $freelancer = User::find($pay->freelancer_id);
+        $freelancer->increment('balance', $pay->amount);
+
+        $employer = User::find($pay->employer_id);
+        Notification::addNotification($freelancer->id, "{$employer->name} Paid {$pay->amount}");
+        return redirect()->route('frontend.profile.index', $freelancer->id);
+    }
+
+    public function paymentSubscribers(Subscription $subscriber)
+    {
+        $pay = $this->createPayment(1, Auth::id(), $subscriber->user_id, $subscriber->price, $subscriber->id, 'subscribe_id');
+        return $this->processPayment($pay, URL::signedRoute('frontend.pay.subscribers.status', $pay));
+    }
+
+    public function paymentSubscribersStatus(Pay $pay)
+    {
+        $responseArr = $this->checkPaymentStatus($pay);
+        if (!empty($responseArr['ErrorCode']) || $responseArr['OrderStatus'] != 2) {
+            return redirect()->route('frontend.pay.error')->with('message', language('Payment Error #:'));
+        }
+
+        User::find($pay->employer_id)->subscriptions()->attach($pay->subscribe_id, ['active' => 1, 'created_at' => now(), 'updated_at' => now()]);
+        return $this->finalizePayment($pay);
+    }
+
+    public function paymentAccess(Access $access)
+    {
+        $access->load('freelancer');
+        $pay = $this->createPayment(1, Auth::id(), $access->freelancer->id, $access->price, $access->id, 'access_id');
+        return $this->processPayment($pay, URL::signedRoute('frontend.pay.accesses.status', [$access, $pay]));
+    }
+
+    public function paymentAccessStatus(Access $access, Pay $pay)
+    {
+        $responseArr = $this->checkPaymentStatus($pay);
+        if (!empty($responseArr['ErrorCode']) || $responseArr['OrderStatus'] != 2) {
+            return redirect()->route('frontend.pay.error')->with('message', language('Payment Error #:'));
+        }
+        return $this->finalizePayment($pay);
+    }
 }

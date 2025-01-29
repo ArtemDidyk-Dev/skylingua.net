@@ -8,3 +8,4 @@ import "./js/tabCategory";
 import "./js/faq";
 import "./js/review";
 import "./js/filter";
+import "./js/tabsProfile";
