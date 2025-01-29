@@ -191,6 +191,21 @@ Route::group(
                             Route::get('teacher/profile-settings', 'ProfileController@editFrelancer')->name('frontend.dashboard.freelancer.profile-settings');
                             Route::post('teacher/profile-settings/store', 'ProfileController@editFrelancerStore')->name('frontend.dashboard.freelancer.-settings.store');
                             Route::post('teacher/profile-settings/store', 'ProfileController@editFrelancerStore')->name('frontend.dashboard.freelancer.profile-settings.store');
+                            Route::get('teacher/subscribers', 'SubscribersController@show')->name('frontend.dashboard.subscribers');
+                            Route::post('teacher/subscribers/update', 'SubscribersController@update')->name('frontend.dashboard.subscribers.update');
+                            Route::post('teacher/subscribers/store', 'SubscribersController@store')->name('frontend.dashboard.subscribers.store');
+
+
+
+
+                            Route::get('teacher/courses', 'CourseController@index')->name('frontend.dashboard.freelancer.courses');
+                            Route::get('teacher/create', 'CourseController@create')->name('frontend.dashboard.freelancer.create.courses');
+                            Route::get('teacher/{course}/edit', 'CourseController@edit')->name('frontend.dashboard.freelancer.edit.courses');
+                            Route::post('teacher/courses/add/store', 'CourseController@store')->name('frontend.dashboard.freelancer.courses.add.store');
+                            Route::post('teacher/courses/{course}', 'CourseController@update')->name('frontend.dashboard.courses.update');
+                            Route::delete('courses/{id}/files/{file}', 'CourseController@deleteFile')->name('frontend.dashboard.courses.deleteFile');
+                            Route::delete('courses/{course}', 'CourseController@destroy')->name('frontend.dashboard.courses.destroy');
+
 
                         });
                     });

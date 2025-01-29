@@ -121,6 +121,28 @@
                     <i class="material-icons">settings</i>  {{ language('frontend.dashboard.settings') }}
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a href="{{ route('frontend.dashboard.subscribers') }}" class="nav-link{{ Route::is(
+                                                        [
+                                                        'frontend.dashboard.subscribers',
+                                                        ]
+                                                        )? " active" : "" }}">
+                    <i class="material-icons">record_voice_over</i>  {{ language('My subscription') }}
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ route('frontend.dashboard.freelancer.courses') }}" class="nav-link{{ Route::is(
+                                                        [
+                                                        'frontend.dashboard.freelancer.courses',
+                                                        ]
+                                                        )? " active" : "" }}">
+                    <i class="material-icons">pie_chart</i> My courses
+                </a>
+            </li>
+
+
             <li class="nav-item">
                 <a href="javascript:void(0)" onclick="document.getElementById('formLogout').submit()" class="nav-link">
                     <i class="material-icons">power_settings_new</i> {{ language('frontend.dashboard.logout') }}

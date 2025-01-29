@@ -78,7 +78,9 @@
                                             <div class="course__item-files">
                                                 @foreach($course->files as $file)
                                                     <div class="course__files-item">
-                                                        <img src="{{$file->promo}}" alt="{{$file->name}}">
+                                                        <img src="{{$file->promo}}"
+                                                             class="{{$file->type !== 'image' ? 'img-files' : ''}}"
+                                                             alt="{{$file->name}}">
                                                         @if($file->type != 'image')
                                                             <a href="{{$file->path}}">
                                                                 <svg width="16" height="16" viewBox="0 0 16 16"
@@ -106,7 +108,8 @@
                                                 {!! $course->short !!}
                                             </div>
                                             <div class="course__item-available-show">
-                                                <img height="280" width="734" src="{{$course->promo_img ?: '/images/promo/look-bay.png'}}">
+                                                <img height="280" width="734"
+                                                     src="{{$course->promo_img ?: '/images/promo/look-bay.png'}}">
                                                 <a href="{{$course->linkPay['link']}}">{{$course->linkPay['text']}}</a>
                                             </div>
 

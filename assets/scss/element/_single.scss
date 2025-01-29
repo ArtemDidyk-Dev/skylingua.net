@@ -522,6 +522,11 @@
                 display: flex;
                 align-items: center;
             }
+            &-author {
+                img {
+                    border-radius: 8px;
+                }
+            }
             &-author-description {
                 margin-left: 16px;
                 span {
@@ -542,6 +547,7 @@
                     font-weight: 600;
                 }
             }
+
             &__item-text {
                 margin-top: 8px;
                 p, span, h2, h1, h3, li {
@@ -556,6 +562,10 @@
                     height: 100%;
                     border-radius: 12px;
                 }
+                .img-files {
+                    width: 50px;
+                    height: 100%;
+                }
                 a {
                     display: flex;
                     align-items: center;
@@ -567,7 +577,6 @@
                     }
                 }
             }
-        ///storage/course/19/6799696d5602c4.00492595.png
             &-files {
                 margin-top: 25px;
             }

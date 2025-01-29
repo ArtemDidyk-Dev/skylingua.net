@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Support\Str;
 
 class Access extends Model
 {
@@ -57,4 +58,14 @@ class Access extends Model
         );
     }
 
+    public function getAccessTextAttribute()
+    {
+        return match ($this->type) {
+            self::OPEN_TO_EVERYONE => 'Open to everyone',
+            self::SUBSCRIBERS_ONLY => 'Subscribers only',
+            self::SUBSCRIBERS_OR_ONE_TIME_PAYMENT => 'Subscribers or one-time payment',
+            self::ONE_TIME_PAYMENT_ONLY => 'One-time payment only',
+            default => '1'
+        };
+    }
 }

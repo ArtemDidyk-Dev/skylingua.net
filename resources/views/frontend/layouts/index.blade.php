@@ -2,6 +2,7 @@
 <html lang="{{ request('currentLang') }}">
 <head>
 @include('frontend.layouts.partials.head')
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 @if(Route::is(['frontend.home.index']))
 <body class="home-page">
