@@ -200,6 +200,7 @@ class ProfileController extends Controller
             $courses = $this->courseServices->getCourses($user, Auth::id());
 
             $isSubscribed = $this->courseServices->isSubscribed(User::find(Auth::id()), $user) ?? Auth::id() === $user->id;
+
             $isAuthor = $user_id == Auth::id();
             return view('pages.freelancers.single', compact(
                 'auth_user',

@@ -241,6 +241,8 @@ Route::group(
                 Route::get('/pay/accesses/{access}/status/{pay}', 'Pay\PayController@paymentAccessStatus')->name('frontend.pay.accesses.status')->middleware('signed');
                 /*   PAY END   */
 
+                Route::get('/subscribers/{subscriber}/unsubscribe', 'Cabinet\SubscribersController@unsubscribe')->name('frontend.unsubscribe');
+
 //                Route::get('/cabinet', 'Cabinet\CabinetController@index')->name('frontend.cabinet.cabinet');
 //                Route::get('/cabinet/edit/{id}', 'Cabinet\CabinetController@edit')->name('frontend.cabinet.edit');
 //                Route::post('/cabinet/edit/{id}/store', 'Cabinet\CabinetController@store')->name('frontend.cabinet.store');
