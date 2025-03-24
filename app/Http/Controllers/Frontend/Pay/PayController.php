@@ -418,7 +418,7 @@ class PayController extends Controller
             $requestData['recurrenceType'] = 'MANUAL';
         }
         $response = Http::get(config('pay.base_url') . '/epg/rest/register.do', $requestData);
-        dd($response->json() );
+
         $responseData = $response->json();
 
         if (!empty($responseData['errorCode'])) {
