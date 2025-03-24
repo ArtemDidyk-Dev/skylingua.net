@@ -440,8 +440,8 @@ class PayController extends Controller
 
         $response = Http::withHeaders(['Content-Type' => 'application/json'])->post("{$url}?{$queryParams}");
         $responseArr = $response->json();
-
-        $pay->update(['code' => $responseArr['ErrorCode'], 'status' => ($responseArr['OrderStatus'] == 2) ? 2 : 3]);
+        $status = $responseArr['OrderStatus'] ?? 3;
+        $pay->update(['code' => $responseArr['ErrorCode'], 'status' => ($status == 2) ? 2 : 3]);
         return $responseArr;
     }
 

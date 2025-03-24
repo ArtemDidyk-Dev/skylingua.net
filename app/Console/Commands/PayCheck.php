@@ -48,7 +48,8 @@ class PayCheck extends Command
             ->get();
         $payments->each(function (Pay $payment) {
             $status = $this->payController->checkPaymentStatus($payment);
-            if($status['OrderStatus'] === 2) {
+            $orderStatus = $status['OrderStatus'] ?? 3;
+            if($orderStatus == 2) {
                 if($payment->subscribe_id !== null) {
                    $subscriptionId = $this->recurrencePaymentService->getSubscriptionId($payment->subscribe_id, $payment->employer_id, 0 );
                    $this->recurrencePaymentService->updatePaymentSubscription($subscriptionId, 1);
