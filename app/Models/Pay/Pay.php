@@ -4,6 +4,7 @@ namespace App\Models\Pay;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Pay extends Model
 {
@@ -23,7 +24,7 @@ class Pay extends Model
             'type' => (int)$data['type'],
             'amount' => (float)$data['amount'],
             'currency' => (int)$data['currency'],
-            'status' => 0
+            'status' => 0,
         ]);
 
         return $pay;

@@ -390,12 +390,19 @@ class PayController extends Controller
         ]);
     }
 
-    private function processPayment(Pay $pay, $returnRoute)
+    private function processPayment(Pay $pay, $returnRoute, bool $recurrence = false)
     {
         $amount = (float) $pay->amount * 100;
         $orderNumber = env('PROJECT_NAME') . "_{$pay->id}";
 
-        $response = Http::get(config('pay.base_url') . '/epg/rest/register.do', [
+        $jsonParams = [
+            'request' => 'PAY',
+            'bank' => config('pay.bankCode'),
+            'description' => config('pay.description'),
+            'sid' => config('pay.sid'),
+        ];
+
+        $requestData = [
             'userName' => config('pay.username'),
             'password' => config('pay.password'),
             'currency' => config('pay.currency'),
@@ -404,25 +411,25 @@ class PayController extends Controller
             'language' => config('pay.language'),
             'returnUrl' => $returnRoute,
             'sessionTimeoutSecs' => 86400,
-            'jsonParams' => json_encode([
-                'request' => 'PAY',
-                'bank' => config('pay.bankCode'),
-                'description' => config('pay.description'),
-                'sid' => config('pay.sid'),
-            ], JSON_THROW_ON_ERROR),
-        ]);
+            'jsonParams' => json_encode($jsonParams, JSON_THROW_ON_ERROR),
+        ];
+
+        if ($recurrence) {
+            $requestData['recurrenceType'] = 'MANUAL';
+        }
+        $response = Http::get(config('pay.base_url') . '/epg/rest/register.do', $requestData);
 
         $responseData = $response->json();
+
         if (!empty($responseData['errorCode'])) {
             $pay->delete();
             return redirect()->route('frontend.pay.error')->with('message', language('Error #:') . $responseData['errorMessage']);
         }
-
-        $pay->update(['orderId' => $responseData['orderId'], 'status' => 1]);
+        $pay->update(['orderId' => $responseData['orderId'], 'status' => 1, 'recurrence_id' => $responseData['recurrenceId'] ?? null]);
         return redirect()->to($responseData['formUrl']);
     }
 
-    private function checkPaymentStatus(Pay $pay)
+    public function checkPaymentStatus(Pay $pay)
     {
         $url = config('pay.base_url') . '/epg/rest/getOrderStatus.do';
         $queryParams = http_build_query([
@@ -438,7 +445,7 @@ class PayController extends Controller
         return $responseArr;
     }
 
-    private function finalizePayment(Pay $pay)
+    public function finalizePayment(Pay $pay)
     {
         $freelancer = User::find($pay->freelancer_id);
         $freelancer->increment('balance', $pay->amount);
@@ -451,7 +458,7 @@ class PayController extends Controller
     public function paymentSubscribers(Subscription $subscriber)
     {
         $pay = $this->createPayment(1, Auth::id(), $subscriber->user_id, $subscriber->price, $subscriber->id, 'subscribe_id');
-        return $this->processPayment($pay, URL::signedRoute('frontend.pay.subscribers.status', $pay));
+        return $this->processPayment($pay, URL::signedRoute('frontend.pay.subscribers.status', $pay), true);
     }
 
     public function paymentSubscribersStatus(Pay $pay)
@@ -479,5 +486,21 @@ class PayController extends Controller
             return redirect()->route('frontend.pay.error')->with('message', language('Payment Error #:'));
         }
         return $this->finalizePayment($pay);
+    }
+
+    public function makeRecurrentPayment(Pay $pay): array
+    {
+        if (!$pay->recurrence_id) {
+            throw new \Exception('No recurrence ID found for order');
+        }
+        $response = Http::get(config('pay.base_url').'/epg/rest/recurrentPayment.do', [
+            'userName' => config('pay.username'),
+            'password' => config('pay.password'),
+            'recurrenceId' => $pay->recurrence_id,
+        ]);
+        if ($response->failed()) {
+            throw new \Exception('Recurrent payment failed: ' . $response->body());
+        }
+        return $response->json();
     }
 }

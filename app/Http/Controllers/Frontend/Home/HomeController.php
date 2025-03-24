@@ -9,6 +9,7 @@ use App\Models\Blog\Blog;
 use App\Models\Blog\Faq;
 use App\Models\FreelancerFavourites;
 use App\Models\Partner\Partner;
+use App\Models\Pay\Pay;
 use App\Models\Post\Post;
 use App\Models\Product\Product;
 use App\Models\Product\ProductCategory;
@@ -50,7 +51,6 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {
-
         $user_id = Auth::id();
         $freelancer_filter = [
             'language_id' => $request->languageID,
