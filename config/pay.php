@@ -4,7 +4,7 @@ return [
     'currencyIcon' => "€",
     'currency' => 978,
     'language' => 'en',
-    'username' => 'SKYLNG_ND',
+    'username' => 'SKLG_ND',
     'password' => 'kOM9smL39j1IL7x!',
     'base_url' => 'https://epg.guavapay.com',
 //    'username' => 'Test_gigsphere',
