@@ -4,7 +4,7 @@
     language('frontend.dashboard.chat'))
 @section('keywords', language('frontend.dashboard.keywords'))
 @section('description', language('frontend.dashboard.description'))
-
+<script  src="https://www.google.com/recaptcha/api.js"></script>
 
 @section('content')
 
@@ -308,12 +308,23 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="p-3 pb-0 mb-4 text-left">
+                        <div class="g-recaptcha" data-callback="recaptchaSuccess" data-sitekey="{{config('services.recaptcha.key')}}"></div>
+                    </div>
                     <div class="submit-section text-right">
                         <a data-bs-dismiss="modal"
                             class="btn btn-primary black-btn submit-btn">{{ language('Cancel') }}</a>
                         <a href="#" type="submit"
-                            class="btn btn-primary submit-btn lapash_url">{{ language('Hire&Pay') }}</a>
+                           id="hirePayBtn"
+                           style="display:none;"
+                           class="btn btn-primary submit-btn lapash_url">
+                            {{ language('Hire&Pay') }}
+                        </a>
+                        <script>
+                            function recaptchaSuccess() {
+                                document.getElementById('hirePayBtn').style.display = 'inline-block';
+                            }
+                        </script>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
@@ -1121,6 +1132,8 @@
                     name: "required",
                 }
             });
+
         </script>
+
     @endif
 @endsection

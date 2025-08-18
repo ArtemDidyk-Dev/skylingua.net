@@ -5,7 +5,7 @@ build:
 	php artisan key:generate
 	docker stop $$(docker ps -aq)
 	docker compose build
-	docker network create proxynet
+	docker network create proxynet_skylingua
 	docker exec -it ${PROJECT_NAME}_app bash -c "php artisan storage:link"
 	exit
 	@echo "\033[0;32mBuild done\033[0m"
