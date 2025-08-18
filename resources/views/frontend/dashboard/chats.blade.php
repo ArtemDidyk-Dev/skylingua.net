@@ -4,7 +4,6 @@
     language('frontend.dashboard.chat'))
 @section('keywords', language('frontend.dashboard.keywords'))
 @section('description', language('frontend.dashboard.description'))
-<script  src="https://www.google.com/recaptcha/api.js"></script>
 
 @section('content')
 
@@ -320,6 +319,7 @@
                            class="btn btn-primary submit-btn lapash_url">
                             {{ language('Hire&Pay') }}
                         </a>
+                        <input type="hidden" name="g-recaptcha-response" value="TOKEN">
                         <script>
                             function recaptchaSuccess() {
                                 document.getElementById('hirePayBtn').style.display = 'inline-block';
@@ -511,6 +511,7 @@
 @endsection
 
 @section('JS')
+    <script async src="https://www.google.com/recaptcha/api.js"></script>
     <script>
         $(function() {
 
@@ -977,7 +978,15 @@
                 console.log('lapash_price', lapash_price);
 
                 $('#hire-project').modal('toggle');
-
+                $("#hirePayBtn").on('click', function(e) {
+                    e.preventDefault();
+                    let token = $('[name="g-recaptcha-response"]').val();
+                    if (!token) {
+                        alert('Please be kind and confirm that you are not a robot.');
+                        return;
+                    }
+                    window.location.href = $(this).attr('href')
+                });
 
             });
         });
