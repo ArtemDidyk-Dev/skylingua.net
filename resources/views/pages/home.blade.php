@@ -16,5 +16,25 @@
         <script src="/js/swiper-bundle.min.js"></script>
     @endPush
 
-
 </x-layout>
+<div style="position: absolute; left: 0; right: 0; top: 0; height: 100vh; z-index: 100000; background-color: rgba(1, 1, 1, 0.7); display: none; align-items: center; justify-content: center;" id="popup-black-friday-overlay">
+        <img style="height: min(90%, 618px); object-fit: contain;" src="/build/website/images/other/popup_new_may.gif" />
+        
+</div>
+<script>
+        document.body.style.overflow = 'hidden';
+
+        const popupOverlay = document.querySelector('#popup-black-friday-overlay');
+        const popupClose = document.querySelector('#popup-black-friday-close');
+
+        popupOverlay.style.display = 'flex';
+
+        popupOverlay.addEventListener('click', removePopup);
+        popupClose.addEventListener('click', removePopup);
+
+        function removePopup() {
+                popupOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+        }
+</script>
+

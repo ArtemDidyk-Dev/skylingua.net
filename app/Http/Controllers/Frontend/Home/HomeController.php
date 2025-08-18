@@ -203,6 +203,7 @@ class HomeController extends Controller
         $subject = ($request->subject ? $request->subject : "");
         $email = $request->email;
         $message = $request->message;
+
         $data = [
             'name' => $name,
             'subject' => $subject,
@@ -234,6 +235,7 @@ class HomeController extends Controller
         if (!empty($data['name']) && !empty($data['email']) && !empty($data['message']) && filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
 
             $toMail = setting('email');
+ 
 
             Mail::to($toMail)
                 ->send(new SendMail($data));

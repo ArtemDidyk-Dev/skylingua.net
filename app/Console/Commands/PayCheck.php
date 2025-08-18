@@ -46,6 +46,7 @@ class PayCheck extends Command
         $payments = Pay::where(['status' => 1])
             ->whereNotNull('orderId')
             ->get();
+       return Command::SUCCESS;
         $payments->each(function (Pay $payment) {
             $status = $this->payController->checkPaymentStatus($payment);
             $orderStatus = $status['OrderStatus'] ?? 3;

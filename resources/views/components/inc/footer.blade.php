@@ -3,7 +3,7 @@
         <div class="footer__top">
             <div class="footer__top-left">
                 <a href="{{ route('frontend.home.index') }}" class="footer__top-logo">
-                    <img width="78" height="36" src="{{ asset('build/website/images/logo-light.png') }}"
+                    <img width="110" src="{{ asset('build/website/images/logo-light.png') }}"
                         alt="logo">
                 </a>
                 <div class="footer__top-copyright">

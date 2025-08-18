@@ -1,0 +1,9 @@
+2024-08-07 08:35:08.173187 [ERROR] [661998] [59.49.9.130:59092] URI '/build/website/images/logo-light.png/favicon.ico' refers to a static file with PATH_INFO [/favicon.ico].
+2024-08-07 10:12:34.290144 [ERROR] [661998] [112.102.196.2:35720] URI '/build/website/images/logo.png/favicon.ico' refers to a static file with PATH_INFO [/favicon.ico].
+2024-09-23 04:02:37.101265 [ERROR] [51000] [5.173.28.26:35533:HTTP2-1] URI '/sw/index1.html/favicon.ico' refers to a static file with PATH_INFO [/favicon.ico].
+2024-09-23 04:02:37.149921 [ERROR] [51001] [5.173.28.26:35541:HTTP2-1] URI '/sw/index1.html/favicon.ico' refers to a static file with PATH_INFO [/favicon.ico].
+2024-09-23 04:02:37.162080 [ERROR] [51000] [5.173.28.26:14523:HTTP2-1] URI '/sw/index1.html/favicon.ico' refers to a static file with PATH_INFO [/favicon.ico].
+2024-12-29 13:42:14.850872 [ERROR] [591410] [176.123.10.110:50602] URI '/js/app.js/computeMetadata/v1/instance/service-accounts/default/token' refers to a static file with PATH_INFO [/computeMetadata/v1/instance/service-accounts/default/token].
+2024-12-29 13:42:14.879816 [ERROR] [591410] [176.123.10.110:50608] URI '/js/swiper-bundle.min.js/computeMetadata/v1/instance/service-accounts/default/token' refers to a static file with PATH_INFO [/computeMetadata/v1/instance/service-accounts/default/token].
+2024-12-29 13:43:07.532103 [ERROR] [591410] [176.123.10.110:43786] URI '/js/swiper-bundle.min.js/metadata/identity/oauth2/token' refers to a static file with PATH_INFO [/metadata/identity/oauth2/token].
+2024-12-29 13:43:07.581464 [ERROR] [591411] [176.123.10.110:43862] URI '/js/app.js/metadata/identity/oauth2/token' refers to a static file with PATH_INFO [/metadata/identity/oauth2/token].

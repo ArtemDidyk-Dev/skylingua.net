@@ -44,6 +44,7 @@ class CheckSubscription extends Command
             ->whereNotNull('subscribe_id')
             ->whereDate('updated_at', '<=', now()->subMonth())
             ->get();
+        return Command::SUCCESS;    
         if($payments->count() > 0){
             $this->recurrencePaymentService->setPayment($payments)->sendPaymentRequest();
         }

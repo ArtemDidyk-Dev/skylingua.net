@@ -26,6 +26,7 @@ class SendMail extends Mailable
      */
     public function build()
     {
+       
 
         return $this->from($address = setting('email'), $name = language('general.site_name'))
             ->subject(language('general.subject_feedback'))
