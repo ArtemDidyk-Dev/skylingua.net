@@ -230,7 +230,7 @@ Route::group(
                 Route::middleware(['auth.check.false', 'throttle:3,1'])->group(function () {
                     Route::post('/pay/go', 'Pay\PayController@go')->name('frontend.pay.go');
                     Route::get('/pay/go_get', 'Pay\PayController@go')->name('frontend.pay.go_get');
-                    Route::get('/pay/link/{id}', 'Pay\PayController@link')->name('frontend.pay.link');
+                    Route::get('/pay/link/{id}/{token}', 'Pay\PayController@link')->name('frontend.pay.link');
                 });
 
 

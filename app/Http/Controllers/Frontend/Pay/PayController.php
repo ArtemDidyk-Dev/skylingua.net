@@ -326,6 +326,16 @@ class PayController extends Controller
     public function link(Request $request)
     {
         $proposal_id = (int)$request->id;
+
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret'   => config('services.recaptcha.secret'),
+            'response' => $request->token,
+            'remoteip' => $request->ip(),
+        ]);
+        $result = $response->json();
+        if (!($result['success'] ?? false)) {
+            abort(403, 'Captcha verification failed');
+        }
         $proposal = ProjectProposals::getProposalsById($proposal_id);
 
         if ($proposal == null) {

@@ -985,7 +985,8 @@
                         alert('Please be kind and confirm that you are not a robot.');
                         return;
                     }
-                    window.location.href = $(this).attr('href')
+                    let href = $(this).attr('href');
+                    window.location.href = href + '/' + encodeURIComponent(token);
                 });
 
             });
